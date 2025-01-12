@@ -1,5 +1,6 @@
 package UMC_7th.Closit.domain.post.entity;
 
+import UMC_7th.Closit.domain.mission.entity.Mission;
 import UMC_7th.Closit.domain.battle.entity.Battle;
 import UMC_7th.Closit.domain.todaycloset.entity.Todaycloset;
 import UMC_7th.Closit.domain.user.entity.User;
@@ -33,9 +34,9 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "mission_id")
-//    private Mission mission;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mission_id")
+    private Mission mission;
 
     @OneToMany(mappedBy = "post1", cascade = CascadeType.ALL)
     private List<Battle> battleList1 = new ArrayList<>();
