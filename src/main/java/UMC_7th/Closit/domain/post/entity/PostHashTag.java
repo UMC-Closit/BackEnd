@@ -13,6 +13,7 @@ public class PostHashTag extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "post_hash_tag_id")
     private Long id;
 
     @ManyToOne
