@@ -1,5 +1,6 @@
 package UMC_7th.Closit.domain.board.entity;
 
+import UMC_7th.Closit.domain.todaycloset.entity.Todaycloset;
 import UMC_7th.Closit.domain.battle.entity.Battle;
 import UMC_7th.Closit.global.common.BaseEntity;
 import jakarta.persistence.*;
@@ -26,4 +27,7 @@ public class Board extends BaseEntity {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Battle> battleList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<Todaycloset> todayclosetList = new ArrayList<>();
 }
