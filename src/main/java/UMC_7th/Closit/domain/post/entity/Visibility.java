@@ -1,5 +1,5 @@
 package UMC_7th.Closit.domain.post.entity;
 
-public enum Range {
+public enum Visibility {
     PUBLIC, FRIEND, PRIVATE;
 }
