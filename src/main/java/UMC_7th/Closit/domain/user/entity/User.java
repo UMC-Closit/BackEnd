@@ -1,5 +1,8 @@
 package UMC_7th.Closit.domain.user.entity;
 
+import UMC_7th.Closit.domain.battle.entity.BattleComment;
+import UMC_7th.Closit.domain.battle.entity.BattleLikes;
+import UMC_7th.Closit.domain.battle.entity.Vote;
 import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.global.common.BaseEntity;
 import jakarta.persistence.*;
@@ -56,16 +59,16 @@ public class User extends BaseEntity {
 //
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private List<Highlight> highlightList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<Vote> voteList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<BattleComment> battleCommentList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<BattleLikes> battleLikesList = new ArrayList<>();
-//
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Vote> voteList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BattleComment> battleCommentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BattleLikes> battleLikesList = new ArrayList<>();
+
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private List<Follow> followList = new ArrayList<>();
 //
