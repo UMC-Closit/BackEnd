@@ -1,16 +1,35 @@
 package UMC_7th.Closit.domain.battle.controller;
 
+import UMC_7th.Closit.domain.battle.converter.BattleConverter;
+import UMC_7th.Closit.domain.battle.dto.BattleRequestDTO;
+import UMC_7th.Closit.domain.battle.dto.BattleResponseDTO;
+import UMC_7th.Closit.domain.battle.entity.Battle;
+import UMC_7th.Closit.domain.battle.repository.BattleRepository;
+import UMC_7th.Closit.domain.battle.service.BattleCommandService;
+import UMC_7th.Closit.domain.post.repository.PostRepository;
+import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "battle", description = "battle-API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/communities/battle")
 public class BattleController {
+
+    private final BattleCommandService battleCommandService;
+
+    @Operation(summary = "새로운 배틀 생성")
+    @PostMapping("/upload/{post_id}")
+    public ApiResponse<BattleResponseDTO.CreateBattleResultDTO> createBattle(@RequestBody @Valid BattleRequestDTO.CreateBattleDTO request,
+                                                                             @PathVariable(name = "postId") Long postId) {
+
+        Battle battle = battleCommandService.createBattle(postId, request);
+
+        return ApiResponse.onSuccess(BattleConverter.createBattleResultDTO(battle));
+    }
 
     @Operation(summary = "배틀 게시판 목록 조회")
     @GetMapping("/")
@@ -34,11 +53,6 @@ public class BattleController {
     @PostMapping("/challenge/{battle_id}/votes")
     public ResponseEntity<String> postVotes(@PathVariable("battle_id") String battleId) {
         return ResponseEntity.ok("battle votes");
-    }
-    @Operation(summary = "새로운 배틀 생성")
-    @PostMapping("/")
-    public ResponseEntity<String> postBattle() {
-        return ResponseEntity.ok("create battle");
     }
 
     @Operation(summary = "배틀 삭제")

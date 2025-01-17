@@ -5,8 +5,7 @@ import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class Battle extends BaseEntity {
     private String title;
 
     @Column
-    private LocalDateTime deadline;
+    private LocalDate deadline;
 
     @OneToMany(mappedBy = "battle", cascade = CascadeType.ALL)
     private List<BattleLikes> battleLikesList = new ArrayList<>();
