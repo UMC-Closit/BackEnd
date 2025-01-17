@@ -5,5 +5,6 @@ import UMC_7th.Closit.domain.battle.entity.Battle;
 
 public interface BattleCommandService {
 
-    Battle createBattle(Long postId, BattleRequestDTO.CreateBattleDTO request);
+    Battle createBattle(BattleRequestDTO.CreateBattleDTO request); // 배틀 생성
+    Battle challengeBattle(Long battleId, BattleRequestDTO.ChallengeBattleDTO request); // 배틀 신청
 }

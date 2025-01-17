@@ -19,11 +19,24 @@ public class BattleCommandServiceImpl implements BattleCommandService {
     private final PostRepository postRepository;
 
     @Override
-    public Battle createBattle (Long postId, BattleRequestDTO.CreateBattleDTO request) {
-        Post post = postRepository.findById(postId)
+    public Battle createBattle (BattleRequestDTO.CreateBattleDTO request) {
+        Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
+
         Battle battle = BattleConverter.toBattle(post, request);
 
         return battleRepository.save(battle);
+    }
+
+    @Override
+    public Battle challengeBattle (Long battleId, BattleRequestDTO.ChallengeBattleDTO request) {
+        Post post = postRepository.findById(request.getPostId())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
+
+        Battle challengeBattle = battleRepository.findById(battleId)
+                .map(existingBattle -> BattleConverter.toChallengeBattle(post, request))
+                .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
+
+        return battleRepository.save(challengeBattle);
     }
 }

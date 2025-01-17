@@ -23,4 +23,18 @@ public class BattleConverter {
                 .createdAt(LocalDateTime.now())
                 .build();
     }
+
+    public static Battle toChallengeBattle (Post post, BattleRequestDTO.ChallengeBattleDTO request) { // 배틀 신청
+        return Battle.builder()
+                .id(post.getId())
+                .build();
+    }
+
+    public static BattleResponseDTO.ChallengeBattleResultDTO challengeBattleResultDTO(Battle battle) {
+        return BattleResponseDTO.ChallengeBattleResultDTO.builder()
+                .firstPostId(battle.getPost1().getId())
+                .secondPostId(battle.getPost2().getId())
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
 }

@@ -18,4 +18,14 @@ public class BattleResponseDTO {
         private Long battleId;
         private LocalDateTime createdAt;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChallengeBattleResultDTO { // 배틀 신청
+        private Long firstPostId;
+        private Long secondPostId;
+        private LocalDateTime createdAt;
+    }
 }
