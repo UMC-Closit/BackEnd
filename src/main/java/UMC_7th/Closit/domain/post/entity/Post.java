@@ -7,6 +7,7 @@ import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,12 @@ public class Post extends BaseEntity {
 
     @Column
     private String postImage;
+
+    @Column(nullable = false)
+    private boolean isBattle;
+
+    @Column
+    private Integer votingCount;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

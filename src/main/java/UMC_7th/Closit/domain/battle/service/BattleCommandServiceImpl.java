@@ -10,8 +10,10 @@ import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BattleCommandServiceImpl implements BattleCommandService {
 
@@ -34,8 +36,8 @@ public class BattleCommandServiceImpl implements BattleCommandService {
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
         Battle challengeBattle = battleRepository.findById(battleId)
-                .map(existingBattle -> BattleConverter.toChallengeBattle(post, request))
-                .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
+                .map(existingBattle -> BattleConverter.toChallengeBattle(post, request)) // 배틀 존재 -> 반환
+                .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND)); // 배틀 존재 X -> BATTLE_NOT_FOUND
 
         return battleRepository.save(challengeBattle);
     }

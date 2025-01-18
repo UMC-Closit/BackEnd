@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class BattleResponseDTO {
 
@@ -27,5 +28,29 @@ public class BattleResponseDTO {
         private Long firstPostId;
         private Long secondPostId;
         private LocalDateTime createdAt;
+    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class BattlePreviewDTO { // 배틀 게시글 목록 조회
+        private Long firstUserId;
+        private Long secondUserId;
+        private Long firstPostId;
+        private Long secondPostId;
+        private String title;
+        private Integer firstVotingCount;
+        private Integer secondVotingCount;
+    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class BattlePreviewListDTO {
+        private List<BattlePreviewDTO> battlePreviewList;
+        private Integer listSize;
+        private boolean isFirst;
+        private boolean isLast;
+        private boolean hasNext;
     }
 }
