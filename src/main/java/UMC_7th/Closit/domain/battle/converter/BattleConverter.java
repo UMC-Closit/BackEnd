@@ -30,12 +30,14 @@ public class BattleConverter {
 
     public static Battle toChallengeBattle (Post post, BattleRequestDTO.ChallengeBattleDTO request) { // 배틀 신청
         return Battle.builder()
-                .id(post.getId())
+                .post2(post)
                 .build();
     }
 
     public static BattleResponseDTO.ChallengeBattleResultDTO challengeBattleResultDTO(Battle battle) {
         return BattleResponseDTO.ChallengeBattleResultDTO.builder()
+                .firstUserId(battle.getPost1().getUser().getId())
+                .secondUserId(battle.getPost2().getUser().getId())
                 .firstPostId(battle.getPost1().getId())
                 .secondPostId(battle.getPost2().getId())
                 .createdAt(LocalDateTime.now())

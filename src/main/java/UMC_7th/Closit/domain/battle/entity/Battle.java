@@ -55,4 +55,8 @@ public class Battle extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id2")
     private Post post2;
+
+    public void setPost2 (Post post2) {
+        this.post2 = post2;
+    }
 }

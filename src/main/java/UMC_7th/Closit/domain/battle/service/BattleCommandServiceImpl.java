@@ -37,9 +37,13 @@ public class BattleCommandServiceImpl implements BattleCommandService {
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
         Battle challengeBattle = battleRepository.findById(battleId)
-                .map(existingBattle -> BattleConverter.toChallengeBattle(post, request)) // 배틀 존재 -> 반환
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND)); // 배틀 존재 X -> BATTLE_NOT_FOUND
 
+        if (challengeBattle.getPost2() != null) { // 배틀 형성 완료 -> 신청 불가능
+            throw new GeneralException(ErrorStatus.BATTLE_ALERADY_EXIST);
+        }
+
+        challengeBattle.setPost2(post);
         return battleRepository.save(challengeBattle);
     }
 

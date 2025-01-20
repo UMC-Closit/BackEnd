@@ -26,6 +26,8 @@ public class BattleResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ChallengeBattleResultDTO { // 배틀 신청
+        private Long firstUserId;
+        private Long secondUserId;
         private Long firstPostId;
         private Long secondPostId;
         private LocalDateTime createdAt;
