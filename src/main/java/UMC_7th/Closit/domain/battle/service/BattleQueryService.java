@@ -7,6 +7,9 @@ import java.util.Optional;
 
 public interface BattleQueryService {
 
-    Optional<Battle> findBattle(Long battleId); // 배틀 게시판 조회
+    Optional<Battle> findBattle(Long battleId); // 배틀 게시글 목록 조회
     Slice<Battle> getBattleList (Integer page);
+
+    Optional<Battle> findChallengeBattle(Long battleId); // 배틀 챌린지 게시글 목록 조회
+    Slice<Battle> getChallengeBattleList (Integer page);
 }

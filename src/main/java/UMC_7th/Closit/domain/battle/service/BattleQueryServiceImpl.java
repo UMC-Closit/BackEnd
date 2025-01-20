@@ -30,4 +30,17 @@ public class BattleQueryServiceImpl implements BattleQueryService {
         Slice<Battle> battleList = battleRepository.findAll(pageable);
         return battleList;
     }
+
+    @Override
+    public Optional<Battle> findChallengeBattle(Long battleId) { // 배틀 챌린지 게시글 목록 조회
+        return battleRepository.findById(battleId);
+    }
+
+    @Override
+    public Slice<Battle> getChallengeBattleList(Integer page) {
+        Pageable pageable = PageRequest.of(page, 10);
+
+        Slice<Battle> challengeBattleList = battleRepository.findAll(pageable);
+        return challengeBattleList;
+    }
 }

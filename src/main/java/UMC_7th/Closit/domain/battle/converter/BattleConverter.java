@@ -7,7 +7,6 @@ import UMC_7th.Closit.domain.post.entity.Post;
 import org.springframework.data.domain.Slice;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,6 +63,27 @@ public class BattleConverter {
                 .isFirst(battleList.isFirst())
                 .isLast(battleList.isLast())
                 .hasNext(battleList.hasNext())
+                .build();
+    }
+
+    public static BattleResponseDTO.ChallengeBattlePreviewDTO challengeBattlePreviewDTO(Battle battle) { // 배틀 챌린지 게시글 목록 조회
+        return BattleResponseDTO.ChallengeBattlePreviewDTO.builder()
+                .firstUserId(battle.getPost1().getUser().getId())
+                .firstPostId(battle.getPost1().getId())
+                .title(battle.getTitle())
+                .build();
+    }
+
+    public static BattleResponseDTO.ChallengeBattlePreviewListDTO challengeBattlePreviewListDTO(Slice<Battle> challengeBattleList) {
+        List<BattleResponseDTO.ChallengeBattlePreviewDTO> challengeBattlePreviewDTOList = challengeBattleList.stream()
+                .map(BattleConverter::challengeBattlePreviewDTO).collect(Collectors.toList());
+
+        return BattleResponseDTO.ChallengeBattlePreviewListDTO.builder()
+                .challengeBattlePreviewList(challengeBattlePreviewDTOList)
+                .listSize(challengeBattlePreviewDTOList.size())
+                .isFirst(challengeBattleList.isFirst())
+                .isLast(challengeBattleList.isLast())
+                .hasNext(challengeBattleList.hasNext())
                 .build();
     }
 }

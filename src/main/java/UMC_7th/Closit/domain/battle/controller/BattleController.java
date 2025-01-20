@@ -46,13 +46,17 @@ public class BattleController {
     public ApiResponse<BattleResponseDTO.BattlePreviewListDTO> getBattleList(@RequestParam(name = "page") Integer page) {
 
         Slice<Battle> battleList = battleQueryService.getBattleList(page);
+
         return ApiResponse.onSuccess(BattleConverter.battlePreviewListDTO(battleList));
     }
 
-    @Operation(summary = "배틀 챌린지 게시판 목록 조회")
+    @Operation(summary = "배틀 챌린지 게시글 목록 조회")
     @GetMapping("/challenge")
-    public ResponseEntity<String> getChallenge() {
-        return ResponseEntity.ok("challenge");
+    public ApiResponse<BattleResponseDTO.ChallengeBattlePreviewListDTO> getChallengeBattleList(@RequestParam(name = "page") Integer page) {
+
+        Slice<Battle> challengeBattleList = battleQueryService.getChallengeBattleList(page);
+
+        return ApiResponse.onSuccess(BattleConverter.challengeBattlePreviewListDTO(challengeBattleList));
     }
 
     @Operation(summary = "배틀 투표")

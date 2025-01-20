@@ -29,6 +29,7 @@ public class BattleResponseDTO {
         private Long secondPostId;
         private LocalDateTime createdAt;
     }
+
     @Builder
     @Getter
     @NoArgsConstructor
@@ -42,12 +43,35 @@ public class BattleResponseDTO {
         private Integer firstVotingCount;
         private Integer secondVotingCount;
     }
+
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class BattlePreviewListDTO {
         private List<BattlePreviewDTO> battlePreviewList;
+        private Integer listSize;
+        private boolean isFirst;
+        private boolean isLast;
+        private boolean hasNext;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChallengeBattlePreviewDTO { // 배틀 챌린지 게시글 목록 조회
+        private Long firstUserId;
+        private Long firstPostId;
+        private String title;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChallengeBattlePreviewListDTO {
+        private List<ChallengeBattlePreviewDTO> challengeBattlePreviewList;
         private Integer listSize;
         private boolean isFirst;
         private boolean isLast;
