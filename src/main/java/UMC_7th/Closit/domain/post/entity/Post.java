@@ -56,5 +56,4 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Todaycloset> todayclosetList = new ArrayList<>();
-
 }

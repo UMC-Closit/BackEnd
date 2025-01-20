@@ -15,7 +15,7 @@ public class BattleConverter {
 
     public static Battle toBattle (Post post, BattleRequestDTO.CreateBattleDTO request) { // 배틀 생성
         return Battle.builder()
-                .id(post.getId())
+                .post1(post)
                 .title(request.getTitle())
                 .deadline(request.getDeadline())
                 .build();
