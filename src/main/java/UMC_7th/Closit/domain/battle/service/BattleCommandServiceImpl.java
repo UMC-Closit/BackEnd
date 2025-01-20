@@ -3,6 +3,7 @@ package UMC_7th.Closit.domain.battle.service;
 import UMC_7th.Closit.domain.battle.converter.BattleConverter;
 import UMC_7th.Closit.domain.battle.dto.BattleRequestDTO;
 import UMC_7th.Closit.domain.battle.entity.Battle;
+import UMC_7th.Closit.domain.battle.entity.Vote;
 import UMC_7th.Closit.domain.battle.repository.BattleRepository;
 import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.domain.post.repository.PostRepository;
@@ -21,7 +22,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
     private final PostRepository postRepository;
 
     @Override
-    public Battle createBattle (BattleRequestDTO.CreateBattleDTO request) {
+    public Battle createBattle (BattleRequestDTO.CreateBattleDTO request) { // 배틀 생성
         Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
@@ -31,7 +32,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
     }
 
     @Override
-    public Battle challengeBattle (Long battleId, BattleRequestDTO.ChallengeBattleDTO request) {
+    public Battle challengeBattle (Long battleId, BattleRequestDTO.ChallengeBattleDTO request) { // 배틀 신청
         Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
@@ -40,5 +41,17 @@ public class BattleCommandServiceImpl implements BattleCommandService {
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND)); // 배틀 존재 X -> BATTLE_NOT_FOUND
 
         return battleRepository.save(challengeBattle);
+    }
+
+    @Override
+    public Vote voteBattle (Long battleId, BattleRequestDTO.VoteBattleDTO request) { // 배틀 투표
+        Battle battle = battleRepository.findById(battleId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
+
+        Post post = postRepository.findById(request.getPostId())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
+
+
+        return null;
     }
 }

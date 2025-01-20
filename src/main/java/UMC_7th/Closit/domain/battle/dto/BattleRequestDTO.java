@@ -1,12 +1,12 @@
 package UMC_7th.Closit.domain.battle.dto;
 
+import UMC_7th.Closit.domain.battle.entity.VotedFor;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class BattleRequestDTO {
 
@@ -22,6 +22,12 @@ public class BattleRequestDTO {
 
     @Getter
     public static class ChallengeBattleDTO { // 배틀 신청
+        @NotNull
+        private Long postId;
+    }
+
+    @Getter
+    public static class VoteBattleDTO { // 배틀 투표
         @NotNull
         private Long postId;
     }

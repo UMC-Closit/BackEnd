@@ -1,5 +1,6 @@
 package UMC_7th.Closit.domain.battle.dto;
 
+import UMC_7th.Closit.domain.battle.entity.VotedFor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +30,20 @@ public class BattleResponseDTO {
         private Long secondPostId;
         private LocalDateTime createdAt;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class VoteBattleResultDTO { // 배틀 투표
+        private Long voterId;
+        private Long battleId;
+        private VotedFor votedFor;
+        private Integer firstVotingCount;
+        private Integer secondVotingCount;
+        private LocalDateTime createdAt;
+    }
+
 
     @Builder
     @Getter

@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/communities/battle")
+@RequestMapping("/api/auth")
 public class BattleController {
 
     private final BattleCommandService battleCommandService;
     private final BattleQueryService battleQueryService;
 
     @Operation(summary = "새로운 배틀 생성")
-    @PostMapping("/upload")
+    @PostMapping("/communities/battle/upload")
     public ApiResponse<BattleResponseDTO.CreateBattleResultDTO> createBattle(@RequestBody @Valid BattleRequestDTO.CreateBattleDTO request) {
 
         Battle battle = battleCommandService.createBattle(request);
@@ -32,7 +32,7 @@ public class BattleController {
     }
 
     @Operation(summary = "배틀 신청")
-    @PostMapping("/challenge/upload/{battle_id}")
+    @PostMapping("/communities/battle/challenge/upload/{battle_id}")
     public ApiResponse<BattleResponseDTO.ChallengeBattleResultDTO> challengeBattle (@RequestBody @Valid BattleRequestDTO.ChallengeBattleDTO request,
                                                 @PathVariable("battle_id") Long battleId) {
 
@@ -41,8 +41,14 @@ public class BattleController {
         return ApiResponse.onSuccess(BattleConverter.challengeBattleResultDTO(challengeBattle));
     }
 
+    @Operation(summary = "배틀 투표")
+    @PostMapping("/communities/battle/{battle_id}/voting")
+    public ResponseEntity<String> postVotes(@PathVariable("battle_id") String battleId) {
+        return ResponseEntity.ok("battle votes");
+    }
+
     @Operation(summary = "배틀 게시글 목록 조회")
-    @GetMapping()
+    @GetMapping("/communities/battle")
     public ApiResponse<BattleResponseDTO.BattlePreviewListDTO> getBattleList(@RequestParam(name = "page") Integer page) {
 
         Slice<Battle> battleList = battleQueryService.getBattleList(page);
@@ -51,7 +57,7 @@ public class BattleController {
     }
 
     @Operation(summary = "배틀 챌린지 게시글 목록 조회")
-    @GetMapping("/challenge")
+    @GetMapping("/communities/battle/challenge")
     public ApiResponse<BattleResponseDTO.ChallengeBattlePreviewListDTO> getChallengeBattleList(@RequestParam(name = "page") Integer page) {
 
         Slice<Battle> challengeBattleList = battleQueryService.getChallengeBattleList(page);
@@ -59,14 +65,8 @@ public class BattleController {
         return ApiResponse.onSuccess(BattleConverter.challengeBattlePreviewListDTO(challengeBattleList));
     }
 
-    @Operation(summary = "배틀 투표")
-    @PostMapping("/{battle_id}/votes")
-    public ResponseEntity<String> postVotes(@PathVariable("battle_id") String battleId) {
-        return ResponseEntity.ok("battle votes");
-    }
-
     @Operation(summary = "배틀 삭제")
-    @DeleteMapping("/{battle_id}")
+    @DeleteMapping("/communities/battle/{battle_id}")
     public ResponseEntity<String> deleteBattle(@PathVariable("battle_id") String battleId) {
         return ResponseEntity.ok("delete battle");
     }

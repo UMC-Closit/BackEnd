@@ -3,6 +3,7 @@ package UMC_7th.Closit.domain.battle.converter;
 import UMC_7th.Closit.domain.battle.dto.BattleRequestDTO;
 import UMC_7th.Closit.domain.battle.dto.BattleResponseDTO;
 import UMC_7th.Closit.domain.battle.entity.Battle;
+import UMC_7th.Closit.domain.battle.entity.Vote;
 import UMC_7th.Closit.domain.post.entity.Post;
 import org.springframework.data.domain.Slice;
 
@@ -38,6 +39,22 @@ public class BattleConverter {
                 .firstPostId(battle.getPost1().getId())
                 .secondPostId(battle.getPost2().getId())
                 .createdAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static Vote toVote (Post post, BattleRequestDTO.VoteBattleDTO request) { // 배틀 투표
+        return Vote.builder()
+                .id(post.getId())
+                .build();
+    }
+
+    public static BattleResponseDTO.VoteBattleResultDTO voteBattleResultDTO(Vote vote) {
+        return BattleResponseDTO.VoteBattleResultDTO.builder()
+                .voterId(vote.getUser().getId())
+                .battleId(vote.getBattle().getId())
+                .votedFor(vote.getVotedFor())
+                .firstVotingCount(vote.getBattle().getPost1().getVotingCount())
+                .secondVotingCount(vote.getBattle().getPost2().getVotingCount())
                 .build();
     }
 
