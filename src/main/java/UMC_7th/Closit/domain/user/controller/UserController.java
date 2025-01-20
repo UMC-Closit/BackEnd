@@ -27,4 +27,6 @@ public class UserController {
     public ResponseEntity<List<String>> getNotifications(@PathVariable Long user_id) {
         return ResponseEntity.ok(List.of("Notification1", "Notification2"));
     }
+
+
 }

@@ -26,8 +26,10 @@ public class Board extends BaseEntity {
     private BoardType boardType;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Battle> battleList = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Todaycloset> todayclosetList = new ArrayList<>();
 }

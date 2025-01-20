@@ -39,11 +39,15 @@ public class Post extends BaseEntity {
     private Mission mission;
 
     @OneToMany(mappedBy = "post1", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Battle> battleList1 = new ArrayList<>();
 
     @OneToMany(mappedBy = "post2", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Battle> battleList2 = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Todaycloset> todayclosetList = new ArrayList<>();
+
 }
