@@ -23,8 +23,12 @@ public class HighlightController {
 
     @Operation(summary = "하이라이트 상세 조회", description = "ID를 통해 특정 하이라이트의 상세 정보를 조회합니다.")
     @GetMapping("/{highlight_id}")
-    public ResponseEntity<String> getHighlightById(@PathVariable Long highlight_id) {
-        return ResponseEntity.ok("Highlight details with ID: " + highlight_id);
+    public ApiResponse<HighlightResponseDTO.HighlightDetailDTO> getHighlightById(@PathVariable Long highlight_id) {
+        Highlight highlight = highlightQueryService.findHighlight(highlight_id)
+                .orElseThrow(() -> new IllegalArgumentException("Highlight not found"));
+
+        HighlightResponseDTO.HighlightDetailDTO detailDTO = HighlightConverter.toHighlightDetailDTO(highlight);
+        return ApiResponse.onSuccess(detailDTO);
     }
 
     @Operation(summary = "하이라이트 생성", description = "새로운 하이라이트를 생성합니다.")

@@ -16,16 +16,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class HighlightPostCommandServiceImpl implements HighlightPostCommandService {
 
     private final HighlightPostRepository highlightPostRepository;
-    private final PostRepository postRepository;
+    //private final PostRepository postRepository;
     private final HighlightRepository highlightRepository;
 
     @Override
     @Transactional
     public HighlightPost createHighlightPost(HighlightPostRequestDTO.CreateHighlightPostDTO request) {
-        Post post = postRepository.findById(request.getPost());
-        Highlight highlight = highlightRepository.findById(request.getHighlight());
-        HighlightPost newHighlightPost = HighlightPostConverter.toHighlightPost(request, post, highlight);
+        //Post post = postRepository.findById(request.getPost());
+        //Highlight highlight = highlightRepository.findById(request.getHighlight());
+        //HighlightPost newHighlightPost = HighlightPostConverter.toHighlightPost(request, post, highlight);
 
-        return highlightPostRepository.save(newHighlightPost);
+        //return highlightPostRepository.save(newHighlightPost);
+        return null;
     }
 }

@@ -14,14 +14,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class HighlightCommandServiceImpl implements HighlightCommandService {
 
     private final HighlightRepository highlightRepository;
-    private final UserRepository userRepository;
+    //private final UserRepository userRepository;
 
     @Override
     @Transactional
     public Highlight createHighlight(HighlightRequestDTO.CreateHighlightDTO request) {
-        User user = userRepository.findById(request.getUser());
-        Highlight newHighlight = HighlightConverter.toHighlight(request, user);
+        //User user = userRepository.findById(request.getUser());
+        //Highlight newHighlight = HighlightConverter.toHighlight(request, user);
 
-        return highlightRepository.save(newHighlight);
+        //return highlightRepository.save(newHighlight);
+        return null;
     }
 }
