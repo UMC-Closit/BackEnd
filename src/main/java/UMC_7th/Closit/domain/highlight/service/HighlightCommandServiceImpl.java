@@ -9,9 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 public class HighlightCommandServiceImpl implements HighlightCommandService {
@@ -22,7 +19,7 @@ public class HighlightCommandServiceImpl implements HighlightCommandService {
     @Override
     @Transactional
     public Highlight createHighlight(HighlightRequestDTO.CreateHighlightDTO request) {
-        User user = userRepository.findById(request.getUserId());
+        User user = userRepository.findById(request.getUser());
         Highlight newHighlight = HighlightConverter.toHighlight(request, user);
 
         return highlightRepository.save(newHighlight);
