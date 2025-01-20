@@ -1,13 +1,16 @@
 package UMC_7th.Closit.domain.user.service;
 
 import UMC_7th.Closit.domain.user.dto.LoginRequestDto;
+import UMC_7th.Closit.domain.user.dto.RegisterResponseDto;
 import UMC_7th.Closit.domain.user.dto.UserDto;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
+import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +20,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public void registerUser (UserDto userDto) {
+    @Transactional
+    public RegisterResponseDto registerUser (UserDto userDto) {
 
         // Email Already Exists
         if (userRepository.existsByEmail(userDto.getEmail())) {
@@ -40,5 +44,11 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
+
+        return RegisterResponseDto.builder()
+                .name(userDto.getName())
+                .email(userDto.getEmail())
+                .build();
+
     }
 }
