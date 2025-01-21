@@ -67,7 +67,10 @@ public class BattleController {
 
     @Operation(summary = "배틀 삭제")
     @DeleteMapping("/communities/battle/{battle_id}")
-    public ResponseEntity<String> deleteBattle(@PathVariable("battle_id") String battleId) {
-        return ResponseEntity.ok("delete battle");
+    public ApiResponse<Void> deleteBattle(@PathVariable("battle_id") Long battleId) {
+
+        battleCommandService.deleteBattle(battleId);
+
+        return ApiResponse.onSuccess(null);
     }
 }

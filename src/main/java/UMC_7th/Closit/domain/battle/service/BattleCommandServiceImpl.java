@@ -57,4 +57,12 @@ public class BattleCommandServiceImpl implements BattleCommandService {
 
         return null;
     }
+
+    @Override
+    public void deleteBattle (Long battleId) {
+        Battle battle = battleRepository.findById(battleId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
+
+        battleRepository.delete(battle);
+    }
 }
