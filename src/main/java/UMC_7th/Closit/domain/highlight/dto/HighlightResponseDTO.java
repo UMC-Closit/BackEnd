@@ -1,12 +1,12 @@
 package UMC_7th.Closit.domain.highlight.dto;
 
-import UMC_7th.Closit.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class HighlightResponseDTO {
 
@@ -29,5 +29,7 @@ public class HighlightResponseDTO {
         private String title;
         private String thumbnail;
         private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+        private List<HighlightPostResponseDTO.HighlightPostDTO> highlightPosts;
     }
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/highlights")
+@RequestMapping("/api/auth/highlights")
 public class HighlightController {
 
     private final HighlightCommandService highlightCommandService;

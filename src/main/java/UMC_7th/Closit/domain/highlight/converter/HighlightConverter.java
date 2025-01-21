@@ -6,6 +6,7 @@ import UMC_7th.Closit.domain.highlight.entity.Highlight;
 import UMC_7th.Closit.domain.user.entity.User;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 public class HighlightConverter {
 
@@ -23,6 +24,12 @@ public class HighlightConverter {
                 .title(highlight.getTitle())
                 .thumbnail(highlight.getThumbnail())
                 .createdAt(highlight.getCreatedAt())
+                .updatedAt(highlight.getUpdatedAt())
+                .highlightPosts(
+                        highlight.getHighlightPosts().stream()
+                                .map(HighlightPostConverter::toHighlightPostDTO) // 수정된 메서드 호출
+                                .collect(Collectors.toList())
+                )
                 .build();
     }
 

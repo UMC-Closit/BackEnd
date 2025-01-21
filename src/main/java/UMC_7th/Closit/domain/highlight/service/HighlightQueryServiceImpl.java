@@ -17,6 +17,6 @@ public class HighlightQueryServiceImpl implements HighlightQueryService {
 
     @Override
     public Optional<Highlight> findHighlight(Long id) {
-        return highlightRepository.findById(id);
+        return highlightRepository.findByIdWithPosts(id);
     }
 }

@@ -5,7 +5,6 @@ import UMC_7th.Closit.domain.highlight.dto.HighlightPostResponseDTO;
 import UMC_7th.Closit.domain.highlight.entity.Highlight;
 import UMC_7th.Closit.domain.highlight.entity.HighlightPost;
 import UMC_7th.Closit.domain.post.entity.Post;
-import UMC_7th.Closit.domain.user.entity.User;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +14,13 @@ public class HighlightPostConverter {
         return HighlightPostResponseDTO.CreateHighlightPostResultDTO.builder()
                 .highlightPostId(highlightPost.getId())
                 .createdAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static HighlightPostResponseDTO.HighlightPostDTO toHighlightPostDTO(HighlightPost highlightPost) {
+        return HighlightPostResponseDTO.HighlightPostDTO.builder()
+                .highlightPostId(highlightPost.getId())
+                .postId(highlightPost.getPost().getId())
                 .build();
     }
 

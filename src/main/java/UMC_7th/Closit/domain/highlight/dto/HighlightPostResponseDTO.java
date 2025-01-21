@@ -17,4 +17,16 @@ public class HighlightPostResponseDTO {
         private Long highlightPostId;
         private LocalDateTime createdAt;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class HighlightPostDTO {
+        private Long highlightPostId;
+        private Long postId;
+        private Long highlightId;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+    }
 }
