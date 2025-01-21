@@ -55,7 +55,6 @@ public class BattleCommandServiceImpl implements BattleCommandService {
         Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
-
         return null;
     }
 }

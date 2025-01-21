@@ -4,8 +4,10 @@ import UMC_7th.Closit.domain.battle.converter.BattleConverter;
 import UMC_7th.Closit.domain.battle.dto.BattleRequestDTO;
 import UMC_7th.Closit.domain.battle.dto.BattleResponseDTO;
 import UMC_7th.Closit.domain.battle.entity.Battle;
+import UMC_7th.Closit.domain.battle.repository.BattleRepository;
 import UMC_7th.Closit.domain.battle.service.BattleCommandService;
 import UMC_7th.Closit.domain.battle.service.BattleQueryService;
+import UMC_7th.Closit.domain.post.repository.PostRepository;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -14,6 +16,9 @@ import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
@@ -21,6 +26,8 @@ public class BattleController {
 
     private final BattleCommandService battleCommandService;
     private final BattleQueryService battleQueryService;
+    private final PostRepository postRepository;
+    private final BattleRepository battleRepository;
 
     @Operation(summary = "새로운 배틀 생성")
     @PostMapping("/communities/battle/upload")
