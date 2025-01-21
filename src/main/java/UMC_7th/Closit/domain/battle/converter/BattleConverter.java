@@ -5,6 +5,7 @@ import UMC_7th.Closit.domain.battle.dto.BattleResponseDTO;
 import UMC_7th.Closit.domain.battle.entity.Battle;
 import UMC_7th.Closit.domain.battle.entity.Vote;
 import UMC_7th.Closit.domain.post.entity.Post;
+import UMC_7th.Closit.domain.user.entity.User;
 import org.springframework.data.domain.Slice;
 
 import java.time.LocalDateTime;
@@ -44,9 +45,10 @@ public class BattleConverter {
                 .build();
     }
 
-    public static Vote toVote (Post post, BattleRequestDTO.VoteBattleDTO request) { // 배틀 투표
+    public static Vote toVote(User user, BattleRequestDTO.VoteBattleDTO request) { // 배틀 투표
         return Vote.builder()
-                .id(post.getId())
+                .user(user)
+                .votedPostId(request.getPostId())
                 .build();
     }
 
@@ -54,7 +56,8 @@ public class BattleConverter {
         return BattleResponseDTO.VoteBattleResultDTO.builder()
                 .voterId(vote.getUser().getId())
                 .battleId(vote.getBattle().getId())
-                .votedFor(vote.getVotedFor())
+                .firstUserId(vote.getBattle().getPost1().getUser().getId())
+                .secondUserId(vote.getBattle().getPost2().getUser().getId())
                 .firstVotingCount(vote.getBattle().getPost1().getVotingCount())
                 .secondVotingCount(vote.getBattle().getPost2().getVotingCount())
                 .build();

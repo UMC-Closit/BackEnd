@@ -1,5 +1,6 @@
 package UMC_7th.Closit.domain.battle.entity;
 
+import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.global.common.BaseEntity;
 import jakarta.persistence.*;
@@ -22,8 +23,7 @@ public class Vote extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private VotedFor votedFor;
+    private Long votedPostId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -32,4 +32,16 @@ public class Vote extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "battle_id")
     private Battle battle;
+
+    public void setUser (Long userId) { // 배틀 투표
+        this.user = user;
+    }
+
+    public void setBattle (Battle battle) {
+        this.battle = battle;
+    }
+
+    public void setVotedPostId (Long postId) {
+        this.votedPostId = votedPostId;
+    }
 }

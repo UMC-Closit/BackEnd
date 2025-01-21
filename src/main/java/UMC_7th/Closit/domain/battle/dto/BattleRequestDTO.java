@@ -28,6 +28,8 @@ public class BattleRequestDTO {
     @Getter
     public static class VoteBattleDTO { // 배틀 투표
         @NotNull
+        private Long userId;
+        @NotNull
         private Long postId;
     }
 }

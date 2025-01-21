@@ -5,8 +5,11 @@ import UMC_7th.Closit.domain.battle.dto.BattleRequestDTO;
 import UMC_7th.Closit.domain.battle.entity.Battle;
 import UMC_7th.Closit.domain.battle.entity.Vote;
 import UMC_7th.Closit.domain.battle.repository.BattleRepository;
+import UMC_7th.Closit.domain.battle.repository.VoteRepository;
 import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.domain.post.repository.PostRepository;
+import UMC_7th.Closit.domain.user.entity.User;
+import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,8 @@ public class BattleCommandServiceImpl implements BattleCommandService {
 
     private final BattleRepository battleRepository;
     private final PostRepository postRepository;
+    private final VoteRepository voteRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Battle createBattle (BattleRequestDTO.CreateBattleDTO request) { // 배틀 생성
@@ -40,7 +45,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND)); // 배틀 존재 X -> BATTLE_NOT_FOUND
 
         if (challengeBattle.getPost2() != null) { // 배틀 형성 완료 -> 신청 불가능
-            throw new GeneralException(ErrorStatus.BATTLE_ALERADY_EXIST);
+            throw new GeneralException(ErrorStatus.BATTLE_ALREADY_EXIST);
         }
 
         challengeBattle.setPost2(post);
@@ -49,13 +54,34 @@ public class BattleCommandServiceImpl implements BattleCommandService {
 
     @Override
     public Vote voteBattle (Long battleId, BattleRequestDTO.VoteBattleDTO request) { // 배틀 투표
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
         Battle battle = battleRepository.findById(battleId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
 
         Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
-        return null;
+        Vote vote = BattleConverter.toVote(user, request);
+
+        // 배틀이 아닌 게시글에 투표 불가능
+        if (!battle.getPost1().getId().equals(request.getPostId()) && !battle.getPost2().getId().equals(request.getPostId())) {
+            throw new GeneralException(ErrorStatus.POST_IS_NOT_BATTLE);
+        }
+
+        // 이미 투표한 곳에 중복 투표 방지
+        boolean alreadyVoted = voteRepository.existsByBattleId(battleId);
+        if (alreadyVoted) {
+            throw new GeneralException(ErrorStatus.VOTE_ALREADY_EXIST);
+        }
+
+        post.incrementVotingCount();
+
+        vote.setUser(request.getUserId());
+        vote.setBattle(battle);
+        vote.setVotedPostId(request.getPostId());
+
+        return voteRepository.save(vote);
     }
 
     @Override

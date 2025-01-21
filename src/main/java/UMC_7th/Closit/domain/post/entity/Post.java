@@ -7,7 +7,6 @@ import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,4 +55,12 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Todaycloset> todayclosetList = new ArrayList<>();
+
+    public void incrementVotingCount() { // 배틀 투표
+        if (this.votingCount == null) {
+            this.votingCount = 1;
+        } else {
+            this.votingCount += votingCount;
+        }
+    }
 }
