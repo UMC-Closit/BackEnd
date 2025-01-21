@@ -18,10 +18,10 @@ import java.util.Optional;
 public class BattleQueryServiceImpl implements BattleQueryService {
 
     private final BattleRepository battleRepository;
-    private final PostRepository postRepository;
 
     @Override
     public Optional<Battle> findBattle(Long battleId) { // 배틀 게시글 목록 조회
+
         return battleRepository.findById(battleId);
     }
 
@@ -31,6 +31,7 @@ public class BattleQueryServiceImpl implements BattleQueryService {
 
         // secondPostId가 not null 인 것을 기준으로 조회
         Slice<Battle> battleList = battleRepository.findByPost2IsNotNull(pageable);
+
         return battleList;
     }
 
