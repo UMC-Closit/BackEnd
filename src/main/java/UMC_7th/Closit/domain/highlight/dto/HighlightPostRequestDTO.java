@@ -10,11 +10,13 @@ public class HighlightPostRequestDTO {
 
     @Getter
     public static class CreateHighlightPostDTO {
+
         @NotNull(message = "게시글 id는 필수 입력 값입니다.")
         @ExistPost
         private Long post;
+
+        @NotNull(message = "하이라이트 id는 필수 입력 값입니다.")
         @ExistHighlight
-        @NotBlank(message = "하이라이트 id는 필수 입력 값입니다.")
         private Long highlight;
     }
 }

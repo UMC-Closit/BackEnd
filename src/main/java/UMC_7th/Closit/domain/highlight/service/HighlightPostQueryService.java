@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface HighlightPostQueryService {
 
-    Optional<HighlightPost> findHighlightPost(Long id);
+    HighlightPost findHighlightPost(Long id);
 }

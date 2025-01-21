@@ -1,7 +1,7 @@
 package UMC_7th.Closit.global.validation.validator;
 
-import UMC_7th.Closit.domain.highlight.repository.HighlightRepository;
-import UMC_7th.Closit.global.validation.annotation.ExistHighlight;
+import UMC_7th.Closit.domain.highlight.repository.HighlightPostRepository;
+import UMC_7th.Closit.global.validation.annotation.ExistHighlightPost;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class HighlightExistValidator implements ConstraintValidator<ExistHighlight, Long> {
+public class HighlightPostExistValidator implements ConstraintValidator<ExistHighlightPost, Long> {
 
-    private final HighlightRepository highlightRepository;
+    private final HighlightPostRepository highlightPostRepository;
 
     @Override
-    public void initialize(ExistHighlight constraintAnnotation) {
+    public void initialize(ExistHighlightPost constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 
@@ -24,11 +24,11 @@ public class HighlightExistValidator implements ConstraintValidator<ExistHighlig
             return true; // null은 검증하지 않음
         }
 
-        boolean isValid = highlightRepository.existsById(userId);
+        boolean isValid = highlightPostRepository.existsById(userId);
 
         if (!isValid) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("HIGHLIGHT_NOT_FOUND")
+            context.buildConstraintViolationWithTemplate("HIGHLIGHT_POST_NOT_FOUND")
                     .addConstraintViolation();
         }
 

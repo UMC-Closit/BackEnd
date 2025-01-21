@@ -26,7 +26,10 @@ public enum ErrorStatus implements BaseErrorCode {
     BATTLE_NOT_FOUND(HttpStatus.NOT_FOUND, "BATTLE4041", "배틀이 존재하지 않습니다."),
 
     // 하이라이트 관련 에러
-    HIGHLIGHT_NOT_FOUND(HttpStatus.NOT_FOUND, "HIGHLIGHT4041", "하이라이트가 존재하지 않습니다.");
+    HIGHLIGHT_NOT_FOUND(HttpStatus.NOT_FOUND, "HIGHLIGHT4041", "하이라이트가 존재하지 않습니다."),
+
+    // 하이라이트 게시글 관련 에러
+    HIGHLIGHT_POST_NOT_FOUND(HttpStatus.NOT_FOUND, "HIGHLIGHTPOST4041", "하이라이트 게시글이 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
