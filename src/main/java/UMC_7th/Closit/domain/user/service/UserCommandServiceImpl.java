@@ -1,25 +1,22 @@
 package UMC_7th.Closit.domain.user.service;
 
-import UMC_7th.Closit.domain.user.dto.LoginRequestDto;
 import UMC_7th.Closit.domain.user.dto.RegisterResponseDto;
 import UMC_7th.Closit.domain.user.dto.UserDto;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
-import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserCommandServiceImpl implements UserCommandService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-
+    @Override
     @Transactional
     public RegisterResponseDto registerUser (UserDto userDto) {
 

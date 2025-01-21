@@ -14,10 +14,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceTest {
+class UserCommandServiceImplTest {
 
     @InjectMocks
-    private UserService userService;
+    private UserCommandService userCommandService;
 
     @Mock
     private UserRepository userRepository;
@@ -33,7 +33,7 @@ class UserServiceTest {
         when(passwordEncoder.encode(userDto.getPassword())).thenReturn("encodedPwd");
 
         // when
-        userService.registerUser(userDto);
+        userCommandService.registerUser(userDto);
 
         // then
         // verify if userRepository.save() is called once
