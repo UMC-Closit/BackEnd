@@ -9,7 +9,8 @@ import java.util.Optional;
 
 public interface BattleRepository extends JpaRepository<Battle,Long> {
 
-    Optional<Battle> findById(Long battleId); // 배틀 게시글 목록 조회
+    Optional<Battle> findById(Long battleId);
 
+    Slice<Battle> findByPost2IsNotNull(Pageable pageable); // 배틀 게시글 목록 조회
     Slice<Battle> findByPost2IsNull(Pageable pageable); // 배틀 챌린지 게시글 목록 조회
 }

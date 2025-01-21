@@ -34,7 +34,8 @@ public class BattleQueryServiceImpl implements BattleQueryService {
     public Slice<Battle> getBattleList(Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
 
-        Slice<Battle> battleList = battleRepository.findAll(pageable);
+        // secondPostId가 not null 인 것을 기준으로 조회
+        Slice<Battle> battleList = battleRepository.findByPost2IsNotNull(pageable);
         return battleList;
     }
 
