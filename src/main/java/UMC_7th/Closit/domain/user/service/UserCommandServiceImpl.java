@@ -1,7 +1,7 @@
 package UMC_7th.Closit.domain.user.service;
 
-import UMC_7th.Closit.domain.user.dto.RegisterResponseDto;
-import UMC_7th.Closit.domain.user.dto.UserDto;
+import UMC_7th.Closit.domain.user.dto.RegisterResponseDTO;
+import UMC_7th.Closit.domain.user.dto.UserRequestDTO;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,33 +18,33 @@ public class UserCommandServiceImpl implements UserCommandService {
 
     @Override
     @Transactional
-    public RegisterResponseDto registerUser (UserDto userDto) {
+    public RegisterResponseDTO registerUser (UserRequestDTO.CreateUserDTO userRequestDto) {
 
         // Email Already Exists
-        if (userRepository.existsByEmail(userDto.getEmail())) {
+        if (userRepository.existsByEmail(userRequestDto.getEmail())) {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
 
         // Password Encoding
-        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+        String encodedPassword = passwordEncoder.encode(userRequestDto.getPassword());
 
         // Get Closit id
 
         // UserDto to User
         User user = User.builder()
-                .name(userDto.getName())
-                .email(userDto.getEmail())
-                .clositId(userDto.getClositId())
+                .name(userRequestDto.getName())
+                .email(userRequestDto.getEmail())
+                .clositId(userRequestDto.getClositId())
                 .password(encodedPassword)
-                .birth(userDto.getBirth())
-                .profileImage(userDto.getProfileImage())
+                .birth(userRequestDto.getBirth())
+                .profileImage(userRequestDto.getProfileImage())
                 .build();
 
         userRepository.save(user);
 
-        return RegisterResponseDto.builder()
-                .name(userDto.getName())
-                .email(userDto.getEmail())
+        return RegisterResponseDTO.builder()
+                .name(userRequestDto.getName())
+                .email(userRequestDto.getEmail())
                 .build();
 
     }

@@ -1,6 +1,6 @@
 package UMC_7th.Closit.domain.user.service;
 
-import UMC_7th.Closit.domain.user.dto.UserDto;
+import UMC_7th.Closit.domain.user.dto.UserRequestDTO;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -28,12 +28,12 @@ class UserCommandServiceImplTest {
     @Test
     void registerUserSuccess () {
         // given
-        UserDto userDto = new UserDto("John", "John@email.com", "pwd1234", 1L, null, null);
-        when(userRepository.existsByEmail(userDto.getEmail())).thenReturn(false);
-        when(passwordEncoder.encode(userDto.getPassword())).thenReturn("encodedPwd");
+        UserRequestDTO.CreateUserDTO userRequestDto = new UserRequestDTO.CreateUserDTO("John", "John@email.com", "pwd12345", "john123", null, null);
+        when(userRepository.existsByEmail(userRequestDto.getEmail())).thenReturn(false);
+        when(passwordEncoder.encode(userRequestDto.getPassword())).thenReturn("encodedPwd");
 
         // when
-        userCommandService.registerUser(userDto);
+        userCommandService.registerUser(userRequestDto);
 
         // then
         // verify if userRepository.save() is called once

@@ -1,7 +1,7 @@
 package UMC_7th.Closit.domain.user.service;
 
 import UMC_7th.Closit.domain.user.dto.JwtResponse;
-import UMC_7th.Closit.domain.user.dto.LoginRequestDto;
+import UMC_7th.Closit.domain.user.dto.LoginRequestDTO;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.security.jwt.JwtTokenProvider;
@@ -19,7 +19,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     // login
     @Override
-    public JwtResponse login(LoginRequestDto loginRequestDto) {
+    public JwtResponse login(LoginRequestDTO loginRequestDto) {
         User user = userRepository.findByEmail(loginRequestDto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일입니다."));
 

@@ -1,9 +1,9 @@
 package UMC_7th.Closit.domain.user.service;
 
-import UMC_7th.Closit.domain.user.dto.RegisterResponseDto;
-import UMC_7th.Closit.domain.user.dto.UserDto;
+import UMC_7th.Closit.domain.user.dto.RegisterResponseDTO;
+import UMC_7th.Closit.domain.user.dto.UserRequestDTO;
 
 public interface UserCommandService {
 
-    RegisterResponseDto registerUser (UserDto userDto);
+    RegisterResponseDTO registerUser (UserRequestDTO.CreateUserDTO userRequestDto);
 }
