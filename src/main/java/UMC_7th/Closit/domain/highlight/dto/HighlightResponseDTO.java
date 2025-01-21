@@ -38,6 +38,19 @@ public class HighlightResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class HighlightDTO {
+        private Long highlightId;
+        private Long userId;
+        private String title;
+        private String thumbnail;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class HighlightDetailDTO {
         private Long highlightId;
         private Long userId;

@@ -30,6 +30,17 @@ public class HighlightConverter {
                 .build();
     }
 
+    public static HighlightResponseDTO.HighlightDTO toHighlightDTO(Highlight highlight) {
+        return HighlightResponseDTO.HighlightDTO.builder()
+                .highlightId(highlight.getId())
+                .userId(highlight.getUser().getId())
+                .title(highlight.getTitle())
+                .thumbnail(highlight.getThumbnail())
+                .createdAt(highlight.getCreatedAt())
+                .updatedAt(highlight.getUpdatedAt())
+                .build();
+    }
+
     public static HighlightResponseDTO.HighlightDetailDTO toHighlightDetailDTO(Highlight highlight) {
         return HighlightResponseDTO.HighlightDetailDTO.builder()
                 .highlightId(highlight.getId())
