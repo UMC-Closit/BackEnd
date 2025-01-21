@@ -29,12 +29,15 @@ public class Battle extends BaseEntity {
     private LocalDateTime deadline;
 
     @OneToMany(mappedBy = "battle", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<BattleLikes> battleLikesList = new ArrayList<>();
 
     @OneToMany(mappedBy = "battle", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<BattleComment> battleCommentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "battle", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Vote> voteList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
