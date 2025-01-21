@@ -1,7 +1,7 @@
 package UMC_7th.Closit.global.validation.validator;
 
-import UMC_7th.Closit.domain.user.repository.UserRepository;
-import UMC_7th.Closit.global.validation.annotation.ExistUser;
+import UMC_7th.Closit.domain.post.repository.PostRepository;
+import UMC_7th.Closit.global.validation.annotation.ExistPost;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserExistValidator implements ConstraintValidator<ExistUser, Long> {
+public class PostExistValidator implements ConstraintValidator<ExistPost, Long> {
 
-    private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
     @Override
-    public void initialize(ExistUser constraintAnnotation) {
+    public void initialize(ExistPost constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 
@@ -24,11 +24,11 @@ public class UserExistValidator implements ConstraintValidator<ExistUser, Long> 
             return true; // null은 검증하지 않음
         }
 
-        boolean isValid = userRepository.existsById(userId);
+        boolean isValid = postRepository.existsById(userId);
 
         if (!isValid) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("HIGHLIGHT_NOT_FOUND")
+            context.buildConstraintViolationWithTemplate("POST_NOT_FOUND")
                     .addConstraintViolation();
         }
 
