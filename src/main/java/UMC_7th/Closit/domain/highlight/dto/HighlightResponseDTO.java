@@ -16,7 +16,20 @@ public class HighlightResponseDTO {
     @AllArgsConstructor
     public static class CreateHighlightResultDTO {
         private Long highlightId;
+        private String title;
+        private String thumbnail;
         private LocalDateTime createdAt;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateHighlightResultDTO {
+        private Long highlightId;
+        private String title;
+        private String thumbnail;
+        private LocalDateTime updatedAt;
     }
 
     @Builder

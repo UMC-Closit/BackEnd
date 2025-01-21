@@ -2,6 +2,8 @@ package UMC_7th.Closit.domain.highlight.service;
 
 import UMC_7th.Closit.domain.highlight.entity.Highlight;
 import UMC_7th.Closit.domain.highlight.repository.HighlightRepository;
+import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
+import UMC_7th.Closit.global.apiPayload.exception.handler.HighlightHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +18,9 @@ public class HighlightQueryServiceImpl implements HighlightQueryService {
     private final HighlightRepository highlightRepository;
 
     @Override
-    public Optional<Highlight> findHighlight(Long id) {
-        return highlightRepository.findByIdWithPosts(id);
+    public Highlight findHighlight(Long id) {
+
+        return highlightRepository.findByIdWithPosts(id)
+                .orElseThrow(() -> new HighlightHandler(ErrorStatus.HIGHLIGHT_NOT_FOUND));
     }
 }

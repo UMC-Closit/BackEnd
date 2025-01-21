@@ -13,7 +13,18 @@ public class HighlightConverter {
     public static HighlightResponseDTO.CreateHighlightResultDTO toCreateHighlightResultDTO(Highlight highlight) {
         return HighlightResponseDTO.CreateHighlightResultDTO.builder()
                 .highlightId(highlight.getId())
+                .title(highlight.getTitle())
+                .thumbnail(highlight.getThumbnail())
                 .createdAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static HighlightResponseDTO.UpdateHighlightResultDTO toUpdateHighlightResultDTO(Highlight highlight) {
+        return HighlightResponseDTO.UpdateHighlightResultDTO.builder()
+                .highlightId(highlight.getId())
+                .title(highlight.getTitle())
+                .thumbnail(highlight.getThumbnail())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 

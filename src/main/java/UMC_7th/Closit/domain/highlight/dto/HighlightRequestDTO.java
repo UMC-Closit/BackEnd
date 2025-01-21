@@ -17,4 +17,12 @@ public class HighlightRequestDTO {
         @NotBlank(message = "대표 사진은 필수 입력 값입니다.")
         private String thumbnail;
     }
+
+    @Getter
+    public static class UpdateHighlightDTO {
+        @NotBlank(message = "제목은 필수 입력 값입니다.")
+        private String title;
+        @NotBlank(message = "대표 사진은 필수 입력 값입니다.")
+        private String thumbnail;
+    }
 }

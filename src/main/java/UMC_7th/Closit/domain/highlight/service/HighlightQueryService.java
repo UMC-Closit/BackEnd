@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface HighlightQueryService {
 
-    Optional<Highlight> findHighlight(Long id);
+    Highlight findHighlight(Long id);
 }
