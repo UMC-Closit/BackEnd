@@ -56,6 +56,10 @@ public class Post extends BaseEntity {
     @Builder.Default
     private List<Todaycloset> todayclosetList = new ArrayList<>();
 
+    public void isBattle(boolean isBattle) { // 배틀 생성
+        this.isBattle = isBattle;
+    }
+
     public void incrementVotingCount() { // 배틀 투표
         if (this.votingCount == null) {
             this.votingCount = 1;

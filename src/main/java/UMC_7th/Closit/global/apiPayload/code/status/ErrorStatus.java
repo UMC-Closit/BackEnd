@@ -26,8 +26,9 @@ public enum ErrorStatus implements BaseErrorCode {
     BATTLE_NOT_FOUND (HttpStatus.BAD_REQUEST, "BATTLE4001", "배틀이 존재하지 않습니다."),
     BATTLE_NOT_CHALLENGE (HttpStatus.BAD_REQUEST, "BATTLE4002", "동일한 게시글로 배틀을 신청할 수 없습니다."),
     BATTLE_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "BATTLE4003", "배틀이 이미 존재합니다."),
-    POST_IS_NOT_BATTLE(HttpStatus.BAD_REQUEST, "BATTLE4004", "해당 게시글은 배틀이 아닙니다"),
-    VOTE_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "VOTE4005", "이미 투표를 했습니다.");
+    POST_NOT_BATTLE(HttpStatus.BAD_REQUEST, "BATTLE4004", "해당 게시글은 배틀이 아닙니다"),
+    POST_ALREADY_BATTLE(HttpStatus.BAD_REQUEST, "BATTLE4005", "해당 게시글은 이미 배틀 게시글입니다."),
+    VOTE_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "VOTE4006", "이미 투표를 했습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

@@ -33,6 +33,13 @@ public class BattleCommandServiceImpl implements BattleCommandService {
 
         Battle battle = BattleConverter.toBattle(post, request);
 
+        // 중복 배틀 생성 방지
+        if (post.isBattle()) {
+            throw new GeneralException(ErrorStatus.POST_ALREADY_BATTLE);
+        }
+
+        post.isBattle(true);
+
         return battleRepository.save(battle);
     }
 
@@ -70,7 +77,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
 
         // 배틀이 아닌 게시글에 투표 불가능
         if (!battle.getPost1().getId().equals(request.getPostId()) && !battle.getPost2().getId().equals(request.getPostId())) {
-            throw new GeneralException(ErrorStatus.POST_IS_NOT_BATTLE);
+            throw new GeneralException(ErrorStatus.POST_NOT_BATTLE);
         }
 
         // 이미 투표한 곳에 중복 투표 방지
