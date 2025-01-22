@@ -56,7 +56,11 @@ public class Battle extends BaseEntity {
     @JoinColumn(name = "post_id2")
     private Post post2;
 
-    public void setPost2 (Post post2) {
+    public void setPost2 (Post post2) { // 배틀 신청
         this.post2 = post2;
+    }
+
+    public boolean availableVote () { // 배틀 투표
+        return LocalDate.now().isAfter(deadline);
     }
 }

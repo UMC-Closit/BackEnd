@@ -67,6 +67,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
     public Vote voteBattle (Long battleId, BattleRequestDTO.VoteBattleDTO request) { // 배틀 투표
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
         Battle battle = battleRepository.findById(battleId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
 
@@ -81,9 +82,14 @@ public class BattleCommandServiceImpl implements BattleCommandService {
         }
 
         // 이미 투표한 곳에 중복 투표 방지
-        boolean alreadyVoted = voteRepository.existsByBattleId(battleId);
+        boolean alreadyVoted = voteRepository.existsByBattleIdAndUserId(battleId, request.getUserId());
         if (alreadyVoted) {
             throw new GeneralException(ErrorStatus.VOTE_ALREADY_EXIST);
+        }
+
+        // 마감 기한 후 투표 방지
+        if (battle.availableVote()) {
+            throw new GeneralException(ErrorStatus.VOTE_EXPIRED);
         }
 
         post.incrementVotingCount();
