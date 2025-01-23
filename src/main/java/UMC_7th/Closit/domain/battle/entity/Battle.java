@@ -34,7 +34,7 @@ public class Battle extends BaseEntity {
 
     @OneToMany(mappedBy = "battle", cascade = CascadeType.ALL)
     @Builder.Default
-    private List<BattleLikes> battleLikesList = new ArrayList<>();
+    private List<BattleLike> battleLikesList = new ArrayList<>();
 
     @OneToMany(mappedBy = "battle", cascade = CascadeType.ALL)
     @Builder.Default

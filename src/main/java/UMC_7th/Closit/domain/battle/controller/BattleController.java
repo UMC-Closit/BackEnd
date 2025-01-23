@@ -1,12 +1,12 @@
 package UMC_7th.Closit.domain.battle.controller;
 
 import UMC_7th.Closit.domain.battle.converter.BattleConverter;
-import UMC_7th.Closit.domain.battle.dto.BattleRequestDTO;
-import UMC_7th.Closit.domain.battle.dto.BattleResponseDTO;
+import UMC_7th.Closit.domain.battle.dto.BattleDTO.BattleRequestDTO;
+import UMC_7th.Closit.domain.battle.dto.BattleDTO.BattleResponseDTO;
 import UMC_7th.Closit.domain.battle.entity.Battle;
 import UMC_7th.Closit.domain.battle.entity.Vote;
-import UMC_7th.Closit.domain.battle.service.BattleCommandService;
-import UMC_7th.Closit.domain.battle.service.BattleQueryService;
+import UMC_7th.Closit.domain.battle.service.BattleService.BattleCommandService;
+import UMC_7th.Closit.domain.battle.service.BattleService.BattleQueryService;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

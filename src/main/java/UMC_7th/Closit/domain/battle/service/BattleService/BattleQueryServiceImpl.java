@@ -1,8 +1,7 @@
-package UMC_7th.Closit.domain.battle.service;
+package UMC_7th.Closit.domain.battle.service.BattleService;
 
 import UMC_7th.Closit.domain.battle.entity.Battle;
 import UMC_7th.Closit.domain.battle.repository.BattleRepository;
-import UMC_7th.Closit.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
