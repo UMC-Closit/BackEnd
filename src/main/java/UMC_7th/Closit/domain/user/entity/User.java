@@ -32,7 +32,7 @@ public class User extends BaseEntity {
     private Long id;
 
     @Column(length = 20, nullable = false)
-    private Long clositId;
+    private String clositId;
 
     @Column(length = 20, nullable = false)
     private String name;

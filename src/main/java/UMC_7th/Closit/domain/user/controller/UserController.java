@@ -1,14 +1,26 @@
 package UMC_7th.Closit.domain.user.controller;
 
+import UMC_7th.Closit.domain.highlight.entity.Highlight;
+import UMC_7th.Closit.domain.user.converter.UserConverter;
+import UMC_7th.Closit.domain.user.dto.UserResponseDTO;
+import UMC_7th.Closit.domain.user.service.UserCommandService;
+import UMC_7th.Closit.domain.user.service.UserQueryService;
+import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequiredArgsConstructor
+@RequestMapping("/api/auth/users")
 public class UserController {
+
+    private final UserCommandService userCommandService;
+    private final UserQueryService userQueryService;
 
     @Operation(summary = "사용자의 팔로워 조회", description = "특정 사용자의 팔로워 목록을 조회합니다.")
     @GetMapping("/{user_id}/followers")
@@ -28,5 +40,11 @@ public class UserController {
         return ResponseEntity.ok(List.of("Notification1", "Notification2"));
     }
 
+    @Operation(summary = "사용자의 하이라이트 목록 조회", description = "특정 사용자의 하이라이트 목록을 조회합니다.")
+    @GetMapping("/{user_id}/highlights")
+    public ApiResponse<UserResponseDTO.UserHighlightListDTO> getUserHighlights(@PathVariable Long user_id) {
+        Slice<Highlight> userHighlights = userQueryService.getHighlightList(user_id);
 
+        return ApiResponse.onSuccess(UserConverter.toUserHighlightListDTO(userHighlights));
+    }
 }

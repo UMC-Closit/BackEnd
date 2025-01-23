@@ -17,7 +17,7 @@ public enum ErrorStatus implements BaseErrorCode {
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
     // 사용자 관련 에러
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "LOGIN4004", "사용자를 찾을 수 없습니다."),
+    USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "LOGIN4001", "사용자가 존재하지 않습니다."),
 
     // 게시글 관련 에러
     POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "POST4001", "게시글이 존재하지 않습니다."),
@@ -29,7 +29,13 @@ public enum ErrorStatus implements BaseErrorCode {
     POST_NOT_BATTLE (HttpStatus.BAD_REQUEST, "BATTLE4004", "해당 게시글은 배틀이 아닙니다"),
     POST_ALREADY_BATTLE (HttpStatus.BAD_REQUEST, "BATTLE4005", "해당 게시글은 이미 배틀 게시글입니다."),
     VOTE_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "VOTE4006", "이미 투표를 했습니다."),
-    VOTE_EXPIRED (HttpStatus.BAD_REQUEST, "VOTE4007", "이미 종료된 투표 입니다.");
+    VOTE_EXPIRED (HttpStatus.BAD_REQUEST, "VOTE4007", "이미 종료된 투표 입니다."),
+
+    // 하이라이트 관련 에러
+    HIGHLIGHT_NOT_FOUND(HttpStatus.NOT_FOUND, "HIGHLIGHT4041", "하이라이트가 존재하지 않습니다."),
+
+    // 하이라이트 게시글 관련 에러
+    HIGHLIGHT_POST_NOT_FOUND(HttpStatus.NOT_FOUND, "HIGHLIGHTPOST4041", "하이라이트 게시글이 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
