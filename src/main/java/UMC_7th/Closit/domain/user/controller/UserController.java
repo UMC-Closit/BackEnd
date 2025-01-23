@@ -8,6 +8,7 @@ import UMC_7th.Closit.domain.user.service.UserQueryService;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +43,8 @@ public class UserController {
     @Operation(summary = "사용자의 하이라이트 목록 조회", description = "특정 사용자의 하이라이트 목록을 조회합니다.")
     @GetMapping("/{user_id}/highlights")
     public ApiResponse<UserResponseDTO.UserHighlightListDTO> getUserHighlights(@PathVariable Long user_id) {
-        List<Highlight> userHighlights = userQueryService.getHighlightList(user_id);
+        Slice<Highlight> userHighlights = userQueryService.getHighlightList(user_id);
+
         return ApiResponse.onSuccess(UserConverter.toUserHighlightListDTO(userHighlights));
     }
 }

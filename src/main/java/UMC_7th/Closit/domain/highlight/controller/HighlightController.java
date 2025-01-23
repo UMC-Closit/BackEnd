@@ -47,8 +47,9 @@ public class HighlightController {
 
     @Operation(summary = "하이라이트 삭제", description = "ID를 통해 특정 하이라이트를 삭제합니다.")
     @DeleteMapping("/{highlight_id}")
-    public ResponseEntity<String> deleteHighlight(@PathVariable Long highlight_id) {
+    public ApiResponse<String> deleteHighlight(@PathVariable Long highlight_id) {
         highlightCommandService.deleteHighlight(highlight_id);
-        return ResponseEntity.ok("Deleted Highlight with ID: " + highlight_id);
+
+        return ApiResponse.onSuccess("Deleted Highlight with ID: " + highlight_id);
     }
 }
