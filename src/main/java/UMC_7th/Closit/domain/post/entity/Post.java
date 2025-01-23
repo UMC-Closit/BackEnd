@@ -27,6 +27,12 @@ public class Post extends BaseEntity {
     private String postImage;
 
     @Column(nullable = false)
+    private boolean isBattle;
+
+    @Column
+    private Integer votingCount;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Visibility visibility;
 
@@ -50,4 +56,15 @@ public class Post extends BaseEntity {
     @Builder.Default
     private List<Todaycloset> todayclosetList = new ArrayList<>();
 
+    public void isBattle(boolean isBattle) { // 배틀 생성
+        this.isBattle = isBattle;
+    }
+
+    public void incrementVotingCount() { // 배틀 투표
+        if (this.votingCount == null) {
+            this.votingCount = 1;
+        } else {
+            this.votingCount += votingCount;
+        }
+    }
 }

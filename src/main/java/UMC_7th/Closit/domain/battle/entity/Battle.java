@@ -5,14 +5,18 @@ import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Builder
+@DynamicUpdate
+@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Battle extends BaseEntity {
@@ -26,7 +30,7 @@ public class Battle extends BaseEntity {
     private String title;
 
     @Column
-    private LocalDateTime deadline;
+    private LocalDate deadline;
 
     @OneToMany(mappedBy = "battle", cascade = CascadeType.ALL)
     @Builder.Default
@@ -51,4 +55,12 @@ public class Battle extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id2")
     private Post post2;
+
+    public void setPost2 (Post post2) { // 배틀 신청
+        this.post2 = post2;
+    }
+
+    public boolean availableVote () { // 배틀 투표
+        return LocalDate.now().isAfter(deadline);
+    }
 }
