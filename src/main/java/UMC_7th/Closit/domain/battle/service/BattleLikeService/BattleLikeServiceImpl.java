@@ -42,4 +42,18 @@ public class BattleLikeServiceImpl implements BattleLikeService{
 
         return battleLikeRepository.save(battleLike);
     }
+
+    @Override
+    @Transactional
+    public void deleteBattleLike (Long battleId, Long battleLikeId) {
+        Battle battle = battleRepository.findById(battleId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
+
+        BattleLike battleLike = battleLikeRepository.findById(battleLikeId)
+                        .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_LIKES_NOT_FOUND));
+
+        battle.decreaseLikeCount();
+
+        battleLikeRepository.delete(battleLike);
+    }
 }

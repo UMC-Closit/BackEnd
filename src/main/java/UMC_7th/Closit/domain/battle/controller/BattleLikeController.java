@@ -27,4 +27,14 @@ public class BattleLikeController {
 
         return ApiResponse.onSuccess(BattleLikeConverter.createBattleLikeResultDTO(battleLike));
     }
+
+    @Operation(summary = "배틀 좋아요 삭제")
+    @DeleteMapping("communities/battle/{battle_id}/likes/{battle_like_id}")
+    public ApiResponse<Void> deleteBattleLike(@PathVariable("battle_id") Long battleId,
+                                              @PathVariable("battle_like_id") Long battleLikeId) {
+
+        battleLikeService.deleteBattleLike(battleId, battleLikeId);
+
+        return ApiResponse.onSuccess(null);
+    }
 }
