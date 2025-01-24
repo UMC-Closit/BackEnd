@@ -32,6 +32,9 @@ public class Battle extends BaseEntity {
     @Column
     private LocalDate deadline;
 
+    @Column
+    private Integer likeCount;
+
     @OneToMany(mappedBy = "battle", cascade = CascadeType.ALL)
     @Builder.Default
     private List<BattleLike> battleLikesList = new ArrayList<>();
@@ -62,5 +65,13 @@ public class Battle extends BaseEntity {
 
     public boolean availableVote () { // 배틀 투표
         return LocalDate.now().isAfter(deadline);
+    }
+
+    public void increaseLikeCount() { // 배틀 좋아요 생성
+        if (this.likeCount == null) {
+            this.likeCount = 1;
+        } else {
+            this.likeCount++;
+        }
     }
 }

@@ -1,4 +1,9 @@
 package UMC_7th.Closit.domain.battle.repository;
 
-public interface BattleLikeRepository {
+import UMC_7th.Closit.domain.battle.entity.BattleLike;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BattleLikeRepository extends JpaRepository<BattleLike, Long> {
+
+   boolean existsBattleLikeByBattleIdAndUserId(Long battleId, Long userId); // 배틀 좋아요 생성
 }
