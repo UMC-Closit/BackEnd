@@ -9,6 +9,7 @@ import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,6 +27,16 @@ public class BattleLikeController {
         BattleLike battleLike = battleLikeService.createBattleLike(battleId, request);
 
         return ApiResponse.onSuccess(BattleLikeConverter.createBattleLikeResultDTO(battleLike));
+    }
+
+    @Operation(summary = "배틀 좋아요 조회")
+    @GetMapping("/communities/battle/{battle_id}/likes")
+    public ApiResponse<BattleLikeResponseDTO.BattleLikePreviewListDTO> getBattleLike(@PathVariable("battle_id") Long battleId,
+                                                                                     @RequestParam(name = "page") Integer page) {
+
+        Slice<BattleLike> battleLikeList = battleLikeService.getBattleLikeList(battleId, page);
+
+        return ApiResponse.onSuccess(BattleLikeConverter.battleLikePreviewListDTO(battleLikeList));
     }
 
     @Operation(summary = "배틀 좋아요 삭제")
