@@ -27,4 +27,14 @@ public class BattleCommentController {
 
         return ApiResponse.onSuccess(BattleCommentConverter.createBattleCommentResponseDTO(battleComment));
     }
+
+    @Operation(summary = "배틀 댓글 삭제")
+    @DeleteMapping("/{battle_id}/comments/{battle_comment_id}")
+    public ApiResponse<String> deleteBattleComment(@PathVariable("battle_id") Long battleId,
+                                                   @PathVariable("battle_comment_id") Long battleCommentId) {
+
+        battleCommentService.deleteBattleComment(battleId, battleCommentId);
+
+        return ApiResponse.onSuccess("Deletion successful");
+    }
 }

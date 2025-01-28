@@ -35,4 +35,17 @@ public class BattleCommentServiceImpl implements BattleCommentService {
 
         return battleCommentRepository.save(battleComment);
     }
+
+    @Override
+    @Transactional
+    public void deleteBattleComment(Long battleId, Long battleCommentId) {
+        Battle battle = battleRepository.findById(battleId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
+
+        BattleComment battleComment = battleCommentRepository.findById(battleCommentId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_COMMENT_NOT_FOUND));
+
+        battleCommentRepository.delete(battleComment);
+    }
+
 }
