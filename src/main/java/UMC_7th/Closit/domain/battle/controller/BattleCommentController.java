@@ -9,6 +9,7 @@ import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,6 +27,16 @@ public class BattleCommentController {
         BattleComment battleComment = battleCommentService.createBattleComment(battleId, request);
 
         return ApiResponse.onSuccess(BattleCommentConverter.createBattleCommentResponseDTO(battleComment));
+    }
+
+    @Operation(summary = "배틀 댓글 조회")
+    @GetMapping("/{battle_id}/comments")
+    public ApiResponse<BattleCommentResponseDTO.BattleCommentPreviewListDTO> getBattleComments(@PathVariable("battle_id") Long battleId,
+                                                                                               @RequestParam(name = "page") Integer page) {
+
+        Slice<BattleComment> battleCommentList = battleCommentService.getBattleCommentList(battleId, page);
+
+        return ApiResponse.onSuccess(BattleCommentConverter.battleCommentPreviewListDTO(battleCommentList));
     }
 
     @Operation(summary = "배틀 댓글 삭제")
