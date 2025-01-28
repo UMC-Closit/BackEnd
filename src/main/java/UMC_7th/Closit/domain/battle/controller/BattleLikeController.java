@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/auth")
+@RequestMapping("api/auth/communities/battle")
 public class BattleLikeController {
 
     private final BattleLikeService battleLikeService;
 
     @Operation(summary = "배틀 좋아요 생성")
-    @PostMapping("/communities/battle/{battle_id}/likes")
+    @PostMapping("/{battle_id}/likes")
     public ApiResponse<BattleLikeResponseDTO.CreateBattleLikeResultDTO> createBattleLike(@RequestBody @Valid BattleLikeRequestDTO.CreateBattleLikeDTO request,
                                                                                          @PathVariable("battle_id") Long battleId) {
 
@@ -30,7 +30,7 @@ public class BattleLikeController {
     }
 
     @Operation(summary = "배틀 좋아요 조회")
-    @GetMapping("/communities/battle/{battle_id}/likes")
+    @GetMapping("/{battle_id}/likes")
     public ApiResponse<BattleLikeResponseDTO.BattleLikePreviewListDTO> getBattleLike(@PathVariable("battle_id") Long battleId,
                                                                                      @RequestParam(name = "page") Integer page) {
 
@@ -40,12 +40,12 @@ public class BattleLikeController {
     }
 
     @Operation(summary = "배틀 좋아요 삭제")
-    @DeleteMapping("communities/battle/{battle_id}/likes/{battle_like_id}")
-    public ApiResponse<Void> deleteBattleLike(@PathVariable("battle_id") Long battleId,
+    @DeleteMapping("{battle_id}/likes/{battle_like_id}")
+    public ApiResponse<String> deleteBattleLike(@PathVariable("battle_id") Long battleId,
                                               @PathVariable("battle_like_id") Long battleLikeId) {
 
         battleLikeService.deleteBattleLike(battleId, battleLikeId);
 
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess("Deletion Success battleLike");
     }
 }
