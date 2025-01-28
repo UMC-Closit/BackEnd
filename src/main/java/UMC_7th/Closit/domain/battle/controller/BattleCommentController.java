@@ -1,10 +1,11 @@
 package UMC_7th.Closit.domain.battle.controller;
 
 import UMC_7th.Closit.domain.battle.converter.BattleCommentConverter;
-import UMC_7th.Closit.domain.battle.dto.battleCommentDTO.BattleCommentRequestDTO;
-import UMC_7th.Closit.domain.battle.dto.battleCommentDTO.BattleCommentResponseDTO;
+import UMC_7th.Closit.domain.battle.dto.BattleCommentDTO.BattleCommentRequestDTO;
+import UMC_7th.Closit.domain.battle.dto.BattleCommentDTO.BattleCommentResponseDTO;
 import UMC_7th.Closit.domain.battle.entity.BattleComment;
-import UMC_7th.Closit.domain.battle.service.battleCommentService.BattleCommentService;
+import UMC_7th.Closit.domain.battle.service.BattleCommentService.BattleCmtCommandService;
+import UMC_7th.Closit.domain.battle.service.BattleCommentService.BattleCmtQueryService;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -17,14 +18,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth/communities/battle")
 public class BattleCommentController {
 
-    private final BattleCommentService battleCommentService;
+    private final BattleCmtCommandService battleCmtCommandService;
+    private final BattleCmtQueryService battleCmtQueryService;
 
     @Operation(summary = "새로운 배틀 댓글 생성")
     @PostMapping("/{battle_id}/comments")
     public ApiResponse<BattleCommentResponseDTO.createBattleCommentResultDTO> createBattleComment(@RequestBody @Valid BattleCommentRequestDTO.createBattleCommentRequestDTO request,
                                                                                                   @PathVariable("battle_id") Long battleId) {
 
-        BattleComment battleComment = battleCommentService.createBattleComment(battleId, request);
+        BattleComment battleComment = battleCmtCommandService.createBattleComment(battleId, request);
 
         return ApiResponse.onSuccess(BattleCommentConverter.createBattleCommentResponseDTO(battleComment));
     }
@@ -34,7 +36,7 @@ public class BattleCommentController {
     public ApiResponse<BattleCommentResponseDTO.BattleCommentPreviewListDTO> getBattleComments(@PathVariable("battle_id") Long battleId,
                                                                                                @RequestParam(name = "page") Integer page) {
 
-        Slice<BattleComment> battleCommentList = battleCommentService.getBattleCommentList(battleId, page);
+        Slice<BattleComment> battleCommentList = battleCmtQueryService.getBattleCommentList(battleId, page);
 
         return ApiResponse.onSuccess(BattleCommentConverter.battleCommentPreviewListDTO(battleCommentList));
     }
@@ -44,7 +46,7 @@ public class BattleCommentController {
     public ApiResponse<String> deleteBattleComment(@PathVariable("battle_id") Long battleId,
                                                    @PathVariable("battle_comment_id") Long battleCommentId) {
 
-        battleCommentService.deleteBattleComment(battleId, battleCommentId);
+        battleCmtCommandService.deleteBattleComment(battleId, battleCommentId);
 
         return ApiResponse.onSuccess("Deletion successful");
     }

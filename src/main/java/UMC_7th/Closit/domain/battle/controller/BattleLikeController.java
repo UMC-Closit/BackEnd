@@ -4,7 +4,8 @@ import UMC_7th.Closit.domain.battle.converter.BattleLikeConverter;
 import UMC_7th.Closit.domain.battle.dto.BattleLikeDTO.BattleLikeRequestDTO;
 import UMC_7th.Closit.domain.battle.dto.BattleLikeDTO.BattleLikeResponseDTO;
 import UMC_7th.Closit.domain.battle.entity.BattleLike;
-import UMC_7th.Closit.domain.battle.service.BattleLikeService.BattleLikeService;
+import UMC_7th.Closit.domain.battle.service.BattleLikeService.BattleLikeCommandService;
+import UMC_7th.Closit.domain.battle.service.BattleLikeService.BattleLikeQueryService;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -17,14 +18,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/auth/communities/battle")
 public class BattleLikeController {
 
-    private final BattleLikeService battleLikeService;
+    private final BattleLikeCommandService battleLikeCommandService;
+    private final BattleLikeQueryService battleLikeQueryService;
 
     @Operation(summary = "배틀 좋아요 생성")
     @PostMapping("/{battle_id}/likes")
     public ApiResponse<BattleLikeResponseDTO.CreateBattleLikeResultDTO> createBattleLike(@RequestBody @Valid BattleLikeRequestDTO.CreateBattleLikeDTO request,
                                                                                          @PathVariable("battle_id") Long battleId) {
 
-        BattleLike battleLike = battleLikeService.createBattleLike(battleId, request);
+        BattleLike battleLike = battleLikeCommandService.createBattleLike(battleId, request);
 
         return ApiResponse.onSuccess(BattleLikeConverter.createBattleLikeResultDTO(battleLike));
     }
@@ -34,7 +36,7 @@ public class BattleLikeController {
     public ApiResponse<BattleLikeResponseDTO.BattleLikePreviewListDTO> getBattleLike(@PathVariable("battle_id") Long battleId,
                                                                                      @RequestParam(name = "page") Integer page) {
 
-        Slice<BattleLike> battleLikeList = battleLikeService.getBattleLikeList(battleId, page);
+        Slice<BattleLike> battleLikeList = battleLikeQueryService.getBattleLikeList(battleId, page);
 
         return ApiResponse.onSuccess(BattleLikeConverter.battleLikePreviewListDTO(battleLikeList));
     }
@@ -44,7 +46,7 @@ public class BattleLikeController {
     public ApiResponse<String> deleteBattleLike(@PathVariable("battle_id") Long battleId,
                                               @PathVariable("battle_like_id") Long battleLikeId) {
 
-        battleLikeService.deleteBattleLike(battleId, battleLikeId);
+        battleLikeCommandService.deleteBattleLike(battleId, battleLikeId);
 
         return ApiResponse.onSuccess("Deletion Success battleLike");
     }
