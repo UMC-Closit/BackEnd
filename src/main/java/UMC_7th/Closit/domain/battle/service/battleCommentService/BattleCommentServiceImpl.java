@@ -54,7 +54,7 @@ public class BattleCommentServiceImpl implements BattleCommentService {
 
     @Override
     @Transactional
-    public void deleteBattleComment(Long battleId, Long battleCommentId) {
+    public void deleteBattleComment(Long battleId, Long battleCommentId) { // 배틀 댓글 삭제
         Battle battle = battleRepository.findById(battleId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
 
