@@ -31,6 +31,10 @@ public enum ErrorStatus implements BaseErrorCode {
     VOTE_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "VOTE4006", "이미 투표를 했습니다."),
     VOTE_EXPIRED (HttpStatus.BAD_REQUEST, "VOTE4007", "이미 종료된 투표 입니다."),
 
+    // 배틀 좋아요 관련 에러
+    BATTLE_LIKES_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "BATTLELIKE4001", "이미 좋아요를 누른 배틀 입니다."),
+    BATTLE_LIKES_NOT_FOUND (HttpStatus.BAD_REQUEST, "BATTLELIKE4002", "배틀 좋아요가 존재하지 않습니다"),
+
     // 하이라이트 관련 에러
     HIGHLIGHT_NOT_FOUND(HttpStatus.NOT_FOUND, "HIGHLIGHT4041", "하이라이트가 존재하지 않습니다."),
 

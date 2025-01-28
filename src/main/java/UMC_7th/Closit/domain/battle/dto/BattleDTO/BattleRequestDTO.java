@@ -1,4 +1,4 @@
-package UMC_7th.Closit.domain.battle.dto;
+package UMC_7th.Closit.domain.battle.dto.BattleDTO;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

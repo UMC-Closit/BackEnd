@@ -1,7 +1,7 @@
 package UMC_7th.Closit.domain.user.entity;
 
 import UMC_7th.Closit.domain.battle.entity.BattleComment;
-import UMC_7th.Closit.domain.battle.entity.BattleLikes;
+import UMC_7th.Closit.domain.battle.entity.BattleLike;
 import UMC_7th.Closit.domain.battle.entity.Vote;
 import UMC_7th.Closit.domain.follow.entity.Follow;
 import UMC_7th.Closit.domain.highlight.entity.Highlight;
@@ -83,7 +83,7 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Builder.Default
-    private List<BattleLikes> battleLikesList = new ArrayList<>();
+    private List<BattleLike> battleLikesList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Builder.Default
