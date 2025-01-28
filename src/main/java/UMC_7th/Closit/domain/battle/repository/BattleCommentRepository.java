@@ -1,0 +1,7 @@
+package UMC_7th.Closit.domain.battle.repository;
+
+import UMC_7th.Closit.domain.battle.entity.BattleComment;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BattleCommentRepository extends JpaRepository<BattleComment, Long> {
+}
