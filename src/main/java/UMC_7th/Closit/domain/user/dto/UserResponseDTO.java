@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Slice;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,8 +30,20 @@ public class UserResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UserHighlightListDTO {
-        private List<HighlightResponseDTO.HighlightDTO> highlightList;
+    public static class UserHighlightSliceDTO {
+        private List<HighlightResponseDTO.HighlightDTO> highlights;
+        private boolean hasNext;
+        private int pageNumber;
+        private int size;
+
+        public static UserHighlightSliceDTO from(Slice<HighlightResponseDTO.HighlightDTO> slice) {
+            return UserHighlightSliceDTO.builder()
+                    .highlights(slice.getContent())
+                    .hasNext(slice.hasNext())
+                    .pageNumber(slice.getNumber())
+                    .size(slice.getSize())
+                    .build();
+        }
     }
 
     @Builder
