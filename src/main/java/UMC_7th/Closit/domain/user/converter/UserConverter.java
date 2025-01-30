@@ -28,30 +28,18 @@ public class UserConverter {
         Slice<HighlightResponseDTO.HighlightDTO> highlightDTOs = highlightSlice.map(HighlightConverter::toHighlightDTO);
 
         return UserResponseDTO.UserHighlightSliceDTO.builder()
-                .highlights(highlightDTOs.getContent())  // 현재 페이지의 하이라이트 목록
-                .hasNext(highlightSlice.hasNext())       // 다음 페이지 존재 여부
-                .pageNumber(highlightSlice.getNumber())  // 현재 페이지 번호
-                .size(highlightSlice.getSize())          // 페이지 크기
+                .highlights(highlightDTOs.getContent())
+                .hasNext(highlightSlice.hasNext())
+                .pageNumber(highlightSlice.getNumber())
+                .size(highlightSlice.getSize())
                 .build();
     }
 
-    public static UserResponseDTO.UserFollwerListDTO toUserFollwerListDTO(Slice<User> followerList) {
-        List<UserResponseDTO.UserDTO> follwerDTOs = followerList.stream()
-                .map(UserConverter::toUserDTO)
-                .collect(Collectors.toList());
-
-        return UserResponseDTO.UserFollwerListDTO.builder()
-                .followerList(follwerDTOs)
-                .build();
+    public static UserResponseDTO.UserFollowerSliceDTO toUserFollowerSliceDTO(Slice<User> followerSlice) {
+        return UserResponseDTO.UserFollowerSliceDTO.from(followerSlice);
     }
 
-    public static UserResponseDTO.UserFollwingListDTO toUserFollwingListDTO(Slice<User> followingList) {
-        List<UserResponseDTO.UserDTO> follwingDTOs = followingList.stream()
-                .map(UserConverter::toUserDTO)
-                .collect(Collectors.toList());
-
-        return UserResponseDTO.UserFollwingListDTO.builder()
-                .followingList(follwingDTOs)
-                .build();
+    public static UserResponseDTO.UserFollowingSliceDTO toUserFollowingSliceDTO(Slice<User> followingSlice) {
+        return UserResponseDTO.UserFollowingSliceDTO.from(followingSlice);
     }
 }

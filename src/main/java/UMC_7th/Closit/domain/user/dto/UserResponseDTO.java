@@ -2,6 +2,8 @@ package UMC_7th.Closit.domain.user.dto;
 
 import UMC_7th.Closit.domain.follow.dto.FollowResponseDTO;
 import UMC_7th.Closit.domain.highlight.dto.HighlightResponseDTO;
+import UMC_7th.Closit.domain.user.converter.UserConverter;
+import UMC_7th.Closit.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,15 +52,39 @@ public class UserResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UserFollwerListDTO {
-        private List<UserDTO> followerList;
+    public static class UserFollowerSliceDTO {
+        private List<UserDTO> followers;
+        private boolean hasNext;
+        private int pageNumber;
+        private int size;
+
+        public static UserFollowerSliceDTO from(Slice<User> slice) {
+            return UserFollowerSliceDTO.builder()
+                    .followers(slice.map(UserConverter::toUserDTO).getContent())
+                    .hasNext(slice.hasNext())
+                    .pageNumber(slice.getNumber())
+                    .size(slice.getSize())
+                    .build();
+        }
     }
 
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UserFollwingListDTO {
-        private List<UserDTO> followingList;
+    public static class UserFollowingSliceDTO {
+        private List<UserDTO> following;
+        private boolean hasNext;
+        private int pageNumber;
+        private int size;
+
+        public static UserFollowingSliceDTO from(Slice<User> slice) {
+            return UserFollowingSliceDTO.builder()
+                    .following(slice.map(UserConverter::toUserDTO).getContent())
+                    .hasNext(slice.hasNext())
+                    .pageNumber(slice.getNumber())
+                    .size(slice.getSize())
+                    .build();
+        }
     }
 }

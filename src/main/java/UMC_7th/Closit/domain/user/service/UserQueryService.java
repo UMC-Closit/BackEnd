@@ -9,7 +9,7 @@ public interface UserQueryService {
 
     Slice<Highlight> getHighlightList(Long userId, Pageable pageable);
 
-    Slice<User> getFollowerList(Long userId);
+    Slice<User> getFollowerList(Long userId, Pageable pageable);
 
-    Slice<User> getFollowingList(Long userId);
+    Slice<User> getFollowingList(Long userId, Pageable pageable);
 }
