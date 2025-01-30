@@ -1,30 +1,38 @@
 package UMC_7th.Closit.domain.mission.controller;
 
+import UMC_7th.Closit.domain.mission.converter.MissionConverter;
+import UMC_7th.Closit.domain.mission.dto.MissionRequestDTO;
+import UMC_7th.Closit.domain.mission.dto.MissionResponseDTO;
+import UMC_7th.Closit.domain.mission.entity.Mission;
+import UMC_7th.Closit.domain.mission.repository.MissionRepository;
+import UMC_7th.Closit.domain.mission.service.MissionCommandService;
+import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/missions")
+@RequiredArgsConstructor
+@RequestMapping("/api/auth/missions")
 public class MissionController {
 
-    @Operation(summary = "사용자의 미션 목록 조회", description = "특정 사용자의 미션 목록을 조회합니다.")
-    @GetMapping("/users/{user_id}/missions")
-    public ResponseEntity<List<String>> getUserMissions(@PathVariable Long user_id) {
-        return ResponseEntity.ok(List.of("Mission1", "Mission2"));
-    }
+    private final MissionCommandService missionCommandService;
 
     @Operation(summary = "미션 생성", description = "새로운 미션을 생성합니다.")
     @PostMapping
-    public ResponseEntity<String> createMission(@RequestBody String mission) {
-        return ResponseEntity.ok("Created Mission: " + mission);
+    public ApiResponse<MissionResponseDTO.CreateMissionResultDTO> createMission(@RequestBody @Valid MissionRequestDTO.CreateMissionDTO request) {
+        Mission mission = missionCommandService.createMission(request);
+        return ApiResponse.onSuccess(MissionConverter.toCreateMissionResultDTO(mission));
     }
 
     @Operation(summary = "미션 완료", description = "특정 미션을 완료로 표시합니다.")
     @PutMapping("/{mission_id}/complete")
     public ResponseEntity<String> completeMission(@PathVariable Long mission_id) {
+        Mission updatedMission = missionCommandService.completeMission(mission_id);
         return ResponseEntity.ok("Completed Mission with ID: " + mission_id);
     }
 }

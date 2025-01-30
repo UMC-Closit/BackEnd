@@ -17,7 +17,6 @@ public class FollowQueryServiceImpl implements FollowQueryService {
 
     @Override
     public Follow findFollow(Long id) {
-
         return followRepository.findById(id)
                 .orElseThrow(() -> new FollowHandler(ErrorStatus.FOLLOW_NOT_FOUND));
     }
