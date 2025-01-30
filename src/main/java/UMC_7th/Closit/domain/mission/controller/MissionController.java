@@ -4,7 +4,6 @@ import UMC_7th.Closit.domain.mission.converter.MissionConverter;
 import UMC_7th.Closit.domain.mission.dto.MissionRequestDTO;
 import UMC_7th.Closit.domain.mission.dto.MissionResponseDTO;
 import UMC_7th.Closit.domain.mission.entity.Mission;
-import UMC_7th.Closit.domain.mission.repository.MissionRepository;
 import UMC_7th.Closit.domain.mission.service.MissionCommandService;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;

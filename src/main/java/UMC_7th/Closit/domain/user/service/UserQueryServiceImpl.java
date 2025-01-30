@@ -4,8 +4,8 @@ import UMC_7th.Closit.domain.follow.entity.Follow;
 import UMC_7th.Closit.domain.follow.repository.FollowRepository;
 import UMC_7th.Closit.domain.highlight.entity.Highlight;
 import UMC_7th.Closit.domain.highlight.repository.HighlightRepository;
-import UMC_7th.Closit.domain.user.converter.UserConverter;
-import UMC_7th.Closit.domain.user.dto.UserResponseDTO;
+import UMC_7th.Closit.domain.mission.entity.Mission;
+import UMC_7th.Closit.domain.mission.repository.MissionRepository;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
@@ -26,6 +26,7 @@ public class UserQueryServiceImpl implements UserQueryService {
     private final UserRepository userRepository;
     private final HighlightRepository highlightRepository;
     private final FollowRepository followRepository;
+    private final MissionRepository missionRepository;
 
     @Override
     public Slice<Highlight> getHighlightList(Long userId, Pageable pageable) {
@@ -51,5 +52,13 @@ public class UserQueryServiceImpl implements UserQueryService {
 
         Slice<Follow> followings = followRepository.findByFollower(user, pageable);
         return followings.map(Follow::getFollowing);
+    }
+
+    @Override
+    public Slice<Mission> getMissionList(Long userId, Pageable pageable) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
+
+        return missionRepository.findAllByUser(user, pageable);
     }
 }
