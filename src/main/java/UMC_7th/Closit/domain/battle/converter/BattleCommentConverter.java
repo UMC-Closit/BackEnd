@@ -7,7 +7,6 @@ import UMC_7th.Closit.domain.battle.entity.BattleComment;
 import UMC_7th.Closit.domain.user.entity.User;
 import org.springframework.data.domain.Slice;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +23,7 @@ public class BattleCommentConverter {
     public static BattleCommentResponseDTO.createBattleCommentResultDTO createBattleCommentResponseDTO (BattleComment battleComment) {
         return BattleCommentResponseDTO.createBattleCommentResultDTO.builder()
                 .battleCommentId(battleComment.getId())
-                .createdAt(LocalDateTime.now())
+                .createdAt(battleComment.getCreatedAt())
                 .build();
     }
 
