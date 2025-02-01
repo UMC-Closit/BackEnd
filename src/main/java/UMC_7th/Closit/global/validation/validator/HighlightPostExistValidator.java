@@ -19,12 +19,12 @@ public class HighlightPostExistValidator implements ConstraintValidator<ExistHig
     }
 
     @Override
-    public boolean isValid(Long userId, ConstraintValidatorContext context) {
-        if (userId == null) {
+    public boolean isValid(Long highlightPostId, ConstraintValidatorContext context) {
+        if (highlightPostId == null) {
             return true; // null은 검증하지 않음
         }
 
-        boolean isValid = highlightPostRepository.existsById(userId);
+        boolean isValid = highlightPostRepository.existsById(highlightPostId);
 
         if (!isValid) {
             context.disableDefaultConstraintViolation();
