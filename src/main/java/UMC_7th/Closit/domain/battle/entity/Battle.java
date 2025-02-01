@@ -33,10 +33,12 @@ public class Battle extends BaseEntity {
     private LocalDate deadline = LocalDate.now().plusDays(3);
 
     @Column
-    private Integer firstVotingCnt;
+    @Builder.Default
+    private Integer firstVotingCnt = 0;
 
     @Column
-    private Integer secondVotingCnt;
+    @Builder.Default
+    private Integer secondVotingCnt = 0;
 
     @Column
     private Integer likeCount;
@@ -81,19 +83,11 @@ public class Battle extends BaseEntity {
     }
 
     public void incrementFirstVotingCnt() { // 첫 번째 게시글 투표
-        if (this.firstVotingCnt == null) {
-            this.firstVotingCnt = 1;
-        } else {
-            this.firstVotingCnt++;
-        }
+        this.firstVotingCnt++;
     }
 
     public void incrementSecondVotingCnt() { // 두 번째 게시글 투표
-        if (this.secondVotingCnt == null) {
-            this.secondVotingCnt = 1;
-        } else {
-            this.secondVotingCnt++;
-        }
+        this.secondVotingCnt++;
     }
 
     public void increaseLikeCount() { // 배틀 좋아요 생성
