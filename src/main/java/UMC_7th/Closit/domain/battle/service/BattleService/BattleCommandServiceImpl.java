@@ -53,6 +53,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
         }
 
         challengeBattle.setPost2(post);
+
         return battleRepository.save(challengeBattle);
     }
 

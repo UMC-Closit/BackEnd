@@ -29,8 +29,8 @@ public class Battle extends BaseEntity {
     @Column
     private String title;
 
-    @Column
-    private LocalDate deadline;
+    @Column(nullable = false)
+    private LocalDate deadline = LocalDate.now().plusDays(3);
 
     @Column
     private Integer firstVotingCnt;
@@ -69,7 +69,14 @@ public class Battle extends BaseEntity {
         this.post2 = post2;
     }
 
-    public boolean availableVote () { // 배틀 투표
+    @PrePersist
+    public void voteDeadline() { // 배틀 투표 - 마감 기한 3일 뒤 설정
+        if (this.deadline == null) {
+            this.deadline = LocalDate.now().plusDays(3);
+        }
+    }
+
+    public boolean availableVote () {
         return LocalDate.now().isAfter(deadline);
     }
 

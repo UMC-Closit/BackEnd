@@ -18,14 +18,14 @@ public class BattleConverter {
         return Battle.builder()
                 .post1(post)
                 .title(request.getTitle())
-                .deadline(request.getDeadline())
                 .build();
     }
     public static BattleResponseDTO.CreateBattleResultDTO createBattleResultDTO(Battle battle) {
         return BattleResponseDTO.CreateBattleResultDTO.builder()
                 .userId(battle.getPost1().getUser().getId())
                 .battleId(battle.getId())
-                .createdAt(LocalDateTime.now())
+                .deadline(battle.getDeadline())
+                .createdAt(battle.getCreatedAt())
                 .build();
     }
 
@@ -41,7 +41,7 @@ public class BattleConverter {
                 .secondUserId(battle.getPost2().getUser().getId())
                 .firstPostId(battle.getPost1().getId())
                 .secondPostId(battle.getPost2().getId())
-                .createdAt(LocalDateTime.now())
+                .createdAt(battle.getCreatedAt())
                 .build();
     }
 

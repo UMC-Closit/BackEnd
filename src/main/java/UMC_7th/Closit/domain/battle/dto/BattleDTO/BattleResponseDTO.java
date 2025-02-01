@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class BattleResponseDTO {
     public static class CreateBattleResultDTO { // 배틀 생성
         private Long userId;
         private Long battleId;
+        private LocalDate deadline;
         private LocalDateTime createdAt;
     }
 

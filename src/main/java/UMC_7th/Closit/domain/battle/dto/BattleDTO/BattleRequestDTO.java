@@ -15,8 +15,6 @@ public class BattleRequestDTO {
         private Long postId;
         @NotBlank
         private String title;
-        @DateTimeFormat(pattern = "yyMMdd")
-        private LocalDate deadline;
     }
 
     @Getter
