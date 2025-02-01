@@ -28,8 +28,11 @@ public enum ErrorStatus implements BaseErrorCode {
     BATTLE_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "BATTLE4003", "배틀이 이미 존재합니다."),
     POST_NOT_BATTLE (HttpStatus.BAD_REQUEST, "BATTLE4004", "해당 게시글은 배틀이 아닙니다"),
     POST_ALREADY_BATTLE (HttpStatus.BAD_REQUEST, "BATTLE4005", "해당 게시글은 이미 배틀 게시글입니다."),
-    VOTE_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "VOTE4006", "이미 투표를 했습니다."),
-    VOTE_EXPIRED (HttpStatus.BAD_REQUEST, "VOTE4007", "이미 종료된 투표 입니다."),
+    POST_IS_CHALLENGE (HttpStatus.BAD_REQUEST, "BATTLE4006", "해당 게시글은 배틀 챌린지 게시글입니다."),
+
+    // 투표 관련 에러
+    VOTE_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "VOTE4001", "이미 투표를 했습니다."),
+    VOTE_EXPIRED (HttpStatus.BAD_REQUEST, "VOTE4002", "이미 종료된 투표 입니다."),
 
     // 배틀 좋아요 관련 에러
     BATTLE_LIKES_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "BATTLELIKE4001", "이미 좋아요를 누른 배틀 입니다."),
