@@ -60,7 +60,7 @@ public class BattleConverter {
                 .secondUserId(vote.getBattle().getPost2().getUser().getId())
                 .firstVotingCount(vote.getBattle().getFirstVotingCnt())
                 .secondVotingCount(vote.getBattle().getSecondVotingCnt())
-                .createdAt(LocalDateTime.now())
+                .createdAt(vote.getBattle().getCreatedAt())
                 .build();
     }
 
