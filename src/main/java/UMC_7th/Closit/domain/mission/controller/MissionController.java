@@ -30,8 +30,8 @@ public class MissionController {
 
     @Operation(summary = "미션 완료", description = "특정 미션을 완료로 표시합니다.")
     @PutMapping("/{mission_id}/complete")
-    public ResponseEntity<String> completeMission(@PathVariable Long mission_id) {
-        Mission updatedMission = missionCommandService.completeMission(mission_id);
-        return ResponseEntity.ok("Completed Mission with ID: " + mission_id);
+    public ApiResponse<MissionResponseDTO.UpdateMissionResultDTO> completeMission(@PathVariable Long mission_id) {
+        Mission mission = missionCommandService.completeMission(mission_id);
+        return ApiResponse.onSuccess(MissionConverter.toUpdateMissionResultDTO(mission));
     }
 }
