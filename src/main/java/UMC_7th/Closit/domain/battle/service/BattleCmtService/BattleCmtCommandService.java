@@ -1,6 +1,6 @@
-package UMC_7th.Closit.domain.battle.service.BattleCommentService;
+package UMC_7th.Closit.domain.battle.service.BattleCmtService;
 
-import UMC_7th.Closit.domain.battle.dto.BattleCommentDTO.BattleCommentRequestDTO;
+import UMC_7th.Closit.domain.battle.dto.BattleCmtDTO.BattleCommentRequestDTO;
 import UMC_7th.Closit.domain.battle.entity.BattleComment;
 
 public interface BattleCmtCommandService {

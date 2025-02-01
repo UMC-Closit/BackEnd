@@ -33,6 +33,12 @@ public class Battle extends BaseEntity {
     private LocalDate deadline;
 
     @Column
+    private Integer firstVotingCnt;
+
+    @Column
+    private Integer secondVotingCnt;
+
+    @Column
     private Integer likeCount;
 
     @OneToMany(mappedBy = "battle", cascade = CascadeType.ALL)
@@ -65,6 +71,22 @@ public class Battle extends BaseEntity {
 
     public boolean availableVote () { // 배틀 투표
         return LocalDate.now().isAfter(deadline);
+    }
+
+    public void incrementFirstVotingCnt() { // 첫 번째 게시글 투표
+        if (this.firstVotingCnt == null) {
+            this.firstVotingCnt = 1;
+        } else {
+            this.firstVotingCnt++;
+        }
+    }
+
+    public void incrementSecondVotingCnt() { // 두 번째 게시글 투표
+        if (this.secondVotingCnt == null) {
+            this.secondVotingCnt = 1;
+        } else {
+            this.secondVotingCnt++;
+        }
     }
 
     public void increaseLikeCount() { // 배틀 좋아요 생성

@@ -58,8 +58,8 @@ public class BattleConverter {
                 .battleId(vote.getBattle().getId())
                 .firstUserId(vote.getBattle().getPost1().getUser().getId())
                 .secondUserId(vote.getBattle().getPost2().getUser().getId())
-                .firstVotingCount(vote.getBattle().getPost1().getVotingCount())
-                .secondVotingCount(vote.getBattle().getPost2().getVotingCount())
+                .firstVotingCount(vote.getBattle().getFirstVotingCnt())
+                .secondVotingCount(vote.getBattle().getSecondVotingCnt())
                 .createdAt(LocalDateTime.now())
                 .build();
     }
@@ -71,8 +71,8 @@ public class BattleConverter {
                 .firstPostId(battle.getPost1().getId())
                 .secondPostId(battle.getPost2().getId())
                 .title(battle.getTitle())
-                .firstVotingCount(battle.getPost1().getVotingCount())
-                .secondVotingCount(battle.getPost2().getVotingCount())
+                .firstVotingCount(battle.getFirstVotingCnt())
+                .secondVotingCount(battle.getSecondVotingCnt())
                 .build();
     }
 

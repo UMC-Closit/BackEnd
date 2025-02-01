@@ -1,4 +1,4 @@
-package UMC_7th.Closit.domain.battle.dto.BattleCommentDTO;
+package UMC_7th.Closit.domain.battle.dto.BattleCmtDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
