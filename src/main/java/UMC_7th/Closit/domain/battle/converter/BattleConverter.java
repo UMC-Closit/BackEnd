@@ -8,7 +8,6 @@ import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.domain.user.entity.User;
 import org.springframework.data.domain.Slice;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,12 +25,6 @@ public class BattleConverter {
                 .battleId(battle.getId())
                 .deadline(battle.getDeadline())
                 .createdAt(battle.getCreatedAt())
-                .build();
-    }
-
-    public static Battle toChallengeBattle (Post post, BattleRequestDTO.ChallengeBattleDTO request) { // 배틀 신청
-        return Battle.builder()
-                .post2(post)
                 .build();
     }
 
