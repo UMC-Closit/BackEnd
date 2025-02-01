@@ -8,6 +8,7 @@ import UMC_7th.Closit.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     private final PasswordEncoder passwordEncoder;
 
     // login
+    @Transactional
     @Override
     public JwtResponse login(LoginRequestDTO loginRequestDto) {
         User user = userRepository.findByEmail(loginRequestDto.getEmail())

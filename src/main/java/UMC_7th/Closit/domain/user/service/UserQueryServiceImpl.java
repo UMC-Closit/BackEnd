@@ -28,4 +28,12 @@ public class UserQueryServiceImpl implements UserQueryService {
 
         return highlightRepository.findAllByUser(user);
     }
+
+    @Override
+    public User getUserInfo(Long userId) {
+
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
+
+    }
 }
