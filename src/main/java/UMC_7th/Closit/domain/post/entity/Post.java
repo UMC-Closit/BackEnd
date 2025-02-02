@@ -31,6 +31,12 @@ public class Post extends BaseEntity {
     private String backImage;
 
     @Column(nullable = false)
+    private boolean isBattle;
+
+    @Column
+    private Integer votingCount;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Visibility visibility;
 
@@ -46,12 +52,15 @@ public class Post extends BaseEntity {
     private Mission mission;
 
     @OneToMany(mappedBy = "post1", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Battle> battleList1 = new ArrayList<>();
 
     @OneToMany(mappedBy = "post2", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Battle> battleList2 = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Todaycloset> todayclosetList = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
@@ -68,4 +77,16 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<ItemTag> itemTagList = new ArrayList<>();
+  
+    public void isBattle(boolean isBattle) { // 배틀 생성
+        this.isBattle = isBattle;
+    }
+
+    public void incrementVotingCount() { // 배틀 투표
+        if (this.votingCount == null) {
+            this.votingCount = 1;
+        } else {
+            this.votingCount += votingCount;
+        }
+    }
 }

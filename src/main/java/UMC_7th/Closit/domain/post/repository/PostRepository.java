@@ -19,5 +19,4 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p JOIN p.postHashTagList pht WHERE pht.hashTag.id = :hashtagId")
     Slice<Post> findByHashtagId(Long hashtagId, Pageable pageable);
-
 }

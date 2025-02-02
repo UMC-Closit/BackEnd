@@ -31,4 +31,9 @@ public class Highlight extends BaseEntity {
 
     @OneToMany(mappedBy = "highlight", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HighlightPost> highlightPosts;
+
+    public void updateHighlight(String title, String thumbnail) {
+        this.title = title;
+        this.thumbnail = thumbnail;
+    }
 }
