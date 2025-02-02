@@ -33,13 +33,6 @@ public class BattleCommandServiceImpl implements BattleCommandService {
 
         Battle battle = BattleConverter.toBattle(post, request);
 
-        // 중복 배틀 생성 방지
-        if (post.isBattle()) {
-            throw new GeneralException(ErrorStatus.POST_ALREADY_BATTLE);
-        }
-
-        post.isBattle(true);
-
         return battleRepository.save(battle);
     }
 
@@ -60,6 +53,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
         }
 
         challengeBattle.setPost2(post);
+
         return battleRepository.save(challengeBattle);
     }
 
@@ -92,7 +86,16 @@ public class BattleCommandServiceImpl implements BattleCommandService {
             throw new GeneralException(ErrorStatus.VOTE_EXPIRED);
         }
 
-        post.incrementVotingCount();
+        // 챌린지 게시글 투표 방지
+        if (battle.getPost2() == null) {
+            throw new GeneralException(ErrorStatus.POST_IS_CHALLENGE);
+        }
+
+        if (battle.getPost1().getId().equals(vote.getVotedPostId())) { // 첫 번째 게시글에 투표
+            battle.incrementFirstVotingCnt();
+        } else if (battle.getPost2().getId().equals(vote.getVotedPostId())) { // 두 번째 게시글에 투표
+            battle.incrementSecondVotingCnt();
+        }
 
         vote.setUser(request.getUserId());
         vote.setBattle(battle);

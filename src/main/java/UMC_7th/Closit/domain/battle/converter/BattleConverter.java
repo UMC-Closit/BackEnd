@@ -8,7 +8,6 @@ import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.domain.user.entity.User;
 import org.springframework.data.domain.Slice;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,20 +17,14 @@ public class BattleConverter {
         return Battle.builder()
                 .post1(post)
                 .title(request.getTitle())
-                .deadline(request.getDeadline())
                 .build();
     }
     public static BattleResponseDTO.CreateBattleResultDTO createBattleResultDTO(Battle battle) {
         return BattleResponseDTO.CreateBattleResultDTO.builder()
                 .userId(battle.getPost1().getUser().getId())
                 .battleId(battle.getId())
-                .createdAt(LocalDateTime.now())
-                .build();
-    }
-
-    public static Battle toChallengeBattle (Post post, BattleRequestDTO.ChallengeBattleDTO request) { // 배틀 신청
-        return Battle.builder()
-                .post2(post)
+                .deadline(battle.getDeadline())
+                .createdAt(battle.getCreatedAt())
                 .build();
     }
 
@@ -41,7 +34,7 @@ public class BattleConverter {
                 .secondUserId(battle.getPost2().getUser().getId())
                 .firstPostId(battle.getPost1().getId())
                 .secondPostId(battle.getPost2().getId())
-                .createdAt(LocalDateTime.now())
+                .createdAt(battle.getCreatedAt())
                 .build();
     }
 
@@ -58,9 +51,9 @@ public class BattleConverter {
                 .battleId(vote.getBattle().getId())
                 .firstUserId(vote.getBattle().getPost1().getUser().getId())
                 .secondUserId(vote.getBattle().getPost2().getUser().getId())
-                .firstVotingCount(vote.getBattle().getPost1().getVotingCount())
-                .secondVotingCount(vote.getBattle().getPost2().getVotingCount())
-                .createdAt(LocalDateTime.now())
+                .firstVotingCount(vote.getBattle().getFirstVotingCnt())
+                .secondVotingCount(vote.getBattle().getSecondVotingCnt())
+                .createdAt(vote.getBattle().getCreatedAt())
                 .build();
     }
 
@@ -71,8 +64,8 @@ public class BattleConverter {
                 .firstPostId(battle.getPost1().getId())
                 .secondPostId(battle.getPost2().getId())
                 .title(battle.getTitle())
-                .firstVotingCount(battle.getPost1().getVotingCount())
-                .secondVotingCount(battle.getPost2().getVotingCount())
+                .firstVotingCount(battle.getFirstVotingCnt())
+                .secondVotingCount(battle.getSecondVotingCnt())
                 .build();
     }
 

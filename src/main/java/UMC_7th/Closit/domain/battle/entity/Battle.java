@@ -29,8 +29,16 @@ public class Battle extends BaseEntity {
     @Column
     private String title;
 
+    @Column(nullable = false)
+    private LocalDate deadline = LocalDate.now().plusDays(3);
+
     @Column
-    private LocalDate deadline;
+    @Builder.Default
+    private Integer firstVotingCnt = 0;
+
+    @Column
+    @Builder.Default
+    private Integer secondVotingCnt = 0;
 
     @Column
     private Integer likeCount;
@@ -63,8 +71,23 @@ public class Battle extends BaseEntity {
         this.post2 = post2;
     }
 
-    public boolean availableVote () { // 배틀 투표
+    @PrePersist
+    public void voteDeadline() { // 배틀 투표 - 마감 기한 3일 뒤 설정
+        if (this.deadline == null) {
+            this.deadline = LocalDate.now().plusDays(3);
+        }
+    }
+
+    public boolean availableVote () {
         return LocalDate.now().isAfter(deadline);
+    }
+
+    public void incrementFirstVotingCnt() { // 첫 번째 게시글 투표
+        this.firstVotingCnt++;
+    }
+
+    public void incrementSecondVotingCnt() { // 두 번째 게시글 투표
+        this.secondVotingCnt++;
     }
 
     public void increaseLikeCount() { // 배틀 좋아요 생성

@@ -3,9 +3,6 @@ package UMC_7th.Closit.domain.battle.dto.BattleDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDate;
 
 public class BattleRequestDTO {
 
@@ -15,8 +12,6 @@ public class BattleRequestDTO {
         private Long postId;
         @NotBlank
         private String title;
-        @DateTimeFormat(pattern = "yyMMdd")
-        private LocalDate deadline;
     }
 
     @Getter

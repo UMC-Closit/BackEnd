@@ -77,7 +77,7 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<ItemTag> itemTagList = new ArrayList<>();
-  
+
     public void isBattle(boolean isBattle) { // 배틀 생성
         this.isBattle = isBattle;
     }
