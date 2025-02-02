@@ -16,7 +16,7 @@ public class HashTag extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "hashtag_id")
+    @Column(name = "hash_tag_id")
     private Long id;
 
     @Column(nullable = false)
