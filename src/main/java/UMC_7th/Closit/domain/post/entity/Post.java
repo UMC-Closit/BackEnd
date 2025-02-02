@@ -13,6 +13,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -23,12 +24,24 @@ public class Post extends BaseEntity {
     @Column(name = "post_id")
     private Long id;
 
+    @Column(nullable = false)
+    private String frontImage;
+
+    @Column(nullable = false)
+    private String backImage;
+
+    @Column(nullable = false)
+    private boolean isBattle;
+
     @Column
-    private String postImage;
+    private Integer votingCount;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Visibility visibility;
+
+    @Column(nullable = false)
+    private String pointColor;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -49,4 +62,31 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Todaycloset> todayclosetList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Likes> likesList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Bookmark> bookmarkList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<PostHashTag> postHashTagList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<ItemTag> itemTagList = new ArrayList<>();
+
+    public void isBattle(boolean isBattle) { // 배틀 생성
+        this.isBattle = isBattle;
+    }
+
+    public void incrementVotingCount() { // 배틀 투표
+        if (this.votingCount == null) {
+            this.votingCount = 1;
+        } else {
+            this.votingCount += votingCount;
+        }
+    }
 }
