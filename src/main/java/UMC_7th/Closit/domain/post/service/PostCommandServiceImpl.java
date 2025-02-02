@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -94,8 +95,8 @@ public class PostCommandServiceImpl implements PostCommandService {
         post.setPointColor(request.getPointColor());
         post.setVisibility(request.getVisibility());
 
-        // 3. 기존 해시태그 삭제 및 새로운 해시태그 추가
-        postHashTagRepository.deleteAll(post.getPostHashTagList());
+        // 3. 기존 해시태그 삭제 후 새로운 해시태그 추가
+        post.getPostHashTagList().clear();  // 리스트를 비움
         List<PostHashTag> newPostHashTags = request.getHashtags().stream()
                 .map(tagContent -> {
                     HashTag hashTag = hashTagRepository.findByContent(tagContent)
@@ -103,28 +104,33 @@ public class PostCommandServiceImpl implements PostCommandService {
                     return PostHashTag.builder().post(post).hashTag(hashTag).build();
                 })
                 .collect(Collectors.toList());
-        postHashTagRepository.saveAll(newPostHashTags);
+        post.getPostHashTagList().addAll(newPostHashTags); // 새로운 태그 추가
 
-        // 4. 기존 아이템 태그 삭제 및 새로운 아이템 태그 추가
-        itemTagRepository.deleteAll(post.getItemTagList());
-        List<ItemTag> frontItemTags = request.getFrontItemtags().stream()
+        // 4. 기존 아이템 태그 삭제 후 새로운 태그 추가
+        post.getItemTagList().clear();
+        List<ItemTag> newItemTags = new ArrayList<>();
+        newItemTags.addAll(request.getFrontItemtags().stream()
                 .map(itemTagDTO -> ItemTag.builder()
                         .post(post)
                         .itemTagX(itemTagDTO.getX())
                         .itemTagY(itemTagDTO.getY())
                         .tagType("FRONT")
                         .build())
-                .collect(Collectors.toList());
-        List<ItemTag> backItemTags = request.getBackItemtags().stream()
+                .collect(Collectors.toList()));
+
+        newItemTags.addAll(request.getBackItemtags().stream()
                 .map(itemTagDTO -> ItemTag.builder()
                         .post(post)
                         .itemTagX(itemTagDTO.getX())
                         .itemTagY(itemTagDTO.getY())
                         .tagType("BACK")
                         .build())
-                .collect(Collectors.toList());
-        itemTagRepository.saveAll(frontItemTags);
-        itemTagRepository.saveAll(backItemTags);
+                .collect(Collectors.toList()));
+
+        post.getItemTagList().addAll(newItemTags);
+
+        // 변경된 post 객체를 저장
+        postRepository.save(post);
     }
 
     @Override
