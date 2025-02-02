@@ -109,4 +109,18 @@ public class UserResponseDTO {
                     .build();
         }
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserInfoDTO {
+        private Long id;                // User ID
+        private String clositId;        // 사용자 닉네임
+        private String name;            // 사용자 이름
+        private String email;           // 이메일
+        private LocalDate birth;        // 생년월일
+        private String profileImage;    // 프로필 이미지
+    }
+
 }

@@ -61,4 +61,12 @@ public class UserQueryServiceImpl implements UserQueryService {
 
         return missionRepository.findAllByUser(user, pageable);
     }
+
+    @Override
+    public User getUserInfo(Long userId) {
+
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
+
+    }
 }

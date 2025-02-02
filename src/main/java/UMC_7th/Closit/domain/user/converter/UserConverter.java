@@ -9,11 +9,26 @@ import UMC_7th.Closit.domain.user.entity.User;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Slice;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class UserConverter {
 
     public static UserResponseDTO.UserDTO toUserDTO(User user) {
         return UserResponseDTO.UserDTO.builder()
                 .userId(user.getId())
+                .clositId(user.getClositId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .birth(user.getBirth())
+                .profileImage(user.getProfileImage())
+                .build();
+    }
+
+    public static UserResponseDTO.UserInfoDTO toUserInfoDTO(User user) {
+
+        return UserResponseDTO.UserInfoDTO.builder()
+                .id(user.getId())
                 .clositId(user.getClositId())
                 .name(user.getName())
                 .email(user.getEmail())

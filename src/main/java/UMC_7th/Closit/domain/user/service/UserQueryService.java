@@ -6,6 +6,8 @@ import UMC_7th.Closit.domain.user.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
+import java.util.List;
+
 public interface UserQueryService {
 
     Slice<Highlight> getHighlightList(Long userId, Pageable pageable);
@@ -15,4 +17,6 @@ public interface UserQueryService {
     Slice<User> getFollowingList(Long userId, Pageable pageable);
 
     Slice<Mission> getMissionList(Long userId, Pageable pageable);
+    Slice<Highlight> getHighlightList(Long userId);
+    User getUserInfo(Long userId);
 }

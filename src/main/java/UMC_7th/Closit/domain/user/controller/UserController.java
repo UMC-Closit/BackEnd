@@ -24,6 +24,13 @@ public class UserController {
     private final UserCommandService userCommandService;
     private final UserQueryService userQueryService;
 
+    @Operation(summary = "사용자 정보 조회", description = "특정 사용자의 정보를 조회합니다.")
+    @GetMapping("/{user_id}")
+    public ApiResponse<UserResponseDTO.UserInfoDTO> getUserInfo(@PathVariable Long user_id) {
+        User userInfo = userQueryService.getUserInfo(user_id);
+        return ApiResponse.onSuccess(UserConverter.toUserInfoDTO(userInfo));
+    }
+
     @Operation(summary = "사용자의 팔로워 목록 조회", description = "특정 사용자의 팔로워 목록을 조회합니다.")
     @GetMapping("/{user_id}/followers")
     public ApiResponse<UserResponseDTO.UserFollowerSliceDTO> getUserFollowers(
