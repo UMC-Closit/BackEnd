@@ -1,15 +1,17 @@
 package UMC_7th.Closit.domain.user.controller;
 
 import UMC_7th.Closit.domain.highlight.entity.Highlight;
+import UMC_7th.Closit.domain.mission.entity.Mission;
 import UMC_7th.Closit.domain.user.converter.UserConverter;
 import UMC_7th.Closit.domain.user.dto.UserResponseDTO;
+import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.service.UserCommandService;
 import UMC_7th.Closit.domain.user.service.UserQueryService;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
