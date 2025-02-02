@@ -23,5 +23,10 @@ public class Mission extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
-    private MissionStatus status;
+    @Builder.Default
+    private MissionStatus status = MissionStatus.INCOMPLETE;
+
+    public void updateMission(MissionStatus status) {
+        this.status = status;
+    }
 }

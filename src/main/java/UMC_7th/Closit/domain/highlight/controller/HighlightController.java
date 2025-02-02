@@ -10,7 +10,6 @@ import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -49,7 +48,6 @@ public class HighlightController {
     @DeleteMapping("/{highlight_id}")
     public ApiResponse<String> deleteHighlight(@PathVariable Long highlight_id) {
         highlightCommandService.deleteHighlight(highlight_id);
-
         return ApiResponse.onSuccess("Deleted Highlight with ID: " + highlight_id);
     }
 }

@@ -19,12 +19,12 @@ public class HighlightExistValidator implements ConstraintValidator<ExistHighlig
     }
 
     @Override
-    public boolean isValid(Long userId, ConstraintValidatorContext context) {
-        if (userId == null) {
+    public boolean isValid(Long highlightId, ConstraintValidatorContext context) {
+        if (highlightId == null) {
             return true; // null은 검증하지 않음
         }
 
-        boolean isValid = highlightRepository.existsById(userId);
+        boolean isValid = highlightRepository.existsById(highlightId);
 
         if (!isValid) {
             context.disableDefaultConstraintViolation();
