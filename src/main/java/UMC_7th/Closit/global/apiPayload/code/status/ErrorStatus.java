@@ -23,6 +23,9 @@ public enum ErrorStatus implements BaseErrorCode {
     // 게시글 관련 에러
     POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "POST4001", "게시글이 존재하지 않습니다."),
 
+    // 댓글 관련 에러
+    COMMENT_NOT_FOUND (HttpStatus.NOT_FOUND, "COMMENT4001", "댓글이 존재하지 않습니다."),
+
     // 배틀 관련 에러
     BATTLE_NOT_FOUND (HttpStatus.BAD_REQUEST, "BATTLE4001", "배틀이 존재하지 않습니다."),
     BATTLE_NOT_CHALLENGE (HttpStatus.BAD_REQUEST, "BATTLE4002", "동일한 게시글로 배틀을 신청할 수 없습니다."),
