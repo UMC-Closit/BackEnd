@@ -24,4 +24,11 @@ public class Likes extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="post_id", nullable = false)
     private Post post;
+
+    public static Likes createLikes(User user, Post post) {
+        return Likes.builder()
+                .user(user)
+                .post(post)
+                .build();
+    }
 }
