@@ -17,6 +17,6 @@ public interface UserQueryService {
     Slice<User> getFollowingList(Long userId, Pageable pageable);
 
     Slice<Mission> getMissionList(Long userId, Pageable pageable);
-    Slice<Highlight> getHighlightList(Long userId);
+
     User getUserInfo(Long userId);
 }

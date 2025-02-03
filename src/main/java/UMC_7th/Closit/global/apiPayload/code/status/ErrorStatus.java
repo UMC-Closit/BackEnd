@@ -31,6 +31,9 @@ public enum ErrorStatus implements BaseErrorCode {
     LIKES_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "LIKE4002", "이미 좋아요를 누른 게시글 입니다."),
 
 
+    // 댓글 관련 에러
+    COMMENT_NOT_FOUND (HttpStatus.NOT_FOUND, "COMMENT4001", "댓글이 존재하지 않습니다."),
+
     // 배틀 관련 에러
     BATTLE_NOT_FOUND (HttpStatus.BAD_REQUEST, "BATTLE4001", "배틀이 존재하지 않습니다."),
     BATTLE_NOT_CHALLENGE (HttpStatus.BAD_REQUEST, "BATTLE4002", "동일한 게시글로 배틀을 신청할 수 없습니다."),
