@@ -31,12 +31,6 @@ public class Post extends BaseEntity {
     private String backImage;
 
     @Column(nullable = false)
-    private boolean isBattle;
-
-    @Column
-    private Integer votingCount;
-
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Visibility visibility;
 
@@ -77,16 +71,4 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemTag> itemTagList = new ArrayList<>();
-
-    public void isBattle(boolean isBattle) { // 배틀 생성
-        this.isBattle = isBattle;
-    }
-
-    public void incrementVotingCount() { // 배틀 투표
-        if (this.votingCount == null) {
-            this.votingCount = 1;
-        } else {
-            this.votingCount += votingCount;
-        }
-    }
 }
