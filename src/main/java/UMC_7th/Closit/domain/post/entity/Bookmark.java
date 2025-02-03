@@ -24,4 +24,11 @@ public class Bookmark extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="post_id", nullable = false)
     private Post post;
+
+    public static Bookmark createBookmark(User user, Post post) {
+        return Bookmark.builder()
+                .user(user)
+                .post(post)
+                .build();
+    }
 }
