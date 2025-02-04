@@ -41,7 +41,8 @@ public class Battle extends BaseEntity {
     private Integer secondVotingCnt = 0;
 
     @Column
-    private Integer likeCount;
+    @Builder.Default
+    private Integer likeCount = 0;
 
     @OneToMany(mappedBy = "battle", cascade = CascadeType.ALL)
     @Builder.Default
@@ -88,6 +89,14 @@ public class Battle extends BaseEntity {
 
     public void incrementSecondVotingCnt() { // 두 번째 게시글 투표
         this.secondVotingCnt++;
+    }
+
+    public void setFirstVotingCnt (Integer firstVotingCnt) { // 배틀 게시글 목록 조회
+        this.firstVotingCnt = firstVotingCnt;
+    }
+
+    public void setSecondVotingCnt (Integer secondVotingCnt) {
+        this.secondVotingCnt = secondVotingCnt;
     }
 
     public void increaseLikeCount() { // 배틀 좋아요 생성
