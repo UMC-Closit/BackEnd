@@ -45,7 +45,7 @@ public class SecurityConfig {
                 // 경로 접속 권한 설정
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/api/auth/**", "/api/public/**").permitAll()
-                        .requestMatchers("/","/swagger-ui/**","/v3/api-docs/**").permitAll()
+                        .requestMatchers("/","/swagger-ui/**","/v3/api-docs/**", "/login").permitAll()
                         .requestMatchers("/user").hasRole("USER")
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated())
