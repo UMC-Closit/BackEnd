@@ -18,7 +18,8 @@ public enum ErrorStatus implements BaseErrorCode {
     _NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "찾을 수 없습니다."),
 
     // 사용자 관련 에러
-    USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "LOGIN4001", "사용자가 존재하지 않습니다."),
+    USER_NOT_FOUND (HttpStatus.BAD_REQUEST, "LOGIN4001", "사용자가 존재하지 않습니다."),
+    PASSWORD_NOT_CORRESPOND (HttpStatus.BAD_REQUEST, "LOGIN4002", "비밀번호가 일치하지 않습니다."),
 
     // 게시글 관련 에러
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4001", "게시글이 존재하지 않습니다."),
@@ -29,7 +30,6 @@ public enum ErrorStatus implements BaseErrorCode {
     //좋아요 관련 에러
     LIKES_NOT_FOUND(HttpStatus.BAD_REQUEST, "LIKE4001", "좋아요가 존재하지 않습니다."),
     LIKES_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "LIKE4002", "이미 좋아요를 누른 게시글 입니다."),
-
 
     // 댓글 관련 에러
     COMMENT_NOT_FOUND (HttpStatus.NOT_FOUND, "COMMENT4001", "댓글이 존재하지 않습니다."),

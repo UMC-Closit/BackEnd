@@ -4,6 +4,8 @@ import UMC_7th.Closit.domain.user.dto.JwtResponse;
 import UMC_7th.Closit.domain.user.dto.LoginRequestDTO;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
+import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
+import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
 import UMC_7th.Closit.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,10 +25,10 @@ public class UserAuthServiceImpl implements UserAuthService {
     @Override
     public JwtResponse login(LoginRequestDTO loginRequestDto) {
         User user = userRepository.findByEmail(loginRequestDto.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일입니다."));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new GeneralException(ErrorStatus.PASSWORD_NOT_CORRESPOND);
         }
 
 
