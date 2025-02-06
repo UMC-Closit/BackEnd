@@ -35,7 +35,7 @@ jobs:
         run: |
           cd ./src/main/resources
           touch ./application.yml
-          echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application.yml
+          echo "${{ secrets.APPLICATION_YML }}" > ./application.yml
 
       # 4. 프로젝트 빌드
       - name: Build with Gradle
