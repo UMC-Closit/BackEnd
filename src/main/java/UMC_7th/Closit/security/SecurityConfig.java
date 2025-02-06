@@ -44,7 +44,6 @@ public class SecurityConfig {
                         .invalidateHttpSession(true))
                 // 경로 접속 권한 설정
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                        .requestMatchers("/login").permitAll()
                         .requestMatchers("/api/auth/**", "/api/public/**").permitAll()
                         .requestMatchers("/","/swagger-ui/**","/v3/api-docs/**").permitAll()
                         .requestMatchers("/user").hasRole("USER")
