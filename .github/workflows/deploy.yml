@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main", "develop", "feature/#27-deploy-test" ]
+    branches: [ "main", "develop" ]
   pull_request:
-    branches: [ "main", "develop", "feature/#27-deploy-test" ]
+    branches: [ "main", "develop" ]
 
 jobs:
   build-docker-image:
