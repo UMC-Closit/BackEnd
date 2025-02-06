@@ -63,7 +63,10 @@ public enum ErrorStatus implements BaseErrorCode {
     FOLLOW_NOT_FOUND(HttpStatus.NOT_FOUND, "FOLLOW4041", "팔로우가 존재하지 않습니다."),
 
     // 미션 관련 에러
-    MISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "MISSION4041", "미션이 존재하지 않습니다.");
+    MISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "MISSION4041", "미션이 존재하지 않습니다."),
+
+    //오늘의 옷장 관련 에러
+    TODAY_CLOSET_NOT_FOUND(HttpStatus.NOT_FOUND, "TODAYCLOSET4001", "오늘의 옷장이 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

@@ -2,7 +2,7 @@ package UMC_7th.Closit.domain.post.entity;
 
 import UMC_7th.Closit.domain.mission.entity.Mission;
 import UMC_7th.Closit.domain.battle.entity.Battle;
-import UMC_7th.Closit.domain.todaycloset.entity.Todaycloset;
+import UMC_7th.Closit.domain.todaycloset.entity.TodayCloset;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.global.common.BaseEntity;
 import jakarta.persistence.*;
@@ -61,7 +61,7 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @Builder.Default
-    private List<Todaycloset> todayclosetList = new ArrayList<>();
+    private List<TodayCloset> todayclosetList = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Likes> likesList = new ArrayList<>();
