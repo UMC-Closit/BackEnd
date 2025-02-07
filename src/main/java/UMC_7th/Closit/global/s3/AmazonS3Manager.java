@@ -35,7 +35,7 @@ public class AmazonS3Manager {
         return amazonS3.getUrl(amazonConfig.getBucket(), keyName).toString();
     }
 
-//    public String generateTestKeyName(Uuid uuid) {
-//        return amazonConfig.getTestPath() + '/' + uuid.getUuid();
-//    }
+    public String generateTestKeyName(Uuid uuid) {
+        return amazonConfig.getTestPath() + '/' + uuid.getUuid();
+    }
 }
