@@ -48,7 +48,6 @@ public class BattleResponseDTO {
         private LocalDateTime createdAt;
     }
 
-
     @Builder
     @Getter
     @NoArgsConstructor
