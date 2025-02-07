@@ -63,7 +63,11 @@ public enum ErrorStatus implements BaseErrorCode {
     FOLLOW_NOT_FOUND(HttpStatus.NOT_FOUND, "FOLLOW4041", "팔로우가 존재하지 않습니다."),
 
     // 미션 관련 에러
-    MISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "MISSION4041", "미션이 존재하지 않습니다.");
+    MISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "MISSION4041", "미션이 존재하지 않습니다."),
+
+    // 알림 관련 에러
+    NOTIFICATION_PUSH_FAILED (HttpStatus.BAD_REQUEST, "NOTIFICATION4001", "알림 전송에 실패했습니다."),
+    NOTIFICATION_NOT_FOUND (HttpStatus.BAD_REQUEST, "NOTIFICATION4002", "알림을 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

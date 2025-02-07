@@ -53,12 +53,6 @@ public class UserController {
         return ApiResponse.onSuccess(UserConverter.toUserFollowingSliceDTO(followingSlice));
     }
 
-    @Operation(summary = "사용자의 알림 목록 조회", description = "특정 사용자의 알림 목록을 조회합니다.")
-    @GetMapping("/{user_id}/notifications")
-    public ApiResponse<List<String>> getNotifications(@PathVariable Long user_id) {
-        return ApiResponse.onSuccess(List.of("Notification1", "Notification2"));
-    }
-
     @Operation(summary = "사용자의 하이라이트 목록 조회", description = "특정 사용자의 하이라이트 목록을 조회합니다.")
     @GetMapping("/{user_id}/highlights")
     public ApiResponse<UserResponseDTO.UserHighlightSliceDTO> getUserHighlights(
