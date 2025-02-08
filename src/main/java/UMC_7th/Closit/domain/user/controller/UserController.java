@@ -29,11 +29,11 @@ public class UserController {
 
     @Operation(summary = "사용자 삭제", description = "특정 사용자를 삭제합니다.")
     @DeleteMapping("/{user_id}")
-    public ApiResponse<Void> deleteUser(@PathVariable Long user_id, Authentication authentication) {
+    public ApiResponse<Void> deleteUser(@PathVariable Long user_id) {
 
-        log.info("사용자 삭제 요청: userId={}, 요청자={}", user_id, authentication.getName());
+        log.info("사용자 삭제 요청: userId={}", user_id);
 
-        userCommandService.deleteUser(authentication, user_id);
+        userCommandService.deleteUser(user_id);
         return ApiResponse.onSuccess(null);
     }
 

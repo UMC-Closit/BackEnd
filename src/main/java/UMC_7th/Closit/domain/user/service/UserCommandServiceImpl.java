@@ -7,14 +7,13 @@ import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
+import UMC_7th.Closit.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.amazonaws.services.ec2.model.PrincipalType.Role;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +23,7 @@ public class UserCommandServiceImpl implements UserCommandService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SecurityUtil securityUtil;
 
     @Override
     public RegisterResponseDTO registerUser (UserRequestDTO.CreateUserDTO userRequestDto) {
@@ -58,21 +58,20 @@ public class UserCommandServiceImpl implements UserCommandService {
     }
 
     @Override
-    public void deleteUser (Authentication authentication, Long userId) {
+    public void deleteUser (Long user_id) {
         // 현재 로그인된 사용자 정보 가져오기
-        String currentUsername = authentication.getName(); // 로그인한 사용자 (username 또는 userId 기반)
-        User currentUser = userRepository.findByName(currentUsername)
-                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
+        User currentUser= securityUtil.getCurrentUser(); // 로그인한 사용자 (username 또는 userId 기반)
 
-        User targetUser = userRepository.findById(userId)
+        log.info("현재 로그인된 사용자: username = {}", currentUser.getName());
+        User targetUser = userRepository.findById(user_id)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
         // 자기 자신이거나 관리자 권한이 있는 경우만 삭제 가능
-        if (!currentUser.getId().equals(userId) && !currentUser.getRole().equals(UMC_7th.Closit.domain.user.entity.Role.USER)) {
+        if (!currentUser.getId().equals(user_id) && !currentUser.getRole().equals(UMC_7th.Closit.domain.user.entity.Role.USER)) {
             throw new UserHandler(ErrorStatus.USER_NOT_AUTHORIZED);
         }
 
-        log.info("사용자 삭제 진행: userId={}, 삭제자={}", userId, currentUsername);
+        log.info("사용자 삭제 진행: userId={}, 삭제자={}", user_id, currentUser.getName());
         userRepository.delete(targetUser);
     }
 

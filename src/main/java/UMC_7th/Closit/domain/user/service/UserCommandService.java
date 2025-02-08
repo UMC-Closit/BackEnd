@@ -7,5 +7,5 @@ import org.springframework.security.core.Authentication;
 public interface UserCommandService {
 
     RegisterResponseDTO registerUser (UserRequestDTO.CreateUserDTO userRequestDto);
-    void deleteUser(Authentication authentication, Long userId);
+    void deleteUser(Long userId);
 }
