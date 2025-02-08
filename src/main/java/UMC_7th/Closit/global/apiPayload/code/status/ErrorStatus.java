@@ -66,6 +66,7 @@ public enum ErrorStatus implements BaseErrorCode {
     MISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "MISSION4041", "미션이 존재하지 않습니다."),
 
     // 알림 관련 에러
+    SSE_CONNECT_FAILED (HttpStatus.INTERNAL_SERVER_ERROR, "SSE5001", "SSE 연결에 실패했습니다"),
     NOTIFICATION_PUSH_FAILED (HttpStatus.BAD_REQUEST, "NOTIFICATION4001", "알림 전송에 실패했습니다."),
     NOTIFICATION_NOT_FOUND (HttpStatus.BAD_REQUEST, "NOTIFICATION4002", "알림을 찾을 수 없습니다.");
 

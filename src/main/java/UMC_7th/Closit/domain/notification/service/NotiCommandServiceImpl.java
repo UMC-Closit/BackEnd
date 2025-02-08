@@ -12,6 +12,10 @@ import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.io.IOException;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +24,42 @@ public class NotiCommandServiceImpl implements NotiCommandService {
 
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
+    private final EmitterRepository emitterRepository;
+
+    @Override
+    public SseEmitter subscribe (Long userId, String lastEventId) { // SSE 연결
+        // 연결 지속 시간 = 1시간
+        SseEmitter emitter = new SseEmitter(60 * 60 * 1000L);
+        String emitterId = userId + "-" + System.currentTimeMillis();
+
+        emitterRepository.save(emitterId, emitter);
+
+        // 완료, 시간초과로 인한 전송 불가 -> SseEmitter 삭제
+        emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
+        emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
+
+        sendToClient(emitter, emitterId, "SSE Connection Complete, EventStream Created. [userId=" + userId + "]");
+
+        if (!lastEventId.isEmpty()) { // Last-Event-ID 존재 = 받지 못한 데이터 존재
+            Map<String, Object> events = emitterRepository.findAllEventCacheByUserId(emitterId);
+            events.entrySet().stream()
+                    .filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
+                    .forEach(entry -> sendToClient(emitter, entry.getKey(), entry.getValue()));
+        }
+        return emitter;
+    }
+
+    // SseEmitter = 최초 연결 시 생성, 해당 SseEmitter를 생성한 클라이언트에게 알림 전송
+    public void sendToClient(SseEmitter emitter, String emitterId, Object data) {
+        try {
+            emitter.send(SseEmitter.event()
+                    .name("SSE")
+                    .data(data));
+        } catch (IOException exception) {
+            emitterRepository.deleteById(emitterId);
+            throw new GeneralException(ErrorStatus.SSE_CONNECT_FAILED);
+        }
+    }
 
     @Override
     public Notification sendNotification (NotificationRequestDTO.SendNotiRequestDTO request) { // 알림 전송

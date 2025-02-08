@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -23,10 +24,15 @@ public class NotificationController {
 
     private final NotiCommandService notiCommandService;
 
-    @Operation(summary = "SSE 구독")
+    @Operation(summary = "SSE 연결")
     @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public ApiResponse<SseEmitter> createNotification(Authentication authentication) {
-        return ApiResponse.onSuccess(null);
+    public SseEmitter createNotification(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId,
+                                                      // @AuthenticationPrincipal Authentication authentication,
+                                                      @RequestParam Long userId) {
+
+        SseEmitter sseEmitter = notiCommandService.subscribe(userId,lastEventId);
+
+        return sseEmitter;
     }
 
     @Operation(summary = "알림 전송")
