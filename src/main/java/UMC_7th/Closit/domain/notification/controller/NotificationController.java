@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/notifications")
+@RequestMapping("/api/auth/notifications")
 public class NotificationController {
 
     @Operation(summary = "알림 생성", description = "새로운 알림을 생성합니다.")
