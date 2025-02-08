@@ -32,9 +32,9 @@ public class UserAuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login (@RequestBody @Valid LoginRequestDTO loginRequestDto) {
+    public ApiResponse<JwtResponse> login (@RequestBody @Valid LoginRequestDTO loginRequestDto) {
         JwtResponse jwtResponse = userAuthService.login(loginRequestDto);
-        return ResponseEntity.status(HttpStatus.OK).body(jwtResponse);
-    }
 
+        return ApiResponse.onSuccess(jwtResponse);
+    }
 }
