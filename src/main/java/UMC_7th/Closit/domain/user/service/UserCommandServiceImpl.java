@@ -2,7 +2,6 @@ package UMC_7th.Closit.domain.user.service;
 
 import UMC_7th.Closit.domain.user.dto.RegisterResponseDTO;
 import UMC_7th.Closit.domain.user.dto.UserRequestDTO;
-import UMC_7th.Closit.domain.user.entity.Role;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
@@ -62,7 +61,7 @@ public class UserCommandServiceImpl implements UserCommandService {
         // 현재 로그인된 사용자 정보 가져오기
         User currentUser= securityUtil.getCurrentUser(); // 로그인한 사용자 (username 또는 userId 기반)
 
-        log.info("현재 로그인된 사용자: username = {}", currentUser.getName());
+//        log.info("현재 로그인된 사용자: username = {}", currentUser.getName());
         User targetUser = userRepository.findById(user_id)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
@@ -71,7 +70,7 @@ public class UserCommandServiceImpl implements UserCommandService {
             throw new UserHandler(ErrorStatus.USER_NOT_AUTHORIZED);
         }
 
-        log.info("사용자 삭제 진행: userId={}, 삭제자={}", user_id, currentUser.getName());
+//        log.info("사용자 삭제 진행: userId={}, 삭제자={}", user_id, currentUser.getName());
         userRepository.delete(targetUser);
     }
 
