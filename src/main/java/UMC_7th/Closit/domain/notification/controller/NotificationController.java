@@ -20,7 +20,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth/notifications")
-@RequestMapping("/api/auth/notifications")
 public class NotificationController {
 
     private final NotiCommandService notiCommandService;
