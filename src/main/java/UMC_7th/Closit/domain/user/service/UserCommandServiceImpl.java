@@ -2,6 +2,7 @@ package UMC_7th.Closit.domain.user.service;
 
 import UMC_7th.Closit.domain.user.dto.RegisterResponseDTO;
 import UMC_7th.Closit.domain.user.dto.UserRequestDTO;
+import UMC_7th.Closit.domain.user.entity.Role;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
@@ -66,7 +67,8 @@ public class UserCommandServiceImpl implements UserCommandService {
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
         // 자기 자신이거나 관리자 권한이 있는 경우만 삭제 가능
-        if (!currentUser.getId().equals(user_id) && !currentUser.getRole().equals(UMC_7th.Closit.domain.user.entity.Role.USER)) {
+        if (!currentUser.getId().equals(user_id) ||
+                !currentUser.getRole().equals(Role.ADMIN)) {
             throw new UserHandler(ErrorStatus.USER_NOT_AUTHORIZED);
         }
 
