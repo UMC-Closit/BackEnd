@@ -8,6 +8,9 @@ build/
 ### application.yml ###
 application.yml
 
+### aplication.yml ###
+application.yml
+
 ### STS ###
 .apt_generated
 .classpath
