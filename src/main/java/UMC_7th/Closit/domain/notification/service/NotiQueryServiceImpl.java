@@ -23,10 +23,10 @@ public class NotiQueryServiceImpl implements NotiQueryService {
     private final NotificationRepository notificationRepository;
 
     @Override
-    public Slice<Notification> getNotificationList(Long userId, Integer page) {
+    public Slice<Notification> getNotificationList(Long userId, Integer page) { // 알림 목록 조회
         // Long userId = Long.parseLong(authentication.getName());
 
-        User user = userRepository.findById(userId)
+        userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         Pageable pageable = PageRequest.of(page, 10);

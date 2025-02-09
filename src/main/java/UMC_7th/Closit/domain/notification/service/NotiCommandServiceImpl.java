@@ -44,10 +44,10 @@ public class NotiCommandServiceImpl implements NotiCommandService {
 
         sendToClient(emitter, emitterId, "SSE Connection Complete, EventStream Created. [userId=" + userId + "]");
 
-        if (!lastEventId.isEmpty()) { // Last-Event-ID 존재 = 받지 못한 데이터 존재
+        if (!lastEventId.isEmpty()) { // Last-Event-ID 존재 = 받지 못한 데이터 존재 (클라이언트가 놓친 이벤트 존재)
             Map<String, Object> events = emitterRepository.findAllEventCacheByUserId(emitterId);
             events.entrySet().stream()
-                    .filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
+                    .filter(entry -> lastEventId.compareTo(entry.getKey()) < 0) // 클라이언트가 놓친 이벤트 필터링 -> lastEventId 이후 발생한 이벤트만 통과
                     .forEach(entry -> sendToClient(emitter, entry.getKey(), entry.getValue()));
         }
         return emitter;
@@ -72,6 +72,7 @@ public class NotiCommandServiceImpl implements NotiCommandService {
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         Notification notification = NotificationConverter.toNotification(user, request);
+        // 저장 후 전송
         notificationRepository.save(notification);
 
         // SSE 통한 알림 전송
@@ -117,7 +118,7 @@ public class NotiCommandServiceImpl implements NotiCommandService {
     }
 
     @Override
-    public Notification readNotification(Long notificationId) {
+    public Notification readNotification(Long notificationId) { // 알림 단건 조회 - 읽음 처리
         Notification notification = notificationRepository.findById(notificationId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.NOTIFICATION_NOT_FOUND));
 
@@ -128,8 +129,8 @@ public class NotiCommandServiceImpl implements NotiCommandService {
     }
 
     @Override
-    public void deleteNotification(Long notificationId) {
-        Notification notification = notificationRepository.findById(notificationId)
+    public void deleteNotification(Long notificationId) { // 알림 삭제
+        notificationRepository.findById(notificationId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.NOTIFICATION_NOT_FOUND));
 
         notificationRepository.deleteById(notificationId);
