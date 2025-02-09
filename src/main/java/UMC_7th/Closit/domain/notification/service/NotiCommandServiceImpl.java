@@ -85,7 +85,7 @@ public class NotiCommandServiceImpl implements NotiCommandService {
     }
 
     @Override
-    public void commentNotification(Comment comment) {
+    public void commentNotification(Comment comment) { // 댓글 알림
         User receiver = comment.getPost().getUser(); // 게시글 작성자 ID
         String content = comment.getUser().getName() + "님이 댓글을 작성했습니다. ";
 

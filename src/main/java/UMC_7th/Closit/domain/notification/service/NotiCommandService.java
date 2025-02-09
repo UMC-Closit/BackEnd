@@ -8,5 +8,5 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public interface NotiCommandService {
     SseEmitter subscribe (Long userId, String lastEventId); // SSE 연결
     Notification sendNotification (NotificationRequestDTO.SendNotiRequestDTO request); // SSE 알림 전송
-    void commentNotification(Comment comment); // 좋아요 알림 전송
+    void commentNotification(Comment comment); // 댓글 알림
 }
