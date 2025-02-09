@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -54,9 +53,12 @@ public class NotificationController {
         return ApiResponse.onSuccess(NotificationConverter.notiPreviewListDTO(notificationList));
     }
 
-    @Operation(summary = "알림 삭제", description = "특정 알림을 삭제합니다.")
+    @Operation(summary = "알림 삭제", description = "특정 알림 삭제")
     @DeleteMapping("/{notification_id}")
-    public ResponseEntity<String> deleteNotification(@PathVariable Long notification_id) {
-        return ResponseEntity.ok("Deleted Notification with ID: " + notification_id);
+    public ApiResponse<String> deleteNotification(@PathVariable Long notification_id) {
+
+        notiCommandService.deleteNotification(notification_id);
+
+        return ApiResponse.onSuccess("Deletion successful");
     }
 }

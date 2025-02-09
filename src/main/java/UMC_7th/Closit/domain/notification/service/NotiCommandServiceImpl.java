@@ -126,4 +126,12 @@ public class NotiCommandServiceImpl implements NotiCommandService {
 
         return notificationRepository.save(notification);
     }
+
+    @Override
+    public void deleteNotification(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.NOTIFICATION_NOT_FOUND));
+
+        notificationRepository.deleteById(notificationId);
+    }
 }
