@@ -29,6 +29,7 @@ public class UserConverter {
 
         return UserResponseDTO.UserInfoDTO.builder()
                 .id(user.getId())
+                .role(user.getRole())
                 .clositId(user.getClositId())
                 .name(user.getName())
                 .email(user.getEmail())

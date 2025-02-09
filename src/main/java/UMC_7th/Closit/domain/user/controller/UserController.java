@@ -10,8 +10,10 @@ import UMC_7th.Closit.domain.user.service.UserQueryService;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,10 +21,21 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth/users")
+@Slf4j
 public class UserController {
 
     private final UserCommandService userCommandService;
     private final UserQueryService userQueryService;
+
+    @Operation(summary = "사용자 삭제", description = "특정 사용자를 삭제합니다.")
+    @DeleteMapping("/{user_id}")
+    public ApiResponse<Void> deleteUser(@PathVariable Long user_id) {
+
+        log.info("사용자 삭제 요청: userId={}", user_id);
+
+        userCommandService.deleteUser(user_id);
+        return ApiResponse.onSuccess(null);
+    }
 
     @Operation(summary = "사용자 정보 조회", description = "특정 사용자의 정보를 조회합니다.")
     @GetMapping("/{user_id}")
