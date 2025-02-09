@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class NotificationResponseDTO {
 
@@ -20,5 +21,29 @@ public class NotificationResponseDTO {
         private NotificationType type;
         private boolean isRead;
         private LocalDateTime createdAt;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class NotiPreviewDTO { // 알림 단건 조회
+        private String userName;
+        private String imageUrl;
+        private String content;
+        private NotificationType type;
+        private boolean isRead;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class NotiPreviewListDTO { // 알림 목록 조회
+        private List<NotiPreviewDTO> notiPreviewDTOList;
+        private Integer listSize;
+        private boolean isFirst;
+        private boolean isLast;
+        private boolean hasNext;
     }
 }
