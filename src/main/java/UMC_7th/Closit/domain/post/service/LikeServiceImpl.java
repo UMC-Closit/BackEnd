@@ -1,5 +1,6 @@
 package UMC_7th.Closit.domain.post.service;
 
+import UMC_7th.Closit.domain.notification.service.NotiCommandService;
 import UMC_7th.Closit.domain.post.converter.LikeConverter;
 import UMC_7th.Closit.domain.post.dto.LikeRequestDTO;
 import UMC_7th.Closit.domain.post.dto.LikeResponseDTO;
@@ -23,6 +24,8 @@ public class LikeServiceImpl implements LikeService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    private final NotiCommandService notiCommandService;
+
     @Override
     public LikeResponseDTO.LikeStatusDTO likePost(LikeRequestDTO.CreateLikeDTO request) {
         User user = userRepository.findById(request.getUserId())
@@ -35,6 +38,10 @@ public class LikeServiceImpl implements LikeService {
 
         Likes likes = Likes.createLikes(user, post);
         likeRepository.save(likes);
+
+        // 좋아요 알림
+        notiCommandService.likeNotification(likes);
+
         return LikeConverter.toLikeStatusDTO(post, user, true);
     }
 

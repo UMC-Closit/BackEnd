@@ -7,6 +7,7 @@ import UMC_7th.Closit.domain.notification.entity.NotificationType;
 import UMC_7th.Closit.domain.notification.repository.NotificationRepository;
 import UMC_7th.Closit.domain.notification.repository.EmitterRepository;
 import UMC_7th.Closit.domain.post.entity.Comment;
+import UMC_7th.Closit.domain.post.entity.Likes;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
@@ -85,11 +86,21 @@ public class NotiCommandServiceImpl implements NotiCommandService {
     }
 
     @Override
+    public void likeNotification(Likes likes) { // 좋아요 알림
+        User receiver = likes.getPost().getUser(); // 게시글 작성자
+        String content = likes.getUser().getName() + "님이 좋아요를 눌렀습니다. ";
+
+        NotificationRequestDTO.SendNotiRequestDTO request = NotificationConverter.sendNotiRequest(receiver, content, NotificationType.LIKE);
+
+        sendNotification(request);
+    }
+
+    @Override
     public void commentNotification(Comment comment) { // 댓글 알림
         User receiver = comment.getPost().getUser(); // 게시글 작성자 ID
         String content = comment.getUser().getName() + "님이 댓글을 작성했습니다. ";
 
-        NotificationRequestDTO.SendNotiRequestDTO request = NotificationConverter.commentNotification(receiver, content, NotificationType.COMMENT);
+        NotificationRequestDTO.SendNotiRequestDTO request = NotificationConverter.sendNotiRequest(receiver, content, NotificationType.COMMENT);
 
         sendNotification(request);
     }

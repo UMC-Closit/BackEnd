@@ -36,6 +36,7 @@ public class CommentCommandServiceImpl implements CommentCommandService {
 
         Comment comment = CommentConverter.toComment(user, post, request);
 
+        // 댓글 알림
         notiCommandService.commentNotification(comment);
 
         return commentRepository.save(comment);

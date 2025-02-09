@@ -26,7 +26,7 @@ public class NotificationConverter {
                 .build();
     }
 
-    public static NotificationRequestDTO.SendNotiRequestDTO commentNotification(User receiver, String content, NotificationType notificationType) { // 댓글 알림
+    public static NotificationRequestDTO.SendNotiRequestDTO sendNotiRequest (User receiver, String content, NotificationType notificationType) {
         return NotificationRequestDTO.SendNotiRequestDTO.builder()
                 .receiverId(receiver.getId())
                 .content(content)
