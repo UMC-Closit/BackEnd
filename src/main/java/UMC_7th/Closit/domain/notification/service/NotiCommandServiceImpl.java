@@ -115,4 +115,15 @@ public class NotiCommandServiceImpl implements NotiCommandService {
 
         sendNotification(request);
     }
+
+    @Override
+    public Notification readNotification(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.NOTIFICATION_NOT_FOUND));
+
+        // 읽음 처리
+        notification.markAsRead();
+
+        return notificationRepository.save(notification);
+    }
 }
