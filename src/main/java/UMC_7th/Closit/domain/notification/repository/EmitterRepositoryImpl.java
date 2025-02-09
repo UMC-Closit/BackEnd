@@ -28,6 +28,7 @@ public class EmitterRepositoryImpl implements EmitterRepository{
         emitters.remove(emitterId);
     }
 
+    // 사용자와 관련된 SseEmitter 탐색
     @Override
     public Map<String, SseEmitter> findAllEmitterByUserId(String userId) {
         return emitters.entrySet().stream()
@@ -35,6 +36,7 @@ public class EmitterRepositoryImpl implements EmitterRepository{
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
+    // 사용자와 관련된 이벤트 탐색
     @Override
     public Map<String, Object> findAllEventCacheByUserId(String userId) {
         return eventCache.entrySet().stream()

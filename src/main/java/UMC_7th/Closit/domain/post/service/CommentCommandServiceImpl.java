@@ -1,5 +1,6 @@
 package UMC_7th.Closit.domain.post.service;
 
+import UMC_7th.Closit.domain.notification.service.NotiCommandService;
 import UMC_7th.Closit.domain.post.converter.CommentConverter;
 import UMC_7th.Closit.domain.post.dto.CommentRequestDTO;
 import UMC_7th.Closit.domain.post.entity.Comment;
@@ -22,6 +23,8 @@ public class CommentCommandServiceImpl implements CommentCommandService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
+    private final NotiCommandService notiCommandService;
+
     @Override
     @Transactional
     public Comment createComment(Long postId, CommentRequestDTO.CreateCommentRequestDTO request) {
@@ -32,6 +35,8 @@ public class CommentCommandServiceImpl implements CommentCommandService {
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
         Comment comment = CommentConverter.toComment(user, post, request);
+
+        notiCommandService.commentNotification(comment);
 
         return commentRepository.save(comment);
     }

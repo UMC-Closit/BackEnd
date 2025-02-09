@@ -35,18 +35,6 @@ public class NotificationController {
         return sseEmitter;
     }
 
-    @Operation(summary = "알림 전송")
-    @PostMapping
-    public ApiResponse<NotificationResponseDTO.SendNotiResultDTO> createNotification(// Authentication authentication,
-                                                                                     @RequestBody NotificationRequestDTO.SendNotiRequestDTO request) {
-
-        // Long userId = Long.parseLong(authentication.getName());
-
-        Notification sendNotification = notiCommandService.sendNotification(request);
-
-        return ApiResponse.onSuccess(NotificationConverter.sendNotiResult(sendNotification));
-    }
-
     @Operation(summary = "알림 목록 조회", description = "특정 사용자의 알림 목록 조회")
     @GetMapping()
     public ApiResponse<List<String>> getNotifications(@PathVariable Long user_id) {

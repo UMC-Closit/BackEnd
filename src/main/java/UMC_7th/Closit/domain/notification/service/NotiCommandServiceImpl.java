@@ -3,8 +3,10 @@ package UMC_7th.Closit.domain.notification.service;
 import UMC_7th.Closit.domain.notification.converter.NotificationConverter;
 import UMC_7th.Closit.domain.notification.dto.NotificationRequestDTO;
 import UMC_7th.Closit.domain.notification.entity.Notification;
+import UMC_7th.Closit.domain.notification.entity.NotificationType;
 import UMC_7th.Closit.domain.notification.repository.NotificationRepository;
 import UMC_7th.Closit.domain.notification.repository.EmitterRepository;
+import UMC_7th.Closit.domain.post.entity.Comment;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
@@ -27,7 +29,7 @@ public class NotiCommandServiceImpl implements NotiCommandService {
     private final EmitterRepository emitterRepository;
 
     @Override
-    public SseEmitter subscribe (Long userId, String lastEventId) { // SSE 연결
+    public SseEmitter subscribe(Long userId, String lastEventId) { // SSE 연결
         // 연결 지속 시간 = 1시간
         SseEmitter emitter = new SseEmitter(60 * 60 * 1000L);
         String emitterId = userId + "-" + System.currentTimeMillis();
@@ -53,6 +55,7 @@ public class NotiCommandServiceImpl implements NotiCommandService {
     public void sendToClient(SseEmitter emitter, String emitterId, Object data) {
         try {
             emitter.send(SseEmitter.event()
+                    .id(emitterId)
                     .name("SSE")
                     .data(data));
         } catch (IOException exception) {
@@ -62,12 +65,32 @@ public class NotiCommandServiceImpl implements NotiCommandService {
     }
 
     @Override
-    public Notification sendNotification (NotificationRequestDTO.SendNotiRequestDTO request) { // 알림 전송
-        User user = userRepository.findById(request.getUserId())
+    public Notification sendNotification(NotificationRequestDTO.SendNotiRequestDTO request) { // 알림 전송
+        User user = userRepository.findById(request.getReceiverId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         Notification notification = NotificationConverter.toNotification(user, request);
+        notificationRepository.save(notification);
 
-        return notificationRepository.save(notification);
+        // SSE 통한 알림 전송
+        Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterByUserId(request.getReceiverId().toString());
+
+        emitters.forEach(
+                (key, emitter) -> {
+                    // 데이터 전송
+                    sendToClient(emitter, key, NotificationConverter.sendNotiResult(notification));
+                }
+        );
+        return notification;
+    }
+
+    @Override
+    public void commentNotification(Comment comment) {
+        User receiver = comment.getPost().getUser(); // 게시글 작성자 ID
+        String content = comment.getUser().getName() + "님이 댓글을 작성했습니다. ";
+
+        NotificationRequestDTO.SendNotiRequestDTO request = NotificationConverter.commentNotification(receiver, content, NotificationType.COMMENT);
+
+        sendNotification(request);
     }
 }

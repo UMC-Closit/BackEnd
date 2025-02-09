@@ -9,6 +9,6 @@ import java.util.Map;
 public interface EmitterRepository {
     SseEmitter save(String emitterId, SseEmitter sseEmitter); // SseEmitter 저장
     void deleteById(String emitterId); // SseEmitter 삭제
-    Map<String, SseEmitter> findAllEmitterByUserId(String userId);
-    Map<String, Object> findAllEventCacheByUserId(String userId);
+    Map<String, SseEmitter> findAllEmitterByUserId(String userId); // 사용자와 관련된 SseEmitter 탐색
+    Map<String, Object> findAllEventCacheByUserId(String userId); // 사용자와 관련된 이벤트 탐색
 }

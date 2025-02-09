@@ -3,6 +3,7 @@ package UMC_7th.Closit.domain.notification.converter;
 import UMC_7th.Closit.domain.notification.dto.NotificationRequestDTO;
 import UMC_7th.Closit.domain.notification.dto.NotificationResponseDTO;
 import UMC_7th.Closit.domain.notification.entity.Notification;
+import UMC_7th.Closit.domain.notification.entity.NotificationType;
 import UMC_7th.Closit.domain.user.entity.User;
 
 public class NotificationConverter {
@@ -18,7 +19,18 @@ public class NotificationConverter {
     public static NotificationResponseDTO.SendNotiResultDTO sendNotiResult (Notification notification) {
         return NotificationResponseDTO.SendNotiResultDTO.builder()
                 .notificationId(notification.getId())
+                .content(notification.getContent())
+                .type(notification.getType())
+                .isRead(notification.isRead())
                 .createdAt(notification.getCreatedAt())
+                .build();
+    }
+
+    public static NotificationRequestDTO.SendNotiRequestDTO commentNotification(User receiver, String content, NotificationType notificationType) { // 댓글 알림
+        return NotificationRequestDTO.SendNotiRequestDTO.builder()
+                .receiverId(receiver.getId())
+                .content(content)
+                .type(notificationType)
                 .build();
     }
 }
