@@ -67,6 +67,9 @@ public class UserQueryServiceImpl implements UserQueryService {
 
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
-
     }
+
+
+
+
 }

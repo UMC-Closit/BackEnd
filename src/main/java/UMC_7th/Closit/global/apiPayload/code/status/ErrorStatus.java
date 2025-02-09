@@ -20,12 +20,16 @@ public enum ErrorStatus implements BaseErrorCode {
     // 사용자 관련 에러
     USER_NOT_FOUND (HttpStatus.BAD_REQUEST, "LOGIN4001", "사용자가 존재하지 않습니다."),
     PASSWORD_NOT_CORRESPOND (HttpStatus.BAD_REQUEST, "LOGIN4002", "비밀번호가 일치하지 않습니다."),
+    USER_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "REGISTER4001", "이미 존재하는 사용자입니다."),
+    USER_NOT_AUTHORIZED (HttpStatus.BAD_REQUEST, "USER4001", "사용자 권한이 없습니다."),
+    USER_NOT_MATCH (HttpStatus.BAD_REQUEST, "USER4002", "사용자가 일치하지 않습니다."),
+    EMAIL_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "USER4003","이미 존재하는 이메일입니다"),
 
     // 게시글 관련 에러
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4001", "게시글이 존재하지 않습니다."),
 
     //북마크 관련 에러
-    BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND,"BOOLMARK4001","북마크가 존재하지 않습니다."),
+    BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND,"BOOKMARK4001","북마크가 존재하지 않습니다."),
 
     //좋아요 관련 에러
     LIKES_NOT_FOUND(HttpStatus.BAD_REQUEST, "LIKE4001", "좋아요가 존재하지 않습니다."),
