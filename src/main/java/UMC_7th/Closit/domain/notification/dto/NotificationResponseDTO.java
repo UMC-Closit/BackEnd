@@ -1,6 +1,7 @@
 package UMC_7th.Closit.domain.notification.dto;
 
 import UMC_7th.Closit.domain.notification.entity.NotificationType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class NotificationResponseDTO {
         private String content;
         private NotificationType type;
         private boolean isRead;
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         private LocalDateTime createdAt;
     }
 
