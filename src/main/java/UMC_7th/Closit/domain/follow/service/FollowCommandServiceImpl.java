@@ -4,6 +4,7 @@ import UMC_7th.Closit.domain.follow.repository.FollowRepository;
 import UMC_7th.Closit.domain.follow.converter.FollowConverter;
 import UMC_7th.Closit.domain.follow.dto.FollowRequestDTO;
 import UMC_7th.Closit.domain.follow.entity.Follow;
+import UMC_7th.Closit.domain.notification.service.NotiCommandService;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
@@ -19,6 +20,7 @@ public class FollowCommandServiceImpl implements FollowCommandService {
 
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
+    private final NotiCommandService notiCommandService;
 
     @Override
     @Transactional
@@ -30,6 +32,9 @@ public class FollowCommandServiceImpl implements FollowCommandService {
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
         Follow newFollow = FollowConverter.toFollow(request, follower, following);
+
+        // 팔로우 알림
+        notiCommandService.followNotification(newFollow);
 
         return followRepository.save(newFollow);
     }

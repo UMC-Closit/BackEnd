@@ -1,5 +1,6 @@
 package UMC_7th.Closit.domain.notification.service;
 
+import UMC_7th.Closit.domain.follow.entity.Follow;
 import UMC_7th.Closit.domain.notification.converter.NotificationConverter;
 import UMC_7th.Closit.domain.notification.dto.NotificationRequestDTO;
 import UMC_7th.Closit.domain.notification.entity.Notification;
@@ -101,6 +102,16 @@ public class NotiCommandServiceImpl implements NotiCommandService {
         String content = comment.getUser().getName() + "님이 댓글을 작성했습니다. ";
 
         NotificationRequestDTO.SendNotiRequestDTO request = NotificationConverter.sendNotiRequest(receiver, content, NotificationType.COMMENT);
+
+        sendNotification(request);
+    }
+
+    @Override
+    public void followNotification(Follow follow) { // 팔로우 알림
+        User receiver = follow.getFollowing(); // 팔로잉
+        String content = follow.getFollower().getName() + "님이 회원님을 팔로우하기 시작했습니다. ";
+
+        NotificationRequestDTO.SendNotiRequestDTO request = NotificationConverter.sendNotiRequest(receiver, content, NotificationType.FOLLOW);
 
         sendNotification(request);
     }
