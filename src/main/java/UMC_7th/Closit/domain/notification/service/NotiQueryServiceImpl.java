@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +25,13 @@ public class NotiQueryServiceImpl implements NotiQueryService {
     public Slice<Notification> getNotificationList(Long userId, Integer page) { // 알림 목록 조회
         // Long userId = Long.parseLong(authentication.getName());
 
-        userRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         Pageable pageable = PageRequest.of(page, 10);
 
-        Slice<Notification> notificationList = notificationRepository.findAll(pageable);
+        // 최신순으로 조회
+        Slice<Notification> notificationList = notificationRepository.findByUserOrderByCreatedAtDesc(user, pageable);
 
         return notificationList;
     }
