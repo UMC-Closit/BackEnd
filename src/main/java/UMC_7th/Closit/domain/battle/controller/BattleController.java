@@ -69,10 +69,7 @@ public class BattleController {
     @GetMapping()
     public ApiResponse<BattleResponseDTO.BattlePreviewListDTO> getBattleList(@RequestParam(name = "page") Integer page) {
 
-        User user = securityUtil.getCurrentUser();
-        Long userId = user.getId();
-
-        Slice<Battle> battleList = battleQueryService.getBattleList(userId, page);
+        Slice<Battle> battleList = battleQueryService.getBattleList(page);
 
         return ApiResponse.onSuccess(BattleConverter.battlePreviewListDTO(battleList));
     }
@@ -81,23 +78,20 @@ public class BattleController {
     @GetMapping("/challenge")
     public ApiResponse<BattleResponseDTO.ChallengeBattlePreviewListDTO> getChallengeBattleList(@RequestParam(name = "page") Integer page) {
 
-        User user = securityUtil.getCurrentUser();
-        Long userId = user.getId();
-
-        Slice<Battle> challengeBattleList = battleQueryService.getChallengeBattleList(userId, page);
+        Slice<Battle> challengeBattleList = battleQueryService.getChallengeBattleList(page);
 
         return ApiResponse.onSuccess(BattleConverter.challengeBattlePreviewListDTO(challengeBattleList));
     }
 
     @Operation(summary = "배틀 삭제")
     @DeleteMapping("/{battle_id}")
-    public ApiResponse<Void> deleteBattle(@PathVariable("battle_id") Long battleId) {
+    public ApiResponse<String> deleteBattle(@PathVariable("battle_id") Long battleId) {
 
         User user = securityUtil.getCurrentUser();
         Long userId = user.getId();
 
         battleCommandService.deleteBattle(userId, battleId);
 
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess("Deletion successful");
     }
 }
