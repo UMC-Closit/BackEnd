@@ -12,7 +12,8 @@ import java.util.List;
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
     boolean existsByFollowerAndFollowing(User follower, User following);
-    List<Follow> findListByFollower(User follower);
+
+    List<Follow> findByFollowing(User follower);
 
     // 특정 유저를 팔로우하는 사람 목록 조회 (팔로워)
     Slice<Follow> findByFollower(User user, Pageable pageable);

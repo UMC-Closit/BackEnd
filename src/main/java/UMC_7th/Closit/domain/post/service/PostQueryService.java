@@ -7,6 +7,6 @@ import org.springframework.data.domain.Slice;
 
 public interface PostQueryService {
 
-    Slice<Post> getPostListByFollowerAndHashtag(User currentUser, boolean follower, Long hashtagId, Pageable pageable);
+    Slice<Post> getPostListByFollowerAndHashtag(Long userId, boolean follower, String hashtag, Pageable pageable);
 }
 
