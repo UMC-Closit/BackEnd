@@ -18,33 +18,33 @@ public enum ErrorStatus implements BaseErrorCode {
     _NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON404", "찾을 수 없습니다."),
 
     // 사용자 관련 에러
-    USER_NOT_FOUND (HttpStatus.BAD_REQUEST, "LOGIN4001", "사용자가 존재하지 않습니다."),
-    PASSWORD_NOT_CORRESPOND (HttpStatus.BAD_REQUEST, "LOGIN4002", "비밀번호가 일치하지 않습니다."),
+    PASSWORD_NOT_CORRESPOND (HttpStatus.BAD_REQUEST, "LOGIN4001", "비밀번호가 일치하지 않습니다."),
     USER_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "REGISTER4001", "이미 존재하는 사용자입니다."),
     USER_NOT_AUTHORIZED (HttpStatus.BAD_REQUEST, "USER4001", "사용자 권한이 없습니다."),
     USER_NOT_MATCH (HttpStatus.BAD_REQUEST, "USER4002", "사용자가 일치하지 않습니다."),
     EMAIL_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "USER4003","이미 존재하는 이메일입니다"),
+    USER_NOT_FOUND (HttpStatus.NOT_FOUND, "USER4041", "사용자가 존재하지 않습니다."),
 
     // 게시글 관련 에러
-    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4001", "게시글이 존재하지 않습니다."),
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4041", "게시글이 존재하지 않습니다."),
 
     //북마크 관련 에러
-    BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND,"BOOKMARK4001","북마크가 존재하지 않습니다."),
+    BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND,"BOOKMARK4041","북마크가 존재하지 않습니다."),
 
     //좋아요 관련 에러
-    LIKES_NOT_FOUND(HttpStatus.BAD_REQUEST, "LIKE4001", "좋아요가 존재하지 않습니다."),
-    LIKES_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "LIKE4002", "이미 좋아요를 누른 게시글 입니다."),
+    LIKES_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "LIKE4001", "이미 좋아요를 누른 게시글 입니다."),
+    LIKES_NOT_FOUND(HttpStatus.NOT_FOUND, "LIKE4041", "좋아요가 존재하지 않습니다."),
 
     // 댓글 관련 에러
-    COMMENT_NOT_FOUND (HttpStatus.NOT_FOUND, "COMMENT4001", "댓글이 존재하지 않습니다."),
+    COMMENT_NOT_FOUND (HttpStatus.NOT_FOUND, "COMMENT4041", "댓글이 존재하지 않습니다."),
 
     // 배틀 관련 에러
-    BATTLE_NOT_FOUND (HttpStatus.BAD_REQUEST, "BATTLE4001", "배틀이 존재하지 않습니다."),
-    BATTLE_NOT_CHALLENGE (HttpStatus.BAD_REQUEST, "BATTLE4002", "동일한 게시글로 배틀을 신청할 수 없습니다."),
-    BATTLE_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "BATTLE4003", "배틀이 이미 존재합니다."),
-    POST_NOT_BATTLE (HttpStatus.BAD_REQUEST, "BATTLE4004", "해당 게시글은 배틀이 아닙니다"),
-    POST_ALREADY_BATTLE (HttpStatus.BAD_REQUEST, "BATTLE4005", "해당 게시글은 이미 배틀 게시글입니다."),
-    POST_IS_CHALLENGE (HttpStatus.BAD_REQUEST, "BATTLE4006", "해당 게시글은 배틀 챌린지 게시글입니다."),
+    BATTLE_NOT_CHALLENGE (HttpStatus.BAD_REQUEST, "BATTLE4001", "동일한 게시글로 배틀을 신청할 수 없습니다."),
+    BATTLE_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "BATTLE4002", "배틀이 이미 존재합니다."),
+    POST_NOT_BATTLE (HttpStatus.BAD_REQUEST, "BATTLE4003", "해당 게시글은 배틀이 아닙니다"),
+    POST_ALREADY_BATTLE (HttpStatus.BAD_REQUEST, "BATTLE4004", "해당 게시글은 이미 배틀 게시글입니다."),
+    POST_IS_CHALLENGE (HttpStatus.BAD_REQUEST, "BATTLE4005", "해당 게시글은 배틀 챌린지 게시글입니다."),
+    BATTLE_NOT_FOUND (HttpStatus.NOT_FOUND, "BATTLE4041", "배틀이 존재하지 않습니다."),
 
     // 투표 관련 에러
     VOTE_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "VOTE4001", "이미 투표를 했습니다."),
@@ -52,10 +52,10 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 배틀 좋아요 관련 에러
     BATTLE_LIKES_ALREADY_EXIST (HttpStatus.BAD_REQUEST, "BATTLELIKE4001", "이미 좋아요를 누른 배틀 입니다."),
-    BATTLE_LIKES_NOT_FOUND (HttpStatus.BAD_REQUEST, "BATTLELIKE4002", "배틀 좋아요가 존재하지 않습니다"),
+    BATTLE_LIKES_NOT_FOUND (HttpStatus.NOT_FOUND, "BATTLELIKE4041", "배틀 좋아요가 존재하지 않습니다"),
 
     // 배틀 댓글 관련 에러
-    BATTLE_COMMENT_NOT_FOUND (HttpStatus.BAD_REQUEST, "BATTLECOMMENT4001", "배틀 댓글이 존재하지 않습니다."),
+    BATTLE_COMMENT_NOT_FOUND (HttpStatus.NOT_FOUND, "BATTLECOMMENT4041", "배틀 댓글이 존재하지 않습니다."),
 
     // 하이라이트 관련 에러
     HIGHLIGHT_NOT_FOUND(HttpStatus.NOT_FOUND, "HIGHLIGHT4041", "하이라이트가 존재하지 않습니다."),
@@ -64,6 +64,8 @@ public enum ErrorStatus implements BaseErrorCode {
     HIGHLIGHT_POST_NOT_FOUND(HttpStatus.NOT_FOUND, "HIGHLIGHTPOST4041", "하이라이트 게시글이 존재하지 않습니다."),
 
     // 팔로우 관련 에러
+    FOLLOW_SELF_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "FOLLOW4001", "자기 자신을 팔로우할 수 없습니다."),
+    FOLLOW_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "FOLLOW4002", "이미 팔로우한 사용자입니다."),
     FOLLOW_NOT_FOUND(HttpStatus.NOT_FOUND, "FOLLOW4041", "팔로우가 존재하지 않습니다."),
 
     // 미션 관련 에러
@@ -72,7 +74,7 @@ public enum ErrorStatus implements BaseErrorCode {
     // 알림 관련 에러
     SSE_CONNECT_FAILED (HttpStatus.INTERNAL_SERVER_ERROR, "SSE5001", "SSE 연결에 실패했습니다"),
     NOTIFICATION_PUSH_FAILED (HttpStatus.BAD_REQUEST, "NOTIFICATION4001", "알림 전송에 실패했습니다."),
-    NOTIFICATION_NOT_FOUND (HttpStatus.BAD_REQUEST, "NOTIFICATION4002", "알림을 찾을 수 없습니다.");
+    NOTIFICATION_NOT_FOUND (HttpStatus.NOT_FOUND, "NOTIFICATION4041", "알림을 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
