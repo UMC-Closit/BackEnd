@@ -25,7 +25,6 @@ public class PostQueryServiceImpl implements PostQueryService {
 
     private final PostRepository postRepository;
     private final FollowRepository followRepository;
-    private final PostHashtagRepository postHashTagRepository;
     private final HashtagRepository hashtagRepository;
     private final UserRepository userRepository;
 
