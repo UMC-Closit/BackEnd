@@ -27,6 +27,7 @@ public class PostConverter {
                         .build())
                 .collect(Collectors.toList());
         return PostResponseDTO.PostPreviewDTO.builder()
+                .postId(post.getId())
                 .userId(post.getUser().getId())
                 .profileImage(post.getUser().getProfileImage())
                 .frontImage(post.getFrontImage())
