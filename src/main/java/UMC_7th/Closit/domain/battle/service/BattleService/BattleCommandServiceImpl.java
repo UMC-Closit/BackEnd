@@ -44,12 +44,19 @@ public class BattleCommandServiceImpl implements BattleCommandService {
         Battle challengeBattle = battleRepository.findById(battleId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
 
-        if (request.getPostId().equals(challengeBattle.getPost1().getId())) { // 동일한 게시글로 배틀 불가능
+        // 동일한 게시글로 배틀 불가능
+        if (request.getPostId().equals(challengeBattle.getPost1().getId())) {
             throw new GeneralException(ErrorStatus.BATTLE_NOT_CHALLENGE);
         }
 
-        if (challengeBattle.getPost2() != null) { // 배틀 형성 완료 -> 신청 불가능
+        // 배틀 형성 완료 -> 신청 불가능
+        if (challengeBattle.getPost2() != null) {
             throw new GeneralException(ErrorStatus.BATTLE_ALREADY_EXIST);
+        }
+
+        // 내 게시글에 배틀 신청 불가능
+        if (challengeBattle.getPost1().getUser().getId().equals(userId)) {
+            throw new GeneralException(ErrorStatus.POST_NOT_APPLY);
         }
 
         challengeBattle.setPost2(post);
@@ -88,7 +95,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
 
         // 챌린지 게시글 투표 방지
         if (battle.getPost2() == null) {
-            throw new GeneralException(ErrorStatus.POST_IS_CHALLENGE);
+            throw new GeneralException(ErrorStatus.POST_IS_BATTLE_CHALLENGE);
         }
 
         if (battle.getPost1().getId().equals(vote.getVotedPostId())) { // 첫 번째 게시글에 투표
