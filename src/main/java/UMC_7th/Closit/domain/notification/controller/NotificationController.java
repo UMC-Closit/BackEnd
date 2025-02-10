@@ -59,7 +59,7 @@ public class NotificationController {
     @GetMapping()
     @Operation(summary = "알림 목록 조회",
             description = """
-             ## 특정 사용자의 알림 목록 조회
+             ## 특정 사용자의 알림 목록 조회 (최신 순 정렬)
              ### Parameters
              page [조회할 페이지 번호] - 0부터 시작, 10개씩 보여줌
              """)
