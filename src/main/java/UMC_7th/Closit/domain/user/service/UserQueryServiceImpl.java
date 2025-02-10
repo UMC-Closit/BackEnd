@@ -41,8 +41,8 @@ public class UserQueryServiceImpl implements UserQueryService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
-        Slice<Follow> followers = followRepository.findByFollowing(user, pageable);
-        return followers.map(Follow::getFollower);
+        Slice<Follow> followers = followRepository.findByFollower(user, pageable);
+        return followers.map(Follow::getFollowing);
     }
 
     @Override
@@ -50,8 +50,8 @@ public class UserQueryServiceImpl implements UserQueryService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
-        Slice<Follow> followings = followRepository.findByFollower(user, pageable);
-        return followings.map(Follow::getFollowing);
+        Slice<Follow> followings = followRepository.findByFollowing(user, pageable);
+        return followings.map(Follow::getFollower);
     }
 
     @Override
