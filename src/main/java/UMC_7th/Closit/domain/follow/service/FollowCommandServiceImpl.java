@@ -49,6 +49,7 @@ public class FollowCommandServiceImpl implements FollowCommandService {
 
             return followRepository.save(newFollow);
         } catch (DataIntegrityViolationException e) {
+            // 이미 팔로우한 사용자를 팔로우 할 수 없음 ({"follower_id", "following_id"}가 unique)
             throw new GeneralException(ErrorStatus.FOLLOW_ALREADY_EXIST);
         }
     }
