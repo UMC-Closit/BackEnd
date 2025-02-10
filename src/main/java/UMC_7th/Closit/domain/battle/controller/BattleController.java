@@ -7,7 +7,9 @@ import UMC_7th.Closit.domain.battle.entity.Battle;
 import UMC_7th.Closit.domain.battle.entity.Vote;
 import UMC_7th.Closit.domain.battle.service.BattleService.BattleCommandService;
 import UMC_7th.Closit.domain.battle.service.BattleService.BattleQueryService;
+import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
+import UMC_7th.Closit.security.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +25,16 @@ public class BattleController {
 
     private final BattleCommandService battleCommandService;
     private final BattleQueryService battleQueryService;
+    private final SecurityUtil securityUtil;
 
     @Operation(summary = "새로운 배틀 생성")
     @PostMapping("/upload")
     public ApiResponse<BattleResponseDTO.CreateBattleResultDTO> createBattle(@RequestBody @Valid BattleRequestDTO.CreateBattleDTO request) {
 
-        Battle battle = battleCommandService.createBattle(request);
+        User user = securityUtil.getCurrentUser();
+        Long userId = user.getId();
+
+        Battle battle = battleCommandService.createBattle(userId, request);
 
         return ApiResponse.onSuccess(BattleConverter.createBattleResultDTO(battle));
     }
@@ -38,7 +44,10 @@ public class BattleController {
     public ApiResponse<BattleResponseDTO.ChallengeBattleResultDTO> challengeBattle(@RequestBody @Valid BattleRequestDTO.ChallengeBattleDTO request,
                                                                                    @PathVariable("battle_id") Long battleId) {
 
-        Battle challengeBattle = battleCommandService.challengeBattle(battleId, request);
+        User user = securityUtil.getCurrentUser();
+        Long userId = user.getId();
+
+        Battle challengeBattle = battleCommandService.challengeBattle(userId, battleId, request);
 
         return ApiResponse.onSuccess(BattleConverter.challengeBattleResultDTO(challengeBattle));
     }
@@ -48,15 +57,20 @@ public class BattleController {
     public ApiResponse<BattleResponseDTO.VoteBattleResultDTO> voteBattle(@RequestBody @Valid BattleRequestDTO.VoteBattleDTO request,
                                                                          @PathVariable("battle_id") Long battleId) {
 
-        Vote voteBattle = battleCommandService.voteBattle(battleId, request);
+        User user = securityUtil.getCurrentUser();
+        Long userId = user.getId();
+
+        Vote voteBattle = battleCommandService.voteBattle(userId, battleId, request);
 
         return ApiResponse.onSuccess(BattleConverter.voteBattleResultDTO(voteBattle));
     }
 
     @Operation(summary = "배틀 게시글 목록 조회")
     @GetMapping()
-    public ApiResponse<BattleResponseDTO.BattlePreviewListDTO> getBattleList(@RequestParam(name = "user_id") Long userId, //@AuthenticationPrincipal Authentication auth
-                                                                             @RequestParam(name = "page") Integer page) {
+    public ApiResponse<BattleResponseDTO.BattlePreviewListDTO> getBattleList(@RequestParam(name = "page") Integer page) {
+
+        User user = securityUtil.getCurrentUser();
+        Long userId = user.getId();
 
         Slice<Battle> battleList = battleQueryService.getBattleList(userId, page);
 
@@ -67,7 +81,10 @@ public class BattleController {
     @GetMapping("/challenge")
     public ApiResponse<BattleResponseDTO.ChallengeBattlePreviewListDTO> getChallengeBattleList(@RequestParam(name = "page") Integer page) {
 
-        Slice<Battle> challengeBattleList = battleQueryService.getChallengeBattleList(page);
+        User user = securityUtil.getCurrentUser();
+        Long userId = user.getId();
+
+        Slice<Battle> challengeBattleList = battleQueryService.getChallengeBattleList(userId, page);
 
         return ApiResponse.onSuccess(BattleConverter.challengeBattlePreviewListDTO(challengeBattleList));
     }
@@ -76,7 +93,10 @@ public class BattleController {
     @DeleteMapping("/{battle_id}")
     public ApiResponse<Void> deleteBattle(@PathVariable("battle_id") Long battleId) {
 
-        battleCommandService.deleteBattle(battleId);
+        User user = securityUtil.getCurrentUser();
+        Long userId = user.getId();
+
+        battleCommandService.deleteBattle(userId, battleId);
 
         return ApiResponse.onSuccess(null);
     }

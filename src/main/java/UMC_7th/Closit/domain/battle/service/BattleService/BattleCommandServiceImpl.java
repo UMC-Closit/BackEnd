@@ -27,7 +27,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
     private final UserRepository userRepository;
 
     @Override
-    public Battle createBattle (BattleRequestDTO.CreateBattleDTO request) { // 배틀 생성
+    public Battle createBattle (Long userId, BattleRequestDTO.CreateBattleDTO request) { // 배틀 생성
         Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
@@ -37,7 +37,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
     }
 
     @Override
-    public Battle challengeBattle (Long battleId, BattleRequestDTO.ChallengeBattleDTO request) { // 배틀 신청
+    public Battle challengeBattle (Long userId, Long battleId, BattleRequestDTO.ChallengeBattleDTO request) { // 배틀 신청
         Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
@@ -58,8 +58,8 @@ public class BattleCommandServiceImpl implements BattleCommandService {
     }
 
     @Override
-    public Vote voteBattle (Long battleId, BattleRequestDTO.VoteBattleDTO request) { // 배틀 투표
-        User user = userRepository.findById(request.getUserId())
+    public Vote voteBattle (Long userId, Long battleId, BattleRequestDTO.VoteBattleDTO request) { // 배틀 투표
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         Battle battle = battleRepository.findById(battleId)
@@ -76,7 +76,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
         }
 
         // 이미 투표한 곳에 중복 투표 방지
-        boolean alreadyVoted = voteRepository.existsByBattleIdAndUserId(battleId, request.getUserId());
+        boolean alreadyVoted = voteRepository.existsByBattleIdAndUserId(battleId, userId);
         if (alreadyVoted) {
             throw new GeneralException(ErrorStatus.VOTE_ALREADY_EXIST);
         }
@@ -97,7 +97,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
             battle.incrementSecondVotingCnt();
         }
 
-        vote.setUser(request.getUserId());
+        vote.setUser(userId);
         vote.setBattle(battle);
         vote.setVotedPostId(request.getPostId());
 
@@ -105,7 +105,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
     }
 
     @Override
-    public void deleteBattle (Long battleId) {
+    public void deleteBattle (Long userId, Long battleId) {
         Battle battle = battleRepository.findById(battleId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
 

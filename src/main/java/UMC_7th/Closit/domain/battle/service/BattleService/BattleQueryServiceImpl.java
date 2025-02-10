@@ -38,7 +38,7 @@ public class BattleQueryServiceImpl implements BattleQueryService {
     }
 
     @Override
-    public Slice<Battle> getChallengeBattleList(Integer page) { // 배틀 챌린지 게시글 목록 조회
+    public Slice<Battle> getChallengeBattleList(Long userId, Integer page) { // 배틀 챌린지 게시글 목록 조회
         Pageable pageable = PageRequest.of(page, 10);
 
         // secondPostId가 null 인 것을 기준으로 조회
