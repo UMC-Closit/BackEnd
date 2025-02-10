@@ -6,7 +6,9 @@ import UMC_7th.Closit.domain.battle.dto.BattleCmtDTO.BattleCommentResponseDTO;
 import UMC_7th.Closit.domain.battle.entity.BattleComment;
 import UMC_7th.Closit.domain.battle.service.BattleCmtService.BattleCmtCommandService;
 import UMC_7th.Closit.domain.battle.service.BattleCmtService.BattleCmtQueryService;
+import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
+import UMC_7th.Closit.security.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +22,17 @@ public class BattleCommentController {
 
     private final BattleCmtCommandService battleCmtCommandService;
     private final BattleCmtQueryService battleCmtQueryService;
+    private final SecurityUtil securityUtil;
 
     @Operation(summary = "새로운 배틀 댓글 생성")
     @PostMapping("/{battle_id}/comments")
     public ApiResponse<BattleCommentResponseDTO.createBattleCommentResultDTO> createBattleComment(@RequestBody @Valid BattleCommentRequestDTO.createBattleCommentRequestDTO request,
                                                                                                   @PathVariable("battle_id") Long battleId) {
 
-        BattleComment battleComment = battleCmtCommandService.createBattleComment(battleId, request);
+        User user = securityUtil.getCurrentUser();
+        Long userId = user.getId();
+
+        BattleComment battleComment = battleCmtCommandService.createBattleComment(userId, battleId, request);
 
         return ApiResponse.onSuccess(BattleCommentConverter.createBattleCommentResponseDTO(battleComment));
     }
@@ -46,7 +52,10 @@ public class BattleCommentController {
     public ApiResponse<String> deleteBattleComment(@PathVariable("battle_id") Long battleId,
                                                    @PathVariable("battle_comment_id") Long battleCommentId) {
 
-        battleCmtCommandService.deleteBattleComment(battleId, battleCommentId);
+        User user = securityUtil.getCurrentUser();
+        Long userId = user.getId();
+
+        battleCmtCommandService.deleteBattleComment(userId, battleId, battleCommentId);
 
         return ApiResponse.onSuccess("Deletion successful");
     }
