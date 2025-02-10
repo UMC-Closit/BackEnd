@@ -3,7 +3,7 @@ package UMC_7th.Closit.domain.post.service;
 import UMC_7th.Closit.domain.follow.entity.Follow;
 import UMC_7th.Closit.domain.follow.repository.FollowRepository;
 import UMC_7th.Closit.domain.post.entity.Post;
-import UMC_7th.Closit.domain.post.repository.PostHashTagRepository;
+import UMC_7th.Closit.domain.post.repository.PostHashtagRepository;
 import UMC_7th.Closit.domain.post.repository.PostRepository;
 import UMC_7th.Closit.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class PostQueryServiceImpl implements PostQueryService {
 
     private final PostRepository postRepository;
     private final FollowRepository followRepository;
-    private final PostHashTagRepository postHashTagRepository;
+    private final PostHashtagRepository postHashTagRepository;
 
     public Slice<Post> getPostListByFollowerAndHashtag(User currentUser, boolean follower, Long hashtagId, Pageable pageable) {
         if (follower) {
