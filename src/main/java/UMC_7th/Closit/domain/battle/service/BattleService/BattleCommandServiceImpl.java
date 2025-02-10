@@ -103,6 +103,16 @@ public class BattleCommandServiceImpl implements BattleCommandService {
         } else if (battle.getPost2().getId().equals(vote.getVotedPostId())) { // 두 번째 게시글에 투표
             battle.incrementSecondVotingCnt();
         }
+        Integer firstVotingCnt = battle.getFirstVotingCnt();
+        Integer secondVotingCnt = battle.getSecondVotingCnt();
+        int totalVoting = firstVotingCnt + secondVotingCnt;
+
+        // 투표 수 비율로 반환
+        double firstVotingPercentage = (totalVoting == 0) ? 0.0 : (firstVotingCnt * 100.0) / totalVoting;
+        double secondVotingPercentage = (totalVoting == 0) ? 0.0 : (secondVotingCnt * 100.0) / totalVoting;
+
+        battle.setFirstVotingRate(firstVotingPercentage);
+        battle.setSecondVotingRate(secondVotingPercentage);
 
         vote.setUser(userId);
         vote.setBattle(battle);

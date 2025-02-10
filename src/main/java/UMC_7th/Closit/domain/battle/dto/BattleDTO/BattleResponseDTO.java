@@ -44,9 +44,9 @@ public class BattleResponseDTO {
     public static class VoteBattleResultDTO { // 배틀 투표
         private Long battleId;
         private String firstUserName;
-        private float firstVotingCount;
+        private double firstVotingRate;
         private String secondUserName;
-        private float secondVotingCount;
+        private double secondVotingRate;
         @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         private LocalDateTime createdAt;
     }
@@ -59,10 +59,10 @@ public class BattleResponseDTO {
         private String title;
         private String firstUserName;
         private Long firstPostId;
-        private float firstVotingCount;
+        private double firstVotingRate;
         private String secondUserName;
         private Long secondPostId;
-        private float secondVotingCount;
+        private double secondVotingRate;
     }
 
     @Builder

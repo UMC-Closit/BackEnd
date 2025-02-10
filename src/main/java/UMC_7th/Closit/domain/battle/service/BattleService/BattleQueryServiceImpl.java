@@ -25,15 +25,24 @@ public class BattleQueryServiceImpl implements BattleQueryService {
         // secondPostId가 not null 인 것을 기준으로 조회
         Slice<Battle> battleList = battleRepository.findByPost2IsNotNull(pageable);
 
-        // 투표하지 않았으면 해당 배틀 투표 수 null로 표시
         battleList.forEach(battle -> {
             boolean isVoted = voteRepository.existsByBattleIdAndUserId(battle.getId(), userId);
-            if (!isVoted) {
+            if (!isVoted) { // 투표하지 않았으면 해당 배틀 투표 수 null로 표시
                 battle.setFirstVotingCnt(null);
                 battle.setSecondVotingCnt(null);
+            } else { // 투표했을 경우
+                Integer firstVotingCnt = battle.getFirstVotingCnt();
+                Integer secondVotingCnt = battle.getSecondVotingCnt();
+                int totalVoting = firstVotingCnt + secondVotingCnt;
+
+                // 투표 수 비율로 반환
+                double firstVotingPercentage = (totalVoting == 0) ? 0.0 : (firstVotingCnt * 100.0) / totalVoting;
+                double secondVotingPercentage = (totalVoting == 0) ? 0.0 : (secondVotingCnt * 100.0) / totalVoting;
+
+                battle.setFirstVotingRate(firstVotingPercentage);
+                battle.setSecondVotingRate(secondVotingPercentage);
             }
         });
-
         return battleList;
     }
 

@@ -48,9 +48,9 @@ public class BattleConverter {
         return BattleResponseDTO.VoteBattleResultDTO.builder()
                 .battleId(vote.getBattle().getId())
                 .firstUserName(vote.getBattle().getPost1().getUser().getName())
-                .firstVotingCount(vote.getBattle().getFirstVotingCnt())
+                .firstVotingRate(vote.getBattle().getFirstVotingRate())
                 .secondUserName(vote.getBattle().getPost2().getUser().getName())
-                .secondVotingCount(vote.getBattle().getSecondVotingCnt())
+                .secondVotingRate(vote.getBattle().getSecondVotingRate())
                 .createdAt(vote.getBattle().getCreatedAt())
                 .build();
     }
@@ -60,10 +60,10 @@ public class BattleConverter {
                 .title(battle.getTitle())
                 .firstUserName(battle.getPost1().getUser().getName())
                 .firstPostId(battle.getPost1().getId())
-                .firstVotingCount(battle.getFirstVotingCnt())
+                .firstVotingRate(battle.getFirstVotingRate())
                 .secondUserName(battle.getPost2().getUser().getName())
                 .secondPostId(battle.getPost2().getId())
-                .secondVotingCount(battle.getSecondVotingCnt())
+                .secondVotingRate(battle.getSecondVotingRate())
                 .build();
     }
 
