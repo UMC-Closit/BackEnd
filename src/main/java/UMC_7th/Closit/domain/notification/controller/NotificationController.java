@@ -24,8 +24,12 @@ public class NotificationController {
     private final NotiQueryService notiQueryService;
     private final SecurityUtil securityUtil;
 
-    @Operation(summary = "SSE 연결")
     @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @Operation(summary = "SSE 연결",
+            description = """
+            ### Postman으로만 테스트 가능
+            ### Headers -> Authorization -> Bearer + accessToken 넣어서 진행
+            """)
     public SseEmitter createNotification(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
 
         User user = securityUtil.getCurrentUser();
@@ -36,8 +40,12 @@ public class NotificationController {
         return sseEmitter;
     }
 
-    @Operation(summary = "알림 단건 조회", description = "알림 단건 조회 후 읽음 처리")
     @PatchMapping("/{notification_id}")
+    @Operation(summary = "알림 단건 조회",
+            description = """
+            ## 알림 단건 조회 후 읽음 처리
+            notification_id [알림 ID]
+            """)
     public ApiResponse<NotificationResponseDTO.NotiPreviewDTO> getNotification(@PathVariable Long notification_id) {
 
         User user = securityUtil.getCurrentUser();
@@ -48,8 +56,13 @@ public class NotificationController {
         return ApiResponse.onSuccess(NotificationConverter.notiPreviewDTO(notification));
     }
 
-    @Operation(summary = "알림 목록 조회", description = "특정 사용자의 알림 목록 조회")
     @GetMapping()
+    @Operation(summary = "알림 목록 조회",
+            description = """
+             ## 특정 사용자의 알림 목록 조회
+             ### Parameters
+             page [조회할 페이지 번호] - 0부터 시작, 10개씩 보여줌
+             """)
     public ApiResponse<NotificationResponseDTO.NotiPreviewListDTO> getNotificationList(@RequestParam(name = "page") Integer page) {
 
         User user = securityUtil.getCurrentUser();
@@ -60,8 +73,12 @@ public class NotificationController {
         return ApiResponse.onSuccess(NotificationConverter.notiPreviewListDTO(notificationList));
     }
 
-    @Operation(summary = "알림 삭제", description = "특정 알림 삭제")
     @DeleteMapping("/{notification_id}")
+    @Operation(summary = "알림 삭제",
+            description = """
+             ## 특정 알림 삭제
+             notification_id [알림 ID]
+             """)
     public ApiResponse<String> deleteNotification(@PathVariable Long notification_id) {
 
         User user = securityUtil.getCurrentUser();
