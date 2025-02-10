@@ -1,14 +1,14 @@
 package UMC_7th.Closit.domain.battle.controller;
 
 import UMC_7th.Closit.domain.battle.converter.BattleLikeConverter;
-import UMC_7th.Closit.domain.battle.dto.BattleLikeDTO.BattleLikeRequestDTO;
 import UMC_7th.Closit.domain.battle.dto.BattleLikeDTO.BattleLikeResponseDTO;
 import UMC_7th.Closit.domain.battle.entity.BattleLike;
 import UMC_7th.Closit.domain.battle.service.BattleLikeService.BattleLikeCommandService;
 import UMC_7th.Closit.domain.battle.service.BattleLikeService.BattleLikeQueryService;
+import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
+import UMC_7th.Closit.security.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +20,15 @@ public class BattleLikeController {
 
     private final BattleLikeCommandService battleLikeCommandService;
     private final BattleLikeQueryService battleLikeQueryService;
+    private final SecurityUtil securityUtil;
 
     @Operation(summary = "배틀 좋아요 생성")
     @PostMapping("/{battle_id}/likes")
-    public ApiResponse<BattleLikeResponseDTO.CreateBattleLikeResultDTO> createBattleLike(@RequestBody @Valid BattleLikeRequestDTO.CreateBattleLikeDTO request,
-                                                                                         @PathVariable("battle_id") Long battleId) {
+    public ApiResponse<BattleLikeResponseDTO.CreateBattleLikeResultDTO> createBattleLike(@PathVariable("battle_id") Long battleId) {
+        User user = securityUtil.getCurrentUser();
+        Long userId = user.getId();
 
-        BattleLike battleLike = battleLikeCommandService.createBattleLike(battleId, request);
+        BattleLike battleLike = battleLikeCommandService.createBattleLike(userId, battleId);
 
         return ApiResponse.onSuccess(BattleLikeConverter.createBattleLikeResultDTO(battleLike));
     }
@@ -44,10 +46,13 @@ public class BattleLikeController {
     @Operation(summary = "배틀 좋아요 삭제")
     @DeleteMapping("{battle_id}/likes/{battle_like_id}")
     public ApiResponse<String> deleteBattleLike(@PathVariable("battle_id") Long battleId,
-                                              @PathVariable("battle_like_id") Long battleLikeId) {
+                                                @PathVariable("battle_like_id") Long battleLikeId) {
 
-        battleLikeCommandService.deleteBattleLike(battleId, battleLikeId);
+        User user = securityUtil.getCurrentUser();
+        Long userId = user.getId();
 
-        return ApiResponse.onSuccess("Deletion Success battleLike");
+        battleLikeCommandService.deleteBattleLike(userId, battleId, battleLikeId);
+
+        return ApiResponse.onSuccess("Deletion successful");
     }
 }

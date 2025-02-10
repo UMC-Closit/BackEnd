@@ -1,5 +1,6 @@
 package UMC_7th.Closit.domain.battle.dto.BattleLikeDTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +17,7 @@ public class BattleLikeResponseDTO {
     @AllArgsConstructor
     public static class CreateBattleLikeResultDTO { // 배틀 좋아요 생성
         private Long battleLikeId;
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         private LocalDateTime createdAt;
     }
 
@@ -24,8 +26,9 @@ public class BattleLikeResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class BattleLikePreviewDTO { // 배틀 좋아요 조회
-        private Long userId;
+        private String userName;
         private Long battleLikeId;
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         private LocalDateTime createdAt;
     }
 
