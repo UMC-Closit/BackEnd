@@ -118,7 +118,7 @@ public class NotiCommandServiceImpl implements NotiCommandService {
     }
 
     @Override
-    public Notification readNotification(Long notificationId) { // 알림 단건 조회 - 읽음 처리
+    public Notification readNotification(Long userId, Long notificationId) { // 알림 단건 조회 - 읽음 처리
         Notification notification = notificationRepository.findById(notificationId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.NOTIFICATION_NOT_FOUND));
 
@@ -129,7 +129,7 @@ public class NotiCommandServiceImpl implements NotiCommandService {
     }
 
     @Override
-    public void deleteNotification(Long notificationId) { // 알림 삭제
+    public void deleteNotification(Long userId, Long notificationId) { // 알림 삭제
         notificationRepository.findById(notificationId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.NOTIFICATION_NOT_FOUND));
 
