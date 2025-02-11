@@ -30,6 +30,7 @@ public class AmazonS3Manager {
         log.info("File extension: {}", file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")));
         log.info("Original file name: {}", file.getOriginalFilename());
 
+        metadata.setContentType(file.getContentType());
         metadata.setContentLength(file.getSize());
         try {
             amazonS3.putObject(new PutObjectRequest(amazonConfig.getBucket(), keyName, file.getInputStream(), metadata));
