@@ -99,6 +99,7 @@ public class UserCommandServiceImpl implements UserCommandService {
 
         // 사용자가 프로필 이미지를 삭제하려는 경우
         if (file == null || file.isEmpty()) {
+            amazonS3Manager.deleteFile(currentUser.getProfileImage());
             currentUser.updateProfileImage(null);
             return currentUser;
         }
