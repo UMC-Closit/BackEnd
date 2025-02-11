@@ -13,8 +13,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -35,6 +37,17 @@ public class UserController {
 
         userCommandService.deleteUser(user_id);
         return ApiResponse.onSuccess(null);
+    }
+
+    @Operation(summary = "사용자 프로필 이미지 등록", description = "특정 사용자의 프로필 이미지를 등록합니다.")
+    @PostMapping(
+            value = "/{user_id}/profile-image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
+    )
+    public ApiResponse<UserResponseDTO.UserInfoDTO> registerProfileImage(@RequestPart(value = "user_image", required = true) MultipartFile profileImage) {
+        log.info("profileImage: {}", profileImage.getOriginalFilename());
+
+        User userInfo = userCommandService.registerProfileImage(profileImage);
+        return ApiResponse.onSuccess(UserConverter.toUserInfoDTO(userInfo));
     }
 
     @Operation(summary = "사용자 정보 조회", description = "특정 사용자의 정보를 조회합니다.")

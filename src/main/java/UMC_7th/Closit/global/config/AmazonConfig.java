@@ -33,6 +33,9 @@ public class AmazonConfig {
     @Value("${cloud.aws.s3.path.test}")
     private String testPath;
 
+    @Value("${cloud.aws.s3.path.profileImage}")
+    private String profileImagePath;
+
     @PostConstruct
     public void init() {
         this.awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
@@ -40,7 +43,6 @@ public class AmazonConfig {
 
     @Bean
     public AmazonS3 amazonS3() {
-        AWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
         return AmazonS3ClientBuilder.standard()
                 .withRegion(region)
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
