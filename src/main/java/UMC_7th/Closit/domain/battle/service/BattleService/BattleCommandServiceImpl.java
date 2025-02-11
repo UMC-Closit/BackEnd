@@ -33,6 +33,11 @@ public class BattleCommandServiceImpl implements BattleCommandService {
 
         Battle battle = BattleConverter.toBattle(post, request);
 
+        // 본인의 게시글이 아닐 경우, 배틀 게시글로 업로드 불가능
+        if (!post.getUser().getId().equals(userId)) {
+            throw new GeneralException(ErrorStatus.POST_NOT_MINE);
+        }
+
         return battleRepository.save(battle);
     }
 
