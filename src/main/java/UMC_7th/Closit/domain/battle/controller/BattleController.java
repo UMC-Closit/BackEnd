@@ -14,8 +14,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,7 +30,7 @@ public class BattleController {
             description = """
             ## 새로운 배틀 게시글 업로드
             ### RequestBody
-            post_id [게시글 ID]
+            post_id [게시글 ID] \n
             title [배틀 게시글 제목]
             """)
     public ApiResponse<BattleResponseDTO.CreateBattleResultDTO> createBattle(@RequestBody @Valid BattleRequestDTO.CreateBattleDTO request) {

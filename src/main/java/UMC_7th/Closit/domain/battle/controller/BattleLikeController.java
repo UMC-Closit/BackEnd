@@ -59,7 +59,7 @@ public class BattleLikeController {
             description = """
             ## 배틀 게시글 내 특정 좋아요 취소
             ### PathVariable
-            battle_id [배틀 ID]
+            battle_id [배틀 ID] \n
             battle_like_id [배틀 좋아요 ID]
             """)
     @DeleteMapping("{battle_id}/likes/{battle_like_id}")

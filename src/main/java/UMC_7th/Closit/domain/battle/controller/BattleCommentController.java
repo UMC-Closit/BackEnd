@@ -66,7 +66,7 @@ public class BattleCommentController {
             description = """
             ## 배틀 게시글 내 특정 댓글 삭제
             ### PathVariable
-            battle_id [배틀 ID]
+            battle_id [배틀 ID] \n
             battle_comment_id [배틀 댓글 ID]
             """)
     public ApiResponse<String> deleteBattleComment(@PathVariable("battle_id") Long battleId,
