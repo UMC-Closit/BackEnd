@@ -43,9 +43,7 @@ public class UserController {
     @PostMapping(
             value = "/{user_id}/profile-image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
     )
-    public ApiResponse<UserResponseDTO.UserInfoDTO> registerProfileImage(@RequestPart(value = "user_image", required = true) MultipartFile profileImage) {
-        log.info("profileImage: {}", profileImage.getOriginalFilename());
-
+    public ApiResponse<UserResponseDTO.UserInfoDTO> registerProfileImage(@RequestPart(value = "user_image", required = false) MultipartFile profileImage) {
         User userInfo = userCommandService.registerProfileImage(profileImage);
         return ApiResponse.onSuccess(UserConverter.toUserInfoDTO(userInfo));
     }

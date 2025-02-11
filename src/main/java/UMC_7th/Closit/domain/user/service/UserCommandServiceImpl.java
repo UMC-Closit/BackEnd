@@ -86,24 +86,35 @@ public class UserCommandServiceImpl implements UserCommandService {
 
     @Override
     public User registerProfileImage (MultipartFile file) {
+
+        // 로그인 여부 확인
         if (!securityUtil.isAuthenticated()) {
             throw new UserHandler(ErrorStatus.USER_NOT_AUTHORIZED);
         }
 
+        // 현재 로그인된 사용자 정보
         User currentUser = securityUtil.getCurrentUser();
-        log.info("Register profile image service: currentUser={}", currentUser.getId());
-        log.info("Register profile image service: file={}", file.getOriginalFilename());
+//        log.info("Register profile image service: currentUser={}", currentUser.getId());
+//        log.info("Register profile image service: file={}", file.getOriginalFilename());
 
+        // 사용자가 프로필 이미지를 삭제하려는 경우
+        if (file == null || file.isEmpty()) {
+            currentUser.updateProfileImage(null);
+            return currentUser;
+        }
 
+        // 기존 프로필 이미지 삭제
         if (currentUser.getProfileImage() != null) {
             amazonS3Manager.deleteFile(currentUser.getProfileImage());
         }
 
+        // 새로운 프로필 이미지 등록
         String uuid = UUID.randomUUID().toString();
         Uuid savedUuid = uuidRepository.save(Uuid.builder().uuid(uuid).build());
         String storedLocation = amazonS3Manager.uploadFile(amazonS3Manager.generateProfileImageKeyName(savedUuid), file);
 
         currentUser.updateProfileImage(storedLocation);
+
         return currentUser;
     }
 
