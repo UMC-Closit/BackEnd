@@ -4,10 +4,8 @@ import UMC_7th.Closit.domain.post.dto.PostRequestDTO;
 import UMC_7th.Closit.domain.post.dto.PostResponseDTO;
 import UMC_7th.Closit.domain.post.entity.ItemTag;
 import UMC_7th.Closit.domain.post.entity.Post;
-import UMC_7th.Closit.domain.user.entity.User;
 import org.springframework.data.domain.Slice;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +27,7 @@ public class PostConverter {
                         .build())
                 .collect(Collectors.toList());
         return PostResponseDTO.PostPreviewDTO.builder()
+                .postId(post.getId())
                 .userId(post.getUser().getId())
                 .profileImage(post.getUser().getProfileImage())
                 .frontImage(post.getFrontImage())
@@ -68,7 +67,7 @@ public class PostConverter {
                 .backImage(post.getBackImage())              // 뒷면 이미지
                 .pointColor(post.getPointColor())             // 포인트 컬러
                 .visibility(post.getVisibility())             // 공개 여부
-                .hashtags(post.getPostHashTagList().stream()  // 해시태그
+                .hashtags(post.getPostHashtagList().stream()  // 해시태그
                         .map(postHashTag -> postHashTag.getHashTag().getContent())
                         .collect(Collectors.toList()))
                 .frontItemtags(post.getItemTagList().stream() // Front ItemTags

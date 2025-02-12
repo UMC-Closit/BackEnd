@@ -105,7 +105,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
 
         // 챌린지 게시글 투표 방지
         if (battle.getPost2() == null) {
-            throw new GeneralException(ErrorStatus.POST_IS_BATTLE_CHALLENGE);
+            throw new GeneralException(ErrorStatus.POST_IS_CHALLENGE);
         }
 
         if (battle.getPost1().getId().equals(vote.getVotedPostId())) { // 첫 번째 게시글에 투표

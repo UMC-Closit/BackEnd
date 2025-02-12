@@ -47,11 +47,13 @@ public class PostController {
     public ApiResponse<PostResponseDTO.PostPreviewListDTO> getPostList(
             @AuthenticationPrincipal User currentUser,
             @RequestParam(name = "follower", defaultValue = "false") boolean follower,
-            @RequestParam(name = "hashtag_id", required = false) Long hashtagId,
-            @RequestParam(name = "page", defaultValue = "0") int page) {
+            @RequestParam(name = "user_id", required = false) Long userId,
+            @RequestParam(name = "hashtag", required = false) String hashtag,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
-        Pageable pageable = PageRequest.of(page, 10);
-        Slice<Post> posts = postQueryService.getPostListByFollowerAndHashtag(currentUser, follower, hashtagId, pageable);
+        Pageable pageable = PageRequest.of(page, size);
+        Slice<Post> posts = postQueryService.getPostListByFollowerAndHashtag(userId, follower, hashtag, pageable);
         PostResponseDTO.PostPreviewListDTO response = PostConverter.toPostPreviewListDTO(posts);
         return ApiResponse.onSuccess(response);
     }
