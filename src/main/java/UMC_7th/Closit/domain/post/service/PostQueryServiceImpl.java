@@ -2,7 +2,7 @@ package UMC_7th.Closit.domain.post.service;
 
 import UMC_7th.Closit.domain.follow.entity.Follow;
 import UMC_7th.Closit.domain.follow.repository.FollowRepository;
-import UMC_7th.Closit.domain.post.entity.HashTag;
+import UMC_7th.Closit.domain.post.entity.Hashtag;
 import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.domain.post.repository.HashtagRepository;
 import UMC_7th.Closit.domain.post.repository.PostRepository;
@@ -41,7 +41,7 @@ public class PostQueryServiceImpl implements PostQueryService {
 
             // 해시태그가 있을 경우 → 팔로우한 유저의 글 중 해당 해시태그 포함한 글 검색
             if (hashtag != null && !hashtag.isBlank()) {
-                HashTag foundHashtag = hashtagRepository.findByContent(hashtag)
+                Hashtag foundHashtag = hashtagRepository.findByContent(hashtag)
                         .orElseThrow(() -> new GeneralException(ErrorStatus.HASHTAG_NOT_FOUND));
                 return postRepository.findByUsersAndHashtagId(followingUsers, foundHashtag.getId(), pageable);
             }
@@ -52,7 +52,7 @@ public class PostQueryServiceImpl implements PostQueryService {
 
         // 팔로워가 `false`인 경우 → 전체 게시글 중 해시태그 여부에 따라 검색
         if (hashtag != null && !hashtag.isBlank()) {
-            HashTag foundHashtag = hashtagRepository.findByContent(hashtag)
+            Hashtag foundHashtag = hashtagRepository.findByContent(hashtag)
                     .orElseThrow(() -> new GeneralException(ErrorStatus.HASHTAG_NOT_FOUND));
             return postRepository.findByHashtagId(foundHashtag.getId(), pageable);
         }

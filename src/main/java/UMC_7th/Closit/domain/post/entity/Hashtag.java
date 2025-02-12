@@ -15,7 +15,7 @@ import java.util.List;
 @Table(indexes = {
         @Index(name = "idx_hashtag_content", columnList = "content") // B-Tree 인덱스 추가
 })
-public class HashTag extends BaseEntity {
+public class Hashtag extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +25,6 @@ public class HashTag extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String content;
 
-    @OneToMany(mappedBy = "hashTag", cascade = CascadeType.ALL)
-    private List<PostHashTag> postHashtagList = new ArrayList<>();
+    @OneToMany(mappedBy = "hashtag", cascade = CascadeType.ALL)
+    private List<PostHashtag> postHashtagList = new ArrayList<>();
 }
