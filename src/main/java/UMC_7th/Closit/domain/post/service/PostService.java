@@ -23,7 +23,7 @@ public class PostService {
     private final LikesRepository likesRepository;
     private final BookmarkRepository bookmarkRepository;
     private final FollowRepository followRepository;
-    private final PostHashtagRepository postHashTagRepository;
+    private final PostHashTagRepository postHashTagRepository;
     private final ItemTagRepository itemTagRepository;
 
     public PostResponseDTO.PostPreviewDTO getPostById(Long postId, User currentUser) {

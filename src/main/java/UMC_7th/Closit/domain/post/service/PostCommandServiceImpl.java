@@ -5,9 +5,9 @@ import UMC_7th.Closit.domain.post.entity.Hashtag;
 import UMC_7th.Closit.domain.post.entity.ItemTag;
 import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.domain.post.entity.PostHashtag;
-import UMC_7th.Closit.domain.post.repository.HashtagRepository;
+import UMC_7th.Closit.domain.post.repository.HashTagRepository;
 import UMC_7th.Closit.domain.post.repository.ItemTagRepository;
-import UMC_7th.Closit.domain.post.repository.PostHashtagRepository;
+import UMC_7th.Closit.domain.post.repository.PostHashTagRepository;
 import UMC_7th.Closit.domain.post.repository.PostRepository;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
 public class PostCommandServiceImpl implements PostCommandService {
 
     private final PostRepository postRepository;
-    private final HashtagRepository hashtagRepository;
-    private final PostHashtagRepository postHashtagRepository;
+    private final HashTagRepository hashtagRepository;
+    private final PostHashTagRepository postHashtagRepository;
     private final ItemTagRepository itemTagRepository;
     private final UserRepository userRepository;
 

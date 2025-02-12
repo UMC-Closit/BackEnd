@@ -4,7 +4,7 @@ import UMC_7th.Closit.domain.follow.entity.Follow;
 import UMC_7th.Closit.domain.follow.repository.FollowRepository;
 import UMC_7th.Closit.domain.post.entity.Hashtag;
 import UMC_7th.Closit.domain.post.entity.Post;
-import UMC_7th.Closit.domain.post.repository.HashtagRepository;
+import UMC_7th.Closit.domain.post.repository.HashTagRepository;
 import UMC_7th.Closit.domain.post.repository.PostRepository;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
@@ -26,7 +26,7 @@ public class PostQueryServiceImpl implements PostQueryService {
 
     private final PostRepository postRepository;
     private final FollowRepository followRepository;
-    private final HashtagRepository hashtagRepository;
+    private final HashTagRepository hashtagRepository;
     private final UserRepository userRepository;
 
     public Slice<Post> getPostListByFollowerAndHashtag(Long userId, boolean follower, String hashtag, Pageable pageable) {
