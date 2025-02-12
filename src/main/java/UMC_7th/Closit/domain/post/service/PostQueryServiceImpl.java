@@ -9,6 +9,8 @@ import UMC_7th.Closit.domain.post.repository.PostHashtagRepository;
 import UMC_7th.Closit.domain.post.repository.PostRepository;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
+import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
+import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -41,7 +43,7 @@ public class PostQueryServiceImpl implements PostQueryService {
             // 해시태그가 있을 경우 → 팔로우한 유저의 글 중 해당 해시태그 포함한 글 검색
             if (hashtag != null && !hashtag.isBlank()) {
                 Hashtag foundHashtag = hashtagRepository.findByContent(hashtag)
-                        .orElseThrow(() -> new IllegalArgumentException("해시태그를 찾을 수 없습니다."));
+                        .orElseThrow(() -> new GeneralException(ErrorStatus.HASHTAG_NOT_FOUND));
                 return postRepository.findByUsersAndHashtagId(followingUsers, foundHashtag.getId(), pageable);
             }
 
@@ -52,7 +54,7 @@ public class PostQueryServiceImpl implements PostQueryService {
         // 팔로워가 `false`인 경우 → 전체 게시글 중 해시태그 여부에 따라 검색
         if (hashtag != null && !hashtag.isBlank()) {
             Hashtag foundHashtag = hashtagRepository.findByContent(hashtag)
-                    .orElseThrow(() -> new IllegalArgumentException("해시태그를 찾을 수 없습니다."));
+                    .orElseThrow(() -> new GeneralException(ErrorStatus.HASHTAG_NOT_FOUND));
             return postRepository.findByHashtagId(foundHashtag.getId(), pageable);
         }
 
