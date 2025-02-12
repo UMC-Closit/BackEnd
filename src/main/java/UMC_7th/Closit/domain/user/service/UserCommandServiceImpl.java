@@ -7,12 +7,18 @@ import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
+import UMC_7th.Closit.global.s3.AmazonS3Manager;
+import UMC_7th.Closit.global.s3.UuidRepository;
+import UMC_7th.Closit.global.s3.entity.Uuid;
 import UMC_7th.Closit.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.UUID;
 
 
 @Service
@@ -23,7 +29,11 @@ public class UserCommandServiceImpl implements UserCommandService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
     private final SecurityUtil securityUtil;
+
+    private final AmazonS3Manager amazonS3Manager;
+    private final UuidRepository uuidRepository;
 
     @Override
     public RegisterResponseDTO registerUser (UserRequestDTO.CreateUserDTO userRequestDto) {
@@ -35,7 +45,6 @@ public class UserCommandServiceImpl implements UserCommandService {
 
         // Password Encoding
         String encodedPassword = passwordEncoder.encode(userRequestDto.getPassword());
-
 
         // UserDto to User
         User user = User.builder()
@@ -63,8 +72,7 @@ public class UserCommandServiceImpl implements UserCommandService {
         User currentUser= securityUtil.getCurrentUser(); // 로그인한 사용자 (username 또는 userId 기반)
 
 //        log.info("현재 로그인된 사용자: username = {}", currentUser.getName());
-        User targetUser = userRepository.findById(user_id)
-                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
+        User targetUser = getOrElseThrow(user_id);
 
         // 자기 자신이거나 관리자 권한이 있는 경우만 삭제 가능
         if (!currentUser.getId().equals(user_id) ||
@@ -74,6 +82,47 @@ public class UserCommandServiceImpl implements UserCommandService {
 
 //        log.info("사용자 삭제 진행: userId={}, 삭제자={}", user_id, currentUser.getName());
         userRepository.delete(targetUser);
+    }
+
+    @Override
+    public User registerProfileImage (MultipartFile file) {
+
+        // 로그인 여부 확인
+        if (!securityUtil.isAuthenticated()) {
+            throw new UserHandler(ErrorStatus.USER_NOT_AUTHORIZED);
+        }
+
+        // 현재 로그인된 사용자 정보
+        User currentUser = securityUtil.getCurrentUser();
+//        log.info("Register profile image service: currentUser={}", currentUser.getId());
+//        log.info("Register profile image service: file={}", file.getOriginalFilename());
+
+        // 사용자가 프로필 이미지를 삭제하려는 경우
+        if (file == null || file.isEmpty()) {
+            amazonS3Manager.deleteFile(currentUser.getProfileImage());
+            currentUser.updateProfileImage(null);
+            return currentUser;
+        }
+
+        // 기존 프로필 이미지 삭제
+        if (currentUser.getProfileImage() != null) {
+            amazonS3Manager.deleteFile(currentUser.getProfileImage());
+        }
+
+        // 새로운 프로필 이미지 등록
+        String uuid = UUID.randomUUID().toString();
+        Uuid savedUuid = uuidRepository.save(Uuid.builder().uuid(uuid).build());
+        String storedLocation = amazonS3Manager.uploadFile(amazonS3Manager.generateProfileImageKeyName(savedUuid), file);
+
+        currentUser.updateProfileImage(storedLocation);
+
+        return currentUser;
+    }
+
+    private User getOrElseThrow (Long userId) {
+        log.info("Get user by userId: userId={}", userId);
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
     }
 
 
