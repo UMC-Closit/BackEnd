@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main", "develop", "fix/#32-build-error"]
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: [ "main" ]
 
 jobs:
   build-docker-image:
