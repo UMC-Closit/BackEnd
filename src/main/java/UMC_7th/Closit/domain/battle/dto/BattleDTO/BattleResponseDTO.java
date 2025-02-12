@@ -1,5 +1,6 @@
 package UMC_7th.Closit.domain.battle.dto.BattleDTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,9 +17,10 @@ public class BattleResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateBattleResultDTO { // 배틀 생성
-        private Long userId;
         private Long battleId;
+        @JsonFormat(pattern = "yyyy/MM/dd")
         private LocalDate deadline;
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         private LocalDateTime createdAt;
     }
 
@@ -27,10 +29,11 @@ public class BattleResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ChallengeBattleResultDTO { // 배틀 신청
-        private Long firstUserId;
-        private Long secondUserId;
+        private String firstUserName;
         private Long firstPostId;
+        private String secondUserName;
         private Long secondPostId;
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         private LocalDateTime createdAt;
     }
 
@@ -39,12 +42,12 @@ public class BattleResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class VoteBattleResultDTO { // 배틀 투표
-        private Long voterId;
         private Long battleId;
-        private Long firstUserId;
-        private Long secondUserId;
-        private Integer firstVotingCount;
-        private Integer secondVotingCount;
+        private String firstUserName;
+        private double firstVotingRate;
+        private String secondUserName;
+        private double secondVotingRate;
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         private LocalDateTime createdAt;
     }
 
@@ -53,13 +56,13 @@ public class BattleResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class BattlePreviewDTO { // 배틀 게시글 목록 조회
-        private Long firstUserId;
-        private Long secondUserId;
-        private Long firstPostId;
-        private Long secondPostId;
         private String title;
-        private Integer firstVotingCount;
-        private Integer secondVotingCount;
+        private String firstUserName;
+        private Long firstPostId;
+        private double firstVotingRate;
+        private String secondUserName;
+        private Long secondPostId;
+        private double secondVotingRate;
     }
 
     @Builder
@@ -79,7 +82,7 @@ public class BattleResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ChallengeBattlePreviewDTO { // 배틀 챌린지 게시글 목록 조회
-        private Long firstUserId;
+        private String firstUserName;
         private Long firstPostId;
         private String title;
     }

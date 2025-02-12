@@ -1,5 +1,6 @@
 package UMC_7th.Closit.domain.battle.dto.BattleCmtDTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +17,7 @@ public class BattleCommentResponseDTO {
     @AllArgsConstructor
     public static class createBattleCommentResultDTO { // 배틀 댓글 생성
         private Long battleCommentId;
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         private LocalDateTime createdAt;
     }
 
@@ -24,9 +26,10 @@ public class BattleCommentResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class BattleCommentPreviewDTO { // 배틀 댓글 조회
-        private Long userId;
+        private String userName;
         private Long battleCommentId;
         private String content;
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         private LocalDateTime createdAt;
     }
 

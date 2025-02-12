@@ -40,6 +40,12 @@ public class Battle extends BaseEntity {
     @Builder.Default
     private Integer secondVotingCnt = 0;
 
+    @Transient
+    private double firstVotingRate;
+
+    @Transient
+    private double secondVotingRate;
+
     @Column
     @Builder.Default
     private Integer likeCount = 0;
@@ -97,6 +103,14 @@ public class Battle extends BaseEntity {
 
     public void setSecondVotingCnt (Integer secondVotingCnt) {
         this.secondVotingCnt = secondVotingCnt;
+    }
+
+    public void setFirstVotingRate (double firstVotingRate) {
+        this.firstVotingRate = firstVotingRate;
+    }
+
+    public void setSecondVotingRate (double secondVotingRate) {
+        this.secondVotingRate = secondVotingRate;
     }
 
     public void increaseLikeCount() { // 배틀 좋아요 생성
