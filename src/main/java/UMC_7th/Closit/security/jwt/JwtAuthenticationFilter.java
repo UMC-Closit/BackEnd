@@ -35,14 +35,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         String token = resolveToken(request);
-//        log.info("🔍 Extracted Token: {}", token);
+        log.info("🔍 Extracted Token: {}", token);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
             Claims claims = jwtTokenProvider.getClaims(token);
             String email = claims.getSubject();
             String roleString = claims.get("role", String.class);
 
-//            log.info("✅ Valid Token - User: {}, Role: {}", email, roleString);
+            log.info("✅ Valid Token - User: {}, Role: {}", email, roleString);
 
             Role role = Role.valueOf(roleString); // String->Role 반환
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     List.of(new SimpleGrantedAuthority("ROLE_"+role.name())) // authorities를 SimpleGrantedAuthority 객체로 설정
             );
 
-//            log.info("🔹 Setting SecurityContextHolder: {}", authentication);
+            log.info("🔹 Setting SecurityContextHolder: {}", authentication);
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

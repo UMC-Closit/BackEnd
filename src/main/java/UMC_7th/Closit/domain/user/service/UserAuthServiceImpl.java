@@ -11,7 +11,9 @@ import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
 import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
 import UMC_7th.Closit.security.jwt.JwtTokenProvider;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class UserAuthServiceImpl implements UserAuthService {
 
     private final UserRepository userRepository;
@@ -52,4 +55,21 @@ public class UserAuthServiceImpl implements UserAuthService {
         return UserConverter.toUserInfoDTO(updatedUser);
     }
 
+    @Override
+    public JwtResponse refresh(String refreshToken) {
+        jwtTokenProvider.validateToken(refreshToken);
+        String resolvedToken = jwtTokenProvider.resolveToken(refreshToken);
+        String username = jwtTokenProvider.getUsername(resolvedToken);
+        Claims claims = jwtTokenProvider.getClaims(resolvedToken);
+
+        log.info("username: {}", username);
+        log.info("claims: {}", claims);
+
+        Role role = claims.get("role", Role.class);
+
+        String newAccessToken = jwtTokenProvider.createAccessToken(username, role);
+        String newRefreshToken = jwtTokenProvider.createRefreshToken(username, role);
+
+        return new JwtResponse(newAccessToken, newRefreshToken);
+    }
 }

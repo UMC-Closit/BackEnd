@@ -8,6 +8,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ import java.util.Base64;
 import java.util.Date;
 
 @Component
+@Slf4j
 public class JwtTokenProvider {
 
 
@@ -77,5 +79,20 @@ public class JwtTokenProvider {
         }
     }
 
+    public String resolveToken(String bearerToken) {
+        if (bearerToken == null || !bearerToken.startsWith("Bearer ")) {
+            throw new JwtHandler(ErrorStatus.INVALID_TOKEN);
+        }
+
+        String token = bearerToken.substring(7);
+        log.info("🔍 Extracted Token: {}", token);
+        return bearerToken.substring(7).trim();
+    }
+
+    public String getUsername(String token) {
+        return getClaims(token).getSubject();
+    }
+
 }
+
 
