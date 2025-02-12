@@ -28,9 +28,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final CustomUserDetailService customUserDetailsService; // 🔹 UserDetailsService 추가
 
     @Override
-    protected void doFilterInternal (HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = resolveToken(request);
+    protected void doFilterInternal (
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
 
+        String token = resolveToken(request);
 //        log.info("🔍 Extracted Token: {}", token);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
@@ -41,7 +45,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //            log.info("✅ Valid Token - User: {}, Role: {}", email, roleString);
 
             Role role = Role.valueOf(roleString); // String->Role 반환
-
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
             // 🔹 SecurityContext에 UserDetails 설정

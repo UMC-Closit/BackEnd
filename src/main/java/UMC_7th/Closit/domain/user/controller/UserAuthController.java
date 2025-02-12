@@ -5,6 +5,8 @@ import UMC_7th.Closit.domain.user.entity.Role;
 import UMC_7th.Closit.domain.user.service.UserAuthService;
 import UMC_7th.Closit.domain.user.service.UserCommandService;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
+import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
+import UMC_7th.Closit.security.jwt.JwtTokenProvider;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ public class UserAuthController {
 
     private final UserCommandService userCommandService;
     private final UserAuthService userAuthService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/register")
     public ApiResponse<RegisterResponseDTO> register (@RequestBody @Valid UserRequestDTO.CreateUserDTO userRequestDto){
@@ -32,6 +35,13 @@ public class UserAuthController {
         JwtResponse jwtResponse = userAuthService.login(loginRequestDto);
 
         return ApiResponse.onSuccess(jwtResponse);
+    }
+
+    @PostMapping("/refresh")
+    public ApiResponse<JwtResponse> refresh(@RequestHeader("Authorization") String refreshToken) {
+
+
+        return ApiResponse.onSuccess();
     }
 
     @PatchMapping("/{user_id}/role")

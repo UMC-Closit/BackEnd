@@ -1,10 +1,10 @@
 package UMC_7th.Closit.security.jwt;
 
 import UMC_7th.Closit.domain.user.entity.Role;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
+import UMC_7th.Closit.global.apiPayload.exception.handler.JwtHandler;
+import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -65,8 +65,15 @@ public class JwtTokenProvider {
                     .build()
                     .parseClaimsJws(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
+
+        } catch (ExpiredJwtException e) {
+            throw new JwtHandler(ErrorStatus.EXPIRED_TOKEN);
+        } catch (MalformedJwtException e) {
+            throw new JwtHandler(ErrorStatus.INVALID_TOKEN);
+        } catch (UnsupportedJwtException e) {
+            throw new JwtHandler(ErrorStatus.UNSUPPORTED_TOKEN);
+        } catch (IllegalArgumentException e) {
+            throw new JwtHandler(ErrorStatus.EMPTY_TOKEN);
         }
     }
 
