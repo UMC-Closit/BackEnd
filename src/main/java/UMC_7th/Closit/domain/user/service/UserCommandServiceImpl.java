@@ -60,6 +60,7 @@ public class UserCommandServiceImpl implements UserCommandService {
         userRepository.save(user);
 
         return RegisterResponseDTO.builder()
+                .userId(user.getId())
                 .name(userRequestDto.getName())
                 .email(userRequestDto.getEmail())
                 .build();
