@@ -1,10 +1,10 @@
 package UMC_7th.Closit.domain.post.service;
 
 import UMC_7th.Closit.domain.post.dto.PostRequestDTO;
-import UMC_7th.Closit.domain.post.entity.Hashtag;
+import UMC_7th.Closit.domain.post.entity.HashTag;
 import UMC_7th.Closit.domain.post.entity.ItemTag;
 import UMC_7th.Closit.domain.post.entity.Post;
-import UMC_7th.Closit.domain.post.entity.PostHashtag;
+import UMC_7th.Closit.domain.post.entity.PostHashTag;
 import UMC_7th.Closit.domain.post.repository.HashtagRepository;
 import UMC_7th.Closit.domain.post.repository.ItemTagRepository;
 import UMC_7th.Closit.domain.post.repository.PostHashtagRepository;
@@ -49,11 +49,11 @@ public class PostCommandServiceImpl implements PostCommandService {
         postRepository.save(post);
 
         // 3. 해시태그 처리
-        List<PostHashtag> postHashtags = request.getHashtags().stream()
+        List<PostHashTag> postHashtags = request.getHashtags().stream()
                 .map(tagContent -> {
-                    Hashtag hashTag = hashTagRepository.findByContent(tagContent)
-                            .orElseGet(() -> hashTagRepository.save(Hashtag.builder().content(tagContent).build()));
-                    return PostHashtag.builder().post(post).hashTag(hashTag).build();
+                    HashTag hashTag = hashTagRepository.findByContent(tagContent)
+                            .orElseGet(() -> hashTagRepository.save(HashTag.builder().content(tagContent).build()));
+                    return PostHashTag.builder().post(post).hashTag(hashTag).build();
                 })
                 .collect(Collectors.toList());
         postHashTagRepository.saveAll(postHashtags);
@@ -97,11 +97,11 @@ public class PostCommandServiceImpl implements PostCommandService {
 
         // 3. 기존 해시태그 삭제 후 새로운 해시태그 추가
         post.getPostHashtagList().clear();  // 리스트를 비움
-        List<PostHashtag> newPostHashtags = request.getHashtags().stream()
+        List<PostHashTag> newPostHashtags = request.getHashtags().stream()
                 .map(tagContent -> {
-                    Hashtag hashTag = hashTagRepository.findByContent(tagContent)
-                            .orElseGet(() -> hashTagRepository.save(Hashtag.builder().content(tagContent).build()));
-                    return PostHashtag.builder().post(post).hashTag(hashTag).build();
+                    HashTag hashTag = hashTagRepository.findByContent(tagContent)
+                            .orElseGet(() -> hashTagRepository.save(HashTag.builder().content(tagContent).build()));
+                    return PostHashTag.builder().post(post).hashTag(hashTag).build();
                 })
                 .collect(Collectors.toList());
         post.getPostHashtagList().addAll(newPostHashtags); // 새로운 태그 추가

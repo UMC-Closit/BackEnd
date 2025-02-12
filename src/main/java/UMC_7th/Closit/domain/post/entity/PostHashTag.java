@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class PostHashtag extends BaseEntity {
+public class PostHashTag extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,7 @@ public class PostHashtag extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name="hashtag_id", nullable = false)
-    private Hashtag hashTag;
+    private HashTag hashTag;
 
     @ManyToOne
     @JoinColumn(name="post_id", nullable = false)
