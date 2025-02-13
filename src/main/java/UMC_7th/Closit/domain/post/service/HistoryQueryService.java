@@ -7,6 +7,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface HistoryQueryService {
-    Slice<Post> getHistoryThumbnailList(Integer page); // 날짜 별 조회 - 썸네일
+    Slice<Post> getHistoryThumbnailList(Integer page); // 히스토리 썸네일 조회
     List<Post> getHistoryPreviewList(LocalDate localDate); // 히스토리 게시글 상세 조회
 }

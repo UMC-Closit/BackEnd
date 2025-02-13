@@ -16,7 +16,7 @@ public class HistoryResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class DateHistoryThumbnailDTO { // 날짜 별 조회 - 썸네일
+    public static class DateHistoryThumbnailDTO { // 히스토리 썸네일 조회
         private Long postId;
         private String thumbnail;
         @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")

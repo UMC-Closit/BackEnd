@@ -30,7 +30,7 @@ public class HistoryController {
                     ### Parameters
                     page [조회할 페이지 번호] - 0부터 시작, 31개씩 보여줌
                     """)
-    public ApiResponse<HistoryResponseDTO.DataHistoryThumbnailListDTO> dateThumbnailList (@RequestParam(name = "page") Integer page) {
+    public ApiResponse<HistoryResponseDTO.DataHistoryThumbnailListDTO> dateThumbnailList (@RequestParam(name = "page") Integer page) { // 히스토리 썸네일 조회
 
         Slice<Post> dateThumbnailList = historyQueryService.getHistoryThumbnailList(page);
 
@@ -44,7 +44,7 @@ public class HistoryController {
                     ### Parameters
                     localDate [조회할 히스토리 날짜] - e.g. 2025-02-14
                     """)
-    public ApiResponse<HistoryResponseDTO.DateHistoryPreviewListDTO> datePreviewList (@RequestParam(name = "localDate") LocalDate localDate) {
+    public ApiResponse<HistoryResponseDTO.DateHistoryPreviewListDTO> datePreviewList (@RequestParam(name = "localDate") LocalDate localDate) { // 히스토리 게시글 상세 조회
 
         List<Post> datePreviewList = historyQueryService.getHistoryPreviewList(localDate);
 

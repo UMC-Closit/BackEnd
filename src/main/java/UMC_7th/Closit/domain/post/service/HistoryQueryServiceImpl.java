@@ -25,7 +25,7 @@ public class HistoryQueryServiceImpl implements HistoryQueryService{
     private final SecurityUtil securityUtil;
 
     @Override
-    public Slice<Post> getHistoryThumbnailList (Integer page) { // 날짜 별 조회 - 썸네일
+    public Slice<Post> getHistoryThumbnailList (Integer page) { // 히스토리 썸네일 조회
         User user = securityUtil.getCurrentUser();
         Long userId = user.getId();
 

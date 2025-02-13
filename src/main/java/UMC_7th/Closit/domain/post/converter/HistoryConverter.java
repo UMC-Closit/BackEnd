@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class HistoryConverter {
 
-    public static HistoryResponseDTO.DateHistoryThumbnailDTO dateHistoryThumbnailDTO (Post post) { // 날짜 별 조회 - 썸네일
+    public static HistoryResponseDTO.DateHistoryThumbnailDTO dateHistoryThumbnailDTO (Post post) { // 히스토리 썸네일 조회
         return  HistoryResponseDTO.DateHistoryThumbnailDTO.builder()
                 .postId(post.getId())
                 .thumbnail(post.getFrontImage())
