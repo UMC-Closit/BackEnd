@@ -24,7 +24,6 @@ public enum ErrorStatus implements BaseErrorCode {
     USER_NOT_MATCH (HttpStatus.BAD_REQUEST, "USER4002", "사용자가 일치하지 않습니다."),
     EMAIL_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "USER4003","이미 존재하는 이메일입니다"),
     USER_NOT_FOUND (HttpStatus.NOT_FOUND, "USER4041", "사용자가 존재하지 않습니다."),
-    CLOSITID_ALREADY_EXISTS (HttpStatus.BAD_REQUEST, "USER4004", "이미 존재하는 Cloist ID 입니다."),
 
     // ClositId 관련 에러
     CLOSITID_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "USER4004", "이미 존재하는 ClositId입니다."),

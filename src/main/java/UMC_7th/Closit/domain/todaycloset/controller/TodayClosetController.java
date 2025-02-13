@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/communities/todayclosets")
+@RequestMapping("api/auth/communities/todayclosets")
 public class TodayClosetController {
     private final TodayClosetService todayClosetService;
     private final TodayClosetQueryService todayClosetQueryService;
