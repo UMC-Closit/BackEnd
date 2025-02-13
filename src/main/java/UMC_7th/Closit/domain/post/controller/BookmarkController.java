@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/bookmarks")
+@RequestMapping("/api/auth/bookmarks")
 public class BookmarkController {
     private final BookmarkService bookmarkService;
     @Operation(summary = "게시글 북마크 추가")
@@ -32,8 +32,8 @@ public class BookmarkController {
 
     @Operation(summary = "게시글 북마크 삭제")
     @DeleteMapping("/{bookmark_id}")
-    public ApiResponse<Void> deleteBookmark(@PathVariable("bookmark_id") Long bookmarkId){
+    public ApiResponse<String> deleteBookmark(@PathVariable("bookmark_id") Long bookmarkId){
         bookmarkService.removeBookmark(bookmarkId);
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess("Deletion successful");
     }
 }

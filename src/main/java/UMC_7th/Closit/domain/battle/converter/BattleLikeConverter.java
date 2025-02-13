@@ -28,7 +28,7 @@ public class BattleLikeConverter {
 
     public static BattleLikeResponseDTO.BattleLikePreviewDTO battleLikePreviewDTO (BattleLike battleLike) { // 배틀 좋아요 조회
         return BattleLikeResponseDTO.BattleLikePreviewDTO.builder()
-                .userId(battleLike.getUser().getId())
+                .userName(battleLike.getUser().getName())
                 .battleLikeId(battleLike.getId())
                 .createdAt(battleLike.getCreatedAt())
                 .build();

@@ -1,5 +1,6 @@
 package UMC_7th.Closit.security.jwt;
 
+import UMC_7th.Closit.domain.user.entity.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -31,7 +32,7 @@ public class JwtTokenProvider {
         this.refreshTokenValidity = Long.parseLong(refreshTokenValidity);
     }
 
-    public String createToken(String email, String role, long validity) {
+    public String createToken(String email, Role role, long validity) {
         return Jwts.builder()
                 .setSubject(email)
                 .claim("role", role)
@@ -41,11 +42,11 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String createAccessToken(String email, String role) {
+    public String createAccessToken(String email, Role role) {
         return createToken(email, role, accessTokenValidity);
     }
 
-    public String createRefreshToken(String email, String role) {
+    public String createRefreshToken(String email, Role role) {
         return createToken(email, role, refreshTokenValidity);
     }
 

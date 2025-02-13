@@ -27,29 +27,46 @@ public class BattleCommandServiceImpl implements BattleCommandService {
     private final UserRepository userRepository;
 
     @Override
-    public Battle createBattle (BattleRequestDTO.CreateBattleDTO request) { // 배틀 생성
+    public Battle createBattle (Long userId, BattleRequestDTO.CreateBattleDTO request) { // 배틀 생성
         Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
         Battle battle = BattleConverter.toBattle(post, request);
 
+        // 본인의 게시글이 아닐 경우, 배틀 게시글로 업로드 불가능
+        if (!post.getUser().getId().equals(userId)) {
+            throw new GeneralException(ErrorStatus.POST_NOT_MINE);
+        }
+
         return battleRepository.save(battle);
     }
 
     @Override
-    public Battle challengeBattle (Long battleId, BattleRequestDTO.ChallengeBattleDTO request) { // 배틀 신청
+    public Battle challengeBattle (Long userId, Long battleId, BattleRequestDTO.ChallengeBattleDTO request) { // 배틀 신청
         Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
         Battle challengeBattle = battleRepository.findById(battleId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
 
-        if (request.getPostId().equals(challengeBattle.getPost1().getId())) { // 동일한 게시글로 배틀 불가능
+        // 동일한 게시글로 배틀 불가능
+        if (request.getPostId().equals(challengeBattle.getPost1().getId())) {
             throw new GeneralException(ErrorStatus.BATTLE_NOT_CHALLENGE);
         }
 
-        if (challengeBattle.getPost2() != null) { // 배틀 형성 완료 -> 신청 불가능
+        // 배틀 형성 완료 -> 신청 불가능
+        if (challengeBattle.getPost2() != null) {
             throw new GeneralException(ErrorStatus.BATTLE_ALREADY_EXIST);
+        }
+
+        // 내 게시글에 배틀 신청 불가능
+        if (challengeBattle.getPost1().getUser().getId().equals(userId)) {
+            throw new GeneralException(ErrorStatus.POST_NOT_APPLY);
+        }
+
+        // 본인의 게시글이 아닐 경우, 배틀 신청 불가능
+        if (!post.getUser().getId().equals(userId)) {
+            throw new GeneralException(ErrorStatus.POST_NOT_MINE);
         }
 
         challengeBattle.setPost2(post);
@@ -58,8 +75,8 @@ public class BattleCommandServiceImpl implements BattleCommandService {
     }
 
     @Override
-    public Vote voteBattle (Long battleId, BattleRequestDTO.VoteBattleDTO request) { // 배틀 투표
-        User user = userRepository.findById(request.getUserId())
+    public Vote voteBattle (Long userId, Long battleId, BattleRequestDTO.VoteBattleDTO request) { // 배틀 투표
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         Battle battle = battleRepository.findById(battleId)
@@ -76,7 +93,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
         }
 
         // 이미 투표한 곳에 중복 투표 방지
-        boolean alreadyVoted = voteRepository.existsByBattleIdAndUserId(battleId, request.getUserId());
+        boolean alreadyVoted = voteRepository.existsByBattleIdAndUserId(battleId, userId);
         if (alreadyVoted) {
             throw new GeneralException(ErrorStatus.VOTE_ALREADY_EXIST);
         }
@@ -96,8 +113,18 @@ public class BattleCommandServiceImpl implements BattleCommandService {
         } else if (battle.getPost2().getId().equals(vote.getVotedPostId())) { // 두 번째 게시글에 투표
             battle.incrementSecondVotingCnt();
         }
+        Integer firstVotingCnt = battle.getFirstVotingCnt();
+        Integer secondVotingCnt = battle.getSecondVotingCnt();
+        int totalVoting = firstVotingCnt + secondVotingCnt;
 
-        vote.setUser(request.getUserId());
+        // 투표 수 비율로 반환
+        double firstVotingPercentage = (totalVoting == 0) ? 0.0 : (firstVotingCnt * 100.0) / totalVoting;
+        double secondVotingPercentage = (totalVoting == 0) ? 0.0 : (secondVotingCnt * 100.0) / totalVoting;
+
+        battle.setFirstVotingRate(firstVotingPercentage);
+        battle.setSecondVotingRate(secondVotingPercentage);
+
+        vote.setUser(userId);
         vote.setBattle(battle);
         vote.setVotedPostId(request.getPostId());
 
@@ -105,7 +132,7 @@ public class BattleCommandServiceImpl implements BattleCommandService {
     }
 
     @Override
-    public void deleteBattle (Long battleId) {
+    public void deleteBattle (Long userId, Long battleId) {
         Battle battle = battleRepository.findById(battleId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
 

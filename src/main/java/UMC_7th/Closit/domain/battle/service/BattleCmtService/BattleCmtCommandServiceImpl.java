@@ -24,8 +24,8 @@ public class BattleCmtCommandServiceImpl implements BattleCmtCommandService {
 
     @Override
     @Transactional
-    public BattleComment createBattleComment(Long battleId, BattleCommentRequestDTO.createBattleCommentRequestDTO request) { // 배틀 댓글 생성
-        User user = userRepository.findById(request.getUserId())
+    public BattleComment createBattleComment(Long userId, Long battleId, BattleCommentRequestDTO.createBattleCommentRequestDTO request) { // 배틀 댓글 생성
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         Battle battle = battleRepository.findById(battleId)
@@ -38,8 +38,8 @@ public class BattleCmtCommandServiceImpl implements BattleCmtCommandService {
 
     @Override
     @Transactional
-    public void deleteBattleComment(Long battleId, Long battleCommentId) { // 배틀 댓글 삭제
-        Battle battle = battleRepository.findById(battleId)
+    public void deleteBattleComment(Long userId, Long battleId, Long battleCommentId) { // 배틀 댓글 삭제
+        Battle battle = battleRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
 
         BattleComment battleComment = battleCommentRepository.findById(battleCommentId)

@@ -1,7 +1,6 @@
 package UMC_7th.Closit.domain.battle.service.BattleLikeService;
 
 import UMC_7th.Closit.domain.battle.converter.BattleLikeConverter;
-import UMC_7th.Closit.domain.battle.dto.BattleLikeDTO.BattleLikeRequestDTO;
 import UMC_7th.Closit.domain.battle.entity.Battle;
 import UMC_7th.Closit.domain.battle.entity.BattleLike;
 import UMC_7th.Closit.domain.battle.repository.BattleLikeRepository;
@@ -24,8 +23,8 @@ public class BattleLikeCommandServiceImpl implements BattleLikeCommandService {
     private final BattleLikeRepository battleLikeRepository;
 
     @Override
-    public BattleLike createBattleLike (Long battleId, BattleLikeRequestDTO.CreateBattleLikeDTO request) { // 배틀 좋아요 생성
-        User user = userRepository.findById(request.getUserId())
+    public BattleLike createBattleLike (Long userId, Long battleId) { // 배틀 좋아요 생성
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
         Battle battle = battleRepository.findById(battleId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
@@ -33,7 +32,7 @@ public class BattleLikeCommandServiceImpl implements BattleLikeCommandService {
         BattleLike battleLike = BattleLikeConverter.toBattleLike(user, battle);
 
         // 배틀 좋아요 중복 생성 방지
-        boolean battleLikeExist = battleLikeRepository.existsBattleLikeByBattleIdAndUserId(battleId, request.getUserId());
+        boolean battleLikeExist = battleLikeRepository.existsBattleLikeByBattleIdAndUserId(battleId, userId);
         if (battleLikeExist) {
             throw new GeneralException(ErrorStatus.BATTLE_LIKES_ALREADY_EXIST);
         }
@@ -44,7 +43,7 @@ public class BattleLikeCommandServiceImpl implements BattleLikeCommandService {
     }
 
     @Override
-    public void deleteBattleLike (Long battleId, Long battleLikeId) {
+    public void deleteBattleLike (Long userId, Long battleId, Long battleLikeId) {
         Battle battle = battleRepository.findById(battleId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
 

@@ -1,5 +1,6 @@
 package UMC_7th.Closit.security;
 
+import UMC_7th.Closit.domain.user.service.CustomUserDetailService;
 import UMC_7th.Closit.security.jwt.JwtAccessDeniedHandler;
 import UMC_7th.Closit.security.jwt.JwtAuthenticationEntryPoint;
 import UMC_7th.Closit.security.jwt.JwtTokenProvider;
@@ -22,7 +23,7 @@ public class SecurityConfig {
 
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -49,12 +50,13 @@ public class SecurityConfig {
                         .requestMatchers("/user").hasRole("USER")
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated())
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 
         return http.build();
 
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -8,8 +8,6 @@ public class BattleCommentRequestDTO {
 
     @Getter
     public static class createBattleCommentRequestDTO { // 배틀 댓글 생성
-        @NotNull
-        private Long userId;
         @NotBlank
         private String content;
     }

@@ -5,6 +5,7 @@ import UMC_7th.Closit.domain.mission.converter.MissionConverter;
 import UMC_7th.Closit.domain.mission.dto.MissionResponseDTO;
 import UMC_7th.Closit.domain.mission.entity.Mission;
 import UMC_7th.Closit.domain.user.converter.UserConverter;
+import UMC_7th.Closit.domain.user.entity.Role;
 import UMC_7th.Closit.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -116,6 +117,7 @@ public class UserResponseDTO {
     @AllArgsConstructor
     public static class UserInfoDTO {
         private Long id;                // User ID
+        private Role role;              // USer role
         private String clositId;        // 사용자 닉네임
         private String name;            // 사용자 이름
         private String email;           // 이메일

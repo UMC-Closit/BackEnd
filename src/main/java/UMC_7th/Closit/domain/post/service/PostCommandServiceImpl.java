@@ -1,10 +1,10 @@
 package UMC_7th.Closit.domain.post.service;
 
 import UMC_7th.Closit.domain.post.dto.PostRequestDTO;
-import UMC_7th.Closit.domain.post.entity.HashTag;
+import UMC_7th.Closit.domain.post.entity.Hashtag;
 import UMC_7th.Closit.domain.post.entity.ItemTag;
 import UMC_7th.Closit.domain.post.entity.Post;
-import UMC_7th.Closit.domain.post.entity.PostHashTag;
+import UMC_7th.Closit.domain.post.entity.PostHashtag;
 import UMC_7th.Closit.domain.post.repository.HashTagRepository;
 import UMC_7th.Closit.domain.post.repository.ItemTagRepository;
 import UMC_7th.Closit.domain.post.repository.PostHashTagRepository;
@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
 public class PostCommandServiceImpl implements PostCommandService {
 
     private final PostRepository postRepository;
-    private final HashTagRepository hashTagRepository;
-    private final PostHashTagRepository postHashTagRepository;
+    private final HashTagRepository hashtagRepository;
+    private final PostHashTagRepository postHashtagRepository;
     private final ItemTagRepository itemTagRepository;
     private final UserRepository userRepository;
 
@@ -49,14 +49,14 @@ public class PostCommandServiceImpl implements PostCommandService {
         postRepository.save(post);
 
         // 3. 해시태그 처리
-        List<PostHashTag> postHashTags = request.getHashtags().stream()
+        List<PostHashtag> postHashtags = request.getHashtags().stream()
                 .map(tagContent -> {
-                    HashTag hashTag = hashTagRepository.findByContent(tagContent)
-                            .orElseGet(() -> hashTagRepository.save(HashTag.builder().content(tagContent).build()));
-                    return PostHashTag.builder().post(post).hashTag(hashTag).build();
+                    Hashtag hashTag = hashtagRepository.findByContent(tagContent)
+                            .orElseGet(() -> hashtagRepository.save(Hashtag.builder().content(tagContent).build()));
+                    return PostHashtag.builder().post(post).hashtag(hashTag).build();
                 })
                 .collect(Collectors.toList());
-        postHashTagRepository.saveAll(postHashTags);
+        postHashtagRepository.saveAll(postHashtags);
 
         // 4. Front ItemTags 처리
         List<ItemTag> frontItemTags = request.getFrontItemtags().stream()
@@ -96,15 +96,15 @@ public class PostCommandServiceImpl implements PostCommandService {
         post.setVisibility(request.getVisibility());
 
         // 3. 기존 해시태그 삭제 후 새로운 해시태그 추가
-        post.getPostHashTagList().clear();  // 리스트를 비움
-        List<PostHashTag> newPostHashTags = request.getHashtags().stream()
+        post.getPostHashtagList().clear();  // 리스트를 비움
+        List<PostHashtag> newPostHashtags = request.getHashtags().stream()
                 .map(tagContent -> {
-                    HashTag hashTag = hashTagRepository.findByContent(tagContent)
-                            .orElseGet(() -> hashTagRepository.save(HashTag.builder().content(tagContent).build()));
-                    return PostHashTag.builder().post(post).hashTag(hashTag).build();
+                    Hashtag hashTag = hashtagRepository.findByContent(tagContent)
+                            .orElseGet(() -> hashtagRepository.save(Hashtag.builder().content(tagContent).build()));
+                    return PostHashtag.builder().post(post).hashtag(hashTag).build();
                 })
                 .collect(Collectors.toList());
-        post.getPostHashTagList().addAll(newPostHashTags); // 새로운 태그 추가
+        post.getPostHashtagList().addAll(newPostHashtags); // 새로운 태그 추가
 
         // 4. 기존 아이템 태그 삭제 후 새로운 태그 추가
         post.getItemTagList().clear();

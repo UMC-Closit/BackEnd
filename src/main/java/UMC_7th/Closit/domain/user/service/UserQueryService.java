@@ -19,4 +19,5 @@ public interface UserQueryService {
     Slice<Mission> getMissionList(Long userId, Pageable pageable);
 
     User getUserInfo(Long userId);
+
 }

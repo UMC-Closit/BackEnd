@@ -12,16 +12,19 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class HashTag extends BaseEntity {
+@Table(indexes = {
+        @Index(name = "idx_hashtag_content", columnList = "content") // B-Tree 인덱스 추가
+})
+public class Hashtag extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hash_tag_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String content;
 
-    @OneToMany(mappedBy = "hashTag", cascade = CascadeType.ALL)
-    private List<PostHashTag> postHashTagList = new ArrayList<>();
+    @OneToMany(mappedBy = "hashtag", cascade = CascadeType.ALL)
+    private List<PostHashtag> postHashtagList = new ArrayList<>();
 }

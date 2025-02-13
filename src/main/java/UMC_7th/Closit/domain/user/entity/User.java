@@ -31,6 +31,10 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role; // USER, ADMIN
+
     @Column(length = 20, nullable = false)
     private String clositId;
 
@@ -96,4 +100,14 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Notification> notificationList = new ArrayList<>();
+
+    public User updateRole(Role newRole) {
+        this.role = newRole;
+        return this;
+    }
+
+    public User updateProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+        return this;
+    }
 }
