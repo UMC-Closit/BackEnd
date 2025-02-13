@@ -23,7 +23,7 @@ public class PostService {
     private final LikesRepository likesRepository;
     private final BookmarkRepository bookmarkRepository;
     private final FollowRepository followRepository;
-    private final PostHashtagRepository postHashTagRepository;
+    private final PostHashTagRepository postHashTagRepository;
     private final ItemTagRepository itemTagRepository;
 
     public PostResponseDTO.PostPreviewDTO getPostById(Long postId, User currentUser) {
@@ -43,7 +43,7 @@ public class PostService {
 
         // 해시태그 조회
         List<String> hashtags = postHashTagRepository.findByPost(post).stream()
-                .map(postHashTag -> postHashTag.getHashTag().getContent())
+                .map(postHashtag -> postHashtag.getHashtag().getContent())
                 .collect(Collectors.toList());
 
         // 아이템 태그 조회
