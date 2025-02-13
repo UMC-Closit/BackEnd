@@ -36,9 +36,9 @@ public class TodayClosetController {
     }
 
     @Operation(summary = "오늘의 옷장 게시글 삭제")
-    @DeleteMapping("/{todayClosetId}")
-    public ApiResponse<String> deleteTodayCloset(@PathVariable("todayClosetId") Long todayClosetId) {
-        todayClosetService.deleteTodayCloset(todayClosetId);
+    @DeleteMapping("/{today_closet_id}")
+    public ApiResponse<String> deleteTodayCloset(@PathVariable("today_closet_id") Long today_closet_id) {
+        todayClosetService.deleteTodayCloset(today_closet_id);
         return ApiResponse.onSuccess("오늘의 옷장 삭제 성공");
     }
 }
