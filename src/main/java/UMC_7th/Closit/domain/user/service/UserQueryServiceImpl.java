@@ -69,7 +69,4 @@ public class UserQueryServiceImpl implements UserQueryService {
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
     }
 
-
-
-
 }

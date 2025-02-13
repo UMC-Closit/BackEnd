@@ -119,10 +119,4 @@ public class UserCommandServiceImpl implements UserCommandService {
         return currentUser;
     }
 
-    private User getByClositIdOrElseThrow (String clositId) {
-        return userRepository.findByClositId(clositId)
-                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
-    }
-
-
 }
