@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface TodayClosetService {
     TodayClosetResponseDTO.CreateResponseDTO createTodayCloset(TodayClosetRequestDTO.CreateRequestDTO request);
-    TodayClosetResponseDTO.TodayClosetListDTO getTodayClosetList(Pageable pageable);
     void deleteTodayCloset(Long todayClosetId);
 }
+
 

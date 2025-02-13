@@ -10,14 +10,13 @@ import UMC_7th.Closit.domain.todaycloset.repository.TodayClosetRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class TodayClosetServiceImpl implements TodayClosetService{
+public class TodayClosetServiceImpl implements TodayClosetService {
+
     private final TodayClosetRepository todayClosetRepository;
     private final PostRepository postRepository;
 
@@ -31,13 +30,6 @@ public class TodayClosetServiceImpl implements TodayClosetService{
         TodayCloset savedTodayCloset = todayClosetRepository.save(todayCloset);
 
         return TodayClosetConverter.toCreateResponseDTO(savedTodayCloset);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public TodayClosetResponseDTO.TodayClosetListDTO getTodayClosetList(Pageable pageable) {
-        Slice<TodayCloset> todayClosets = todayClosetRepository.findAll(pageable);
-        return TodayClosetConverter.toListDTO(todayClosets);
     }
 
     @Override
