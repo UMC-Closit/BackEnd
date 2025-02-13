@@ -24,9 +24,9 @@ public class HistoryController {
     private final HistoryQueryService historyQueryService;
 
     @GetMapping
-    @Operation(summary = "사용자의 히스토리 조회 - 날짜",
+    @Operation(summary = "사용자의 히스토리 썸네일 조회",
             description = """
-                    ## 사용자 날짜 별 히스토리 조회
+                    ## 사용자 날짜 별 히스토리 썸네일 조회
                     ### Parameters
                     page [조회할 페이지 번호] - 0부터 시작, 31개씩 보여줌
                     """)
@@ -38,7 +38,7 @@ public class HistoryController {
     }
 
     @GetMapping("/detail")
-    @Operation(summary = "사용자의 히스토리 조회 - 날짜",
+    @Operation(summary = "사용자의 히스토리 상세 조회",
             description = """
                     ## 사용자 날짜 별 히스토리 상세 조회
                     ### Parameters
