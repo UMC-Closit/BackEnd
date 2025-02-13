@@ -11,10 +11,13 @@ import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
 import UMC_7th.Closit.global.apiPayload.exception.handler.FollowHandler;
 import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
+import UMC_7th.Closit.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,22 +26,24 @@ public class FollowCommandServiceImpl implements FollowCommandService {
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
     private final NotiCommandService notiCommandService;
+    private final SecurityUtil securityUtil;
 
     @Override
     @Transactional
     public Follow createFollow(FollowRequestDTO.CreateFollowDTO request) {
-        Long followerId = request.getFollower();
-        Long followingId = request.getFollowing();
+        String followerClositId = request.getFollower();
+        // 현재 로그인된 사용자 정보를 following으로 가져오기
+        String followingClositId = securityUtil.getCurrentUser().getClositId();
 
         // 자기 자신은 팔로우 할 수 없음
-        if (followerId.equals(followingId)) {
+        if (followerClositId.equals(followingClositId)) {
             throw new GeneralException(ErrorStatus.FOLLOW_SELF_NOT_ALLOWED);
         }
 
-        User follower = userRepository.findById(followerId)
+        User follower = userRepository.findByClositId(followerClositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
-        User following = userRepository.findById(followingId)
+        User following = userRepository.findByClositId(followingClositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
         try {
@@ -56,8 +61,18 @@ public class FollowCommandServiceImpl implements FollowCommandService {
 
     @Override
     @Transactional
-    public void deleteFollow(Long followId) {
-        Follow follow = followRepository.findById(followId)
+    public boolean isFollowing(String followerClositId) {
+        // 현재 로그인된 사용자 정보를 following으로 가져오기
+        String followingClositId = securityUtil.getCurrentUser().getClositId();
+
+        Optional<Follow> follow = followRepository.findByFollowerClositIdAndFollowingClositId(followerClositId, followingClositId);
+        return follow.isPresent();
+    }
+
+    @Override
+    @Transactional
+    public void deleteFollow(String followerClositId, String followingClositId) {
+        Follow follow = followRepository.findByFollowerClositIdAndFollowingClositId(followerClositId, followingClositId)
                 .orElseThrow(() -> new FollowHandler(ErrorStatus.FOLLOW_NOT_FOUND));
 
         followRepository.delete(follow);
