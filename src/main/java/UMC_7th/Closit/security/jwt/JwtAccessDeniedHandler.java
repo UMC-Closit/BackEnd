@@ -1,5 +1,6 @@
 package UMC_7th.Closit.security.jwt;
 
+import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,10 +19,11 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Override
-    public void handle (HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        ErrorStatus userNotAuthorized = ErrorStatus.USER_NOT_AUTHORIZED;
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.setStatus(userNotAuthorized.getReasonHttpStatus().getHttpStatus().value());
 
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("code", "COMMON403");

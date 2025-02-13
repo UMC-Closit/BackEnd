@@ -19,10 +19,11 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 사용자 관련 에러
     PASSWORD_NOT_CORRESPOND (HttpStatus.UNAUTHORIZED, "LOGIN4001", "비밀번호가 일치하지 않습니다."), // 인증 실패
-    USER_ALREADY_EXIST (HttpStatus.CONFLICT, "REGISTER4001", "이미 존재하는 사용자입니다."), // 리소스 충돌 (회원가입 시)
-    USER_NOT_AUTHORIZED (HttpStatus.FORBIDDEN, "USER4001", "사용자 권한이 없습니다."), // 권한 부족
-    USER_NOT_MATCH (HttpStatus.FORBIDDEN, "USER4002", "사용자가 일치하지 않습니다."), // 권한 부족
-    EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "USER4003","이미 존재하는 이메일입니다"), // 리소스 충돌
+    USER_NOT_LOGGED_IN(HttpStatus.UNAUTHORIZED, "USER4001", "로그인이 필요합니다. 다시 로그인해주세요."),
+    USER_ALREADY_EXIST (HttpStatus.CONFLICT, "REGISTER4002", "이미 존재하는 사용자입니다."), // 리소스 충돌 (회원가입 시)
+    USER_NOT_AUTHORIZED (HttpStatus.FORBIDDEN, "USER4003", "사용자 권한이 없습니다."), // 권한 부족
+    USER_NOT_MATCH (HttpStatus.FORBIDDEN, "USER4004", "사용자가 일치하지 않습니다."), // 권한 부족
+    EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "USER4005","이미 존재하는 이메일입니다"), // 리소스 충돌
     USER_NOT_FOUND (HttpStatus.NOT_FOUND, "USER4041", "사용자가 존재하지 않습니다."), // 존재하지 않는 사용자
 
     // ClositId 관련 에러
