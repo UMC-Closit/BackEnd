@@ -29,7 +29,7 @@ public class HistoryQueryServiceImpl implements HistoryQueryService{
         User user = securityUtil.getCurrentUser();
         Long userId = user.getId();
 
-        Pageable pageable = PageRequest.of(page, 31);
+        Pageable pageable = PageRequest.of(page, 50);
 
         Slice<Post> postList = postRepository.findFrontImageByUserId(userId, pageable);
 
@@ -45,5 +45,17 @@ public class HistoryQueryServiceImpl implements HistoryQueryService{
         LocalDateTime end = start.plusDays(1);
 
         return postRepository.findAllByUserIdAndCreatedAtBetween(userId, start, end);
+    }
+
+    @Override
+    public Slice<Post> getHistoryColorThumbnailList(Integer page) { // 히스토리 포인트 색상 썸네일 조회
+        User user = securityUtil.getCurrentUser();
+        Long userId = user.getId();
+
+        Pageable pageable = PageRequest.of(page, 50);
+
+        Slice<Post> postList = postRepository.findPointColorByUserId(userId, pageable);
+
+        return postList;
     }
 }

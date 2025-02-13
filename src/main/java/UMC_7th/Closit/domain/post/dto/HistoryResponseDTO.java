@@ -54,4 +54,26 @@ public class HistoryResponseDTO {
         @JsonFormat(pattern = "yyyy/MM/dd")
         private LocalDate date;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ColorHistoryThumbnailDTO { // 히스토리 포인트 색상 썸네일 조회
+        private Long postId;
+        private String thumbnail;
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+        private LocalDateTime createdAt;
+    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ColorHistoryThumbnailListDTO {
+        private List<ColorHistoryThumbnailDTO> colorHistoryThumbnailDTOList;
+        private Integer listSize;
+        private boolean isFirst;
+        private boolean isLast;
+        private boolean hasNext;
+    }
 }

@@ -32,4 +32,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Slice<Post> findFrontImageByUserId(@Param("userId") Long userId, Pageable pageable);
 
     List<Post> findAllByUserIdAndCreatedAtBetween (Long userId, LocalDateTime start, LocalDateTime end); // 히스토리 게시글 상세 조회 - 하루 내 게시글 탐색
+
+    @Query("SELECT p FROM Post p WHERE p.user.id = :userId GROUP BY FUNCTION('DATE', p.createdAt) ORDER BY p.createdAt ASC")
+    Slice<Post> findPointColorByUserId(@Param("userId") Long userId, Pageable pageable);
 }

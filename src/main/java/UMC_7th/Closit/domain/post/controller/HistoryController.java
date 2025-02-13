@@ -28,7 +28,7 @@ public class HistoryController {
             description = """
                     ## 사용자 날짜 별 히스토리 썸네일 조회
                     ### Parameters
-                    page [조회할 페이지 번호] - 0부터 시작, 31개씩 보여줌
+                    page [조회할 페이지 번호] - 0부터 시작, 50개씩 보여줌
                     """)
     public ApiResponse<HistoryResponseDTO.DataHistoryThumbnailListDTO> dateThumbnailList (@RequestParam(name = "page") Integer page) { // 히스토리 썸네일 조회
 
@@ -49,5 +49,19 @@ public class HistoryController {
         List<Post> datePreviewList = historyQueryService.getHistoryPreviewList(localDate);
 
         return ApiResponse.onSuccess(HistoryConverter.dateHistoryPreviewListDTO(localDate, datePreviewList));
+    }
+
+    @GetMapping("/pointcolor")
+    @Operation(summary = "사용자의 히스토리 포인트 컬러 썸네일 조회",
+            description = """
+                    ## 사용자 날짜 별 히스토리 포인트 컬러 썸네일 조회
+                    ### Parameters
+                    page [조회할 페이지 번호] - 0부터 시작, 50개씩 보여줌
+                    """)
+    public ApiResponse<HistoryResponseDTO.ColorHistoryThumbnailListDTO> colorThumbnailList (@RequestParam(name = "page") Integer page) { // 히스토리 포인트 색상 썸네일 조회
+
+        Slice<Post> colorThumbnailList = historyQueryService.getHistoryColorThumbnailList(page);
+
+        return ApiResponse.onSuccess(HistoryConverter.colorHistoryThumbnailListDTO(colorThumbnailList));
     }
 }

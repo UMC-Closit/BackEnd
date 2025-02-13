@@ -47,4 +47,25 @@ public class HistoryConverter {
                 .date(localDate)
                 .build();
     }
+
+    public static HistoryResponseDTO.ColorHistoryThumbnailDTO colorHistoryThumbnailDTO(Post post) { // 히스토리 포인트 색상 썸네일 조회
+        return HistoryResponseDTO.ColorHistoryThumbnailDTO.builder()
+                .postId(post.getId())
+                .thumbnail(post.getPointColor())
+                .createdAt(post.getCreatedAt())
+                .build();
+    }
+
+    public static HistoryResponseDTO.ColorHistoryThumbnailListDTO colorHistoryThumbnailListDTO(Slice<Post> postList) {
+        List<HistoryResponseDTO.ColorHistoryThumbnailDTO> colorHistoryThumbnailDTOList = postList.stream()
+                .map(HistoryConverter::colorHistoryThumbnailDTO).collect(Collectors.toList());
+
+        return HistoryResponseDTO.ColorHistoryThumbnailListDTO.builder()
+                .colorHistoryThumbnailDTOList(colorHistoryThumbnailDTOList)
+                .listSize(colorHistoryThumbnailDTOList.size())
+                .isFirst(postList.isFirst())
+                .isLast(postList.isLast())
+                .hasNext(postList.hasNext())
+                .build();
+    }
 }
