@@ -4,8 +4,10 @@ import UMC_7th.Closit.domain.user.converter.UserConverter;
 import UMC_7th.Closit.domain.user.dto.JwtResponse;
 import UMC_7th.Closit.domain.user.dto.LoginRequestDTO;
 import UMC_7th.Closit.domain.user.dto.UserResponseDTO;
+import UMC_7th.Closit.domain.user.entity.RefreshToken;
 import UMC_7th.Closit.domain.user.entity.Role;
 import UMC_7th.Closit.domain.user.entity.User;
+import UMC_7th.Closit.domain.user.repository.RefreshTokenRepository;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
@@ -27,6 +29,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     // login
     @Override
@@ -57,18 +60,33 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Override
     public JwtResponse refresh(String refreshToken) {
+        // Refresh Token 유효성 검사
         jwtTokenProvider.validateToken(refreshToken);
+
+        // Refresh Token에서 email 추출
         String resolvedToken = jwtTokenProvider.resolveToken(refreshToken);
-        String username = jwtTokenProvider.getUsername(resolvedToken);
+        String email = jwtTokenProvider.getEmail(resolvedToken);
+
+        // 서버에 저장된 refresh token과 비교
+        RefreshToken savedToken = refreshTokenRepository.findByUsername(email)
+                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
+
+        if (!savedToken.getRefreshToken().equals(refreshToken)) {
+            throw new GeneralException(ErrorStatus.INVALID_REFRESH_TOKEN);
+        }
+        log.info("username: {}", email);
+
+        // Token에서 Role 추출
         Claims claims = jwtTokenProvider.getClaims(resolvedToken);
-
-        log.info("username: {}", username);
-        log.info("claims: {}", claims);
-
         Role role = claims.get("role", Role.class);
 
-        String newAccessToken = jwtTokenProvider.createAccessToken(username, role);
-        String newRefreshToken = jwtTokenProvider.createRefreshToken(username, role);
+        // 새로운 Access Token, Refresh Token 생성
+        String newAccessToken = jwtTokenProvider.createAccessToken(email, role);
+        String newRefreshToken = jwtTokenProvider.createRefreshToken(email, role);
+
+        // Refresh Token 업데이트
+        savedToken.updateRefreshToken(newRefreshToken);
+        refreshTokenRepository.save(new RefreshToken(email, newRefreshToken));
 
         return new JwtResponse(newAccessToken, newRefreshToken);
     }

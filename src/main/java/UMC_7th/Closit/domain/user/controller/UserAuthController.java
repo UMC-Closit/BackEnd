@@ -6,6 +6,7 @@ import UMC_7th.Closit.domain.user.service.UserAuthService;
 import UMC_7th.Closit.domain.user.service.UserCommandService;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
+import UMC_7th.Closit.security.SecurityUtil;
 import UMC_7th.Closit.security.jwt.JwtTokenProvider;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,6 @@ public class UserAuthController {
 
     private final UserCommandService userCommandService;
     private final UserAuthService userAuthService;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/register")
     public ApiResponse<RegisterResponseDTO> register (@RequestBody @Valid UserRequestDTO.CreateUserDTO userRequestDto){
@@ -40,8 +40,10 @@ public class UserAuthController {
     }
 
     @PostMapping("/refresh")
-    public ApiResponse<JwtResponse> refresh(@RequestHeader("Authorization") String refreshToken) {
-        log.debug("🔁 Refresh Token: {}", refreshToken);
+    public ApiResponse<JwtResponse> refresh(@RequestBody RefreshRequestDTO refreshRequestDTO) {
+        String refreshToken = refreshRequestDTO.getRefreshToken();
+        log.info("🔁 Refresh Token: {}", refreshToken);
+
         JwtResponse jwtResponse = userAuthService.refresh(refreshToken);
 
         return ApiResponse.onSuccess(jwtResponse);

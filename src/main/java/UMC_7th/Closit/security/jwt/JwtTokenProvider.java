@@ -61,13 +61,19 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
+        log.info("🔍 Validating Token: {}", token);
+        Claims claims = getClaims(token);
+        log.info("🔍 Token Claims: {}", claims);
+        log.info("🔍 Token Subject: {}", claims.getSubject());
+        log.info("🔍 Token Expiration: {}", claims.getExpiration());
+        log.info("🔍 Token Issued At: {}", claims.getIssuedAt());
+
         try {
             Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
             return true;
-
         } catch (ExpiredJwtException e) {
             throw new JwtHandler(ErrorStatus.EXPIRED_TOKEN);
         } catch (MalformedJwtException e) {
@@ -89,7 +95,7 @@ public class JwtTokenProvider {
         return bearerToken.substring(7).trim();
     }
 
-    public String getUsername(String token) {
+    public String getEmail(String token) {
         return getClaims(token).getSubject();
     }
 
