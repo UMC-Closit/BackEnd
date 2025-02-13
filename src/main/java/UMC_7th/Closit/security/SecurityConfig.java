@@ -52,6 +52,7 @@ public class SecurityConfig {
                                          "/api/auth/login",
                                          "/api/auth/refresh").permitAll()
                         .anyRequest().authenticated())
+                // UsernamePasswordAuthenticationFilter 전에 JwtAuthenticationFilter 추가
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 
