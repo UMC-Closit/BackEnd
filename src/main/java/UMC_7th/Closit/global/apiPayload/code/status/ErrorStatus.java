@@ -26,6 +26,15 @@ public enum ErrorStatus implements BaseErrorCode {
     USER_NOT_FOUND (HttpStatus.NOT_FOUND, "USER4041", "사용자가 존재하지 않습니다."),
     CLOSITID_ALREADY_EXISTS (HttpStatus.BAD_REQUEST, "USER4004", "이미 존재하는 Cloist ID 입니다."),
 
+    // ClositId 관련 에러
+    CLOSITID_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "USER4004", "이미 존재하는 ClositId입니다."),
+
+    // 토큰 관련 에러
+    EXPIRED_TOKEN(HttpStatus.BAD_REQUEST, "TOKEN4001", "토큰이 만료되었습니다."),
+    INVALID_TOKEN(HttpStatus.BAD_REQUEST, "TOKEN4002", "유효하지 않은 토큰입니다."),
+    UNSUPPORTED_TOKEN(HttpStatus.BAD_REQUEST, "TOKEN4003", "지원하지 않는 토큰입니다."),
+    EMPTY_TOKEN(HttpStatus.BAD_REQUEST, "TOKEN4004", "토큰이 비어있습니다."),
+    INVALID_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "TOKEN4005", "유효하지 않은 리프레시 토큰입니다."),
     // 게시글 관련 에러
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4041", "게시글이 존재하지 않습니다."),
 
@@ -73,6 +82,9 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 미션 관련 에러
     MISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "MISSION4041", "미션이 존재하지 않습니다."),
+
+    //오늘의 옷장 관련 에러
+    TODAY_CLOSET_NOT_FOUND(HttpStatus.NOT_FOUND, "TODAYCLOSET4001", "오늘의 옷장이 존재하지 않습니다."),
 
     // 해시태그 관련 관련 에러
     HASHTAG_NOT_FOUND(HttpStatus.NOT_FOUND, "HASHTAG4041", "해시태그가 존재하지 않습니다."),
