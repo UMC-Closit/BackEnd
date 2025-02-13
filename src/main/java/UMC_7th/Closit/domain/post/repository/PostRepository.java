@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,4 +30,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p WHERE p.user.id = :userId GROUP BY FUNCTION('DATE', p.createdAt) ORDER BY p.createdAt ASC")
     Slice<Post> findFrontImageByUserId(@Param("userId") Long userId, Pageable pageable);
+
+    List<Post> findAllByUserIdAndCreatedAtBetween (Long userId, LocalDateTime start, LocalDateTime end);
 }

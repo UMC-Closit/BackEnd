@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth/history")
@@ -32,5 +35,19 @@ public class HistoryController {
         Slice<Post> dateThumbnailList = historyQueryService.getHistoryThumbnailList(page);
 
         return ApiResponse.onSuccess(HistoryConverter.dataHistoryThumbnailListDTO(dateThumbnailList));
+    }
+
+    @GetMapping("/detail")
+    @Operation(summary = "사용자의 히스토리 조회 - 날짜",
+            description = """
+                    ## 사용자 날짜 별 히스토리 상세 조회
+                    ### Parameters
+                    localDate [조회할 히스토리 날짜] - e.g. 2025-02-14
+                    """)
+    public ApiResponse<HistoryResponseDTO.DateHistoryPreviewListDTO> datePreviewList (@RequestParam(name = "localDate") LocalDate localDate) {
+
+        List<Post> datePreviewList = historyQueryService.getHistoryPreviewList(localDate);
+
+        return ApiResponse.onSuccess(HistoryConverter.dateHistoryPreviewListDTO(localDate, datePreviewList));
     }
 }

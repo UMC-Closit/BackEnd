@@ -11,6 +11,10 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 
 @Service
 @Transactional(readOnly = true)
@@ -30,5 +34,16 @@ public class HistoryQueryServiceImpl implements HistoryQueryService{
         Slice<Post> postList = postRepository.findFrontImageByUserId(userId, pageable);
 
         return postList;
+    }
+
+    @Override
+    public List<Post> getHistoryPreviewList(LocalDate localDate) { // 히스토리 게시글 상세 조회
+        User user = securityUtil.getCurrentUser();
+        Long userId = user.getId();
+
+        LocalDateTime start = localDate.atStartOfDay();
+        LocalDateTime end = start.plusDays(1);
+
+        return postRepository.findAllByUserIdAndCreatedAtBetween(userId, start, end);
     }
 }
