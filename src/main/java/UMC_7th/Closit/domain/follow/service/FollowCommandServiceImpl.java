@@ -65,6 +65,9 @@ public class FollowCommandServiceImpl implements FollowCommandService {
         // 현재 로그인된 사용자 정보를 following으로 가져오기
         String followingClositId = securityUtil.getCurrentUser().getClositId();
 
+        userRepository.findByClositId(followerClositId)
+                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
+
         Optional<Follow> follow = followRepository.findByFollowerClositIdAndFollowingClositId(followerClositId, followingClositId);
         return follow.isPresent();
     }
@@ -72,6 +75,12 @@ public class FollowCommandServiceImpl implements FollowCommandService {
     @Override
     @Transactional
     public void deleteFollow(String followerClositId, String followingClositId) {
+        userRepository.findByClositId(followerClositId)
+                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
+
+        userRepository.findByClositId(followingClositId)
+                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
+
         Follow follow = followRepository.findByFollowerClositIdAndFollowingClositId(followerClositId, followingClositId)
                 .orElseThrow(() -> new FollowHandler(ErrorStatus.FOLLOW_NOT_FOUND));
 
