@@ -30,12 +30,10 @@ public class UserController {
     private final UserQueryService userQueryService;
 
     @Operation(summary = "사용자 삭제", description = "특정 사용자를 삭제합니다.")
-    @DeleteMapping("/{user_id}")
-    public ApiResponse<String> deleteUser(@PathVariable Long user_id) {
+    @DeleteMapping("/")
+    public ApiResponse<String> deleteUser() {
 
-        log.info("사용자 삭제 요청: userId={}", user_id);
-
-        userCommandService.deleteUser(user_id);
+        userCommandService.deleteUser();
         return ApiResponse.onSuccess("Deletion successful");
     }
 
