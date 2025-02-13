@@ -87,15 +87,8 @@ public class UserCommandServiceImpl implements UserCommandService {
     @Override
     public User registerProfileImage (MultipartFile file) {
 
-        // 로그인 여부 확인
-        if (!securityUtil.isAuthenticated()) {
-            throw new UserHandler(ErrorStatus.USER_NOT_AUTHORIZED);
-        }
-
         // 현재 로그인된 사용자 정보
         User currentUser = securityUtil.getCurrentUser();
-//        log.info("Register profile image service: currentUser={}", currentUser.getId());
-//        log.info("Register profile image service: file={}", file.getOriginalFilename());
 
         // 사용자가 프로필 이미지를 삭제하려는 경우
         if (file == null || file.isEmpty()) {
