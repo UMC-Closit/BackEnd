@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Role role = Role.valueOf(roleString); // String->Role 반환
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
-            // 🔹 SecurityContext에 UserDetails 설정
+            // SecurityContext에 UserDetails 설정
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     userDetails, // principal을 UserDetails 객체로 설정
                     null,
