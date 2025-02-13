@@ -31,7 +31,7 @@ public class MissionConverter {
     public static MissionResponseDTO.MissionDTO toMissionDTO(Mission mission) {
         return MissionResponseDTO.MissionDTO.builder()
                 .missionId(mission.getId())
-                .userId(mission.getUser().getId())
+                .clositId(mission.getUser().getClositId())
                 .status(mission.getStatus().name())
                 .createdAt(mission.getCreatedAt())
                 .updatedAt(mission.getUpdatedAt())

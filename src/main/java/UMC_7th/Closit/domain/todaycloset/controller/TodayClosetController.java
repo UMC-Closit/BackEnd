@@ -9,14 +9,12 @@ import UMC_7th.Closit.domain.todaycloset.service.TodayClosetService;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/communities/todayclosets")
+@RequestMapping("api/auth/communities/todayclosets")
 public class TodayClosetController {
     private final TodayClosetService todayClosetService;
     private final TodayClosetQueryService todayClosetQueryService;
@@ -38,9 +36,9 @@ public class TodayClosetController {
     }
 
     @Operation(summary = "오늘의 옷장 게시글 삭제")
-    @DeleteMapping("/{todayClosetId}")
-    public ApiResponse<String> deleteTodayCloset(@PathVariable("todayClosetId") Long todayClosetId) {
-        todayClosetService.deleteTodayCloset(todayClosetId);
+    @DeleteMapping("/{today_closet_id}")
+    public ApiResponse<String> deleteTodayCloset(@PathVariable("today_closet_id") Long today_closet_id) {
+        todayClosetService.deleteTodayCloset(today_closet_id);
         return ApiResponse.onSuccess("오늘의 옷장 삭제 성공");
     }
 }

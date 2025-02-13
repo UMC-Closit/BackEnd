@@ -29,16 +29,16 @@ public class UserQueryServiceImpl implements UserQueryService {
     private final MissionRepository missionRepository;
 
     @Override
-    public Slice<Highlight> getHighlightList(Long userId, Pageable pageable) {
-        User user = userRepository.findById(userId)
+    public Slice<Highlight> getHighlightList(String clositId, Pageable pageable) {
+        User user = userRepository.findByClositId(clositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
         return highlightRepository.findAllByUser(user, pageable);
     }
 
     @Override
-    public Slice<User> getFollowerList(Long userId, Pageable pageable) {
-        User user = userRepository.findById(userId)
+    public Slice<User> getFollowerList(String clositId, Pageable pageable) {
+        User user = userRepository.findByClositId(clositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
         Slice<Follow> followers = followRepository.findByFollower(user, pageable);
@@ -46,8 +46,8 @@ public class UserQueryServiceImpl implements UserQueryService {
     }
 
     @Override
-    public Slice<User> getFollowingList(Long userId, Pageable pageable) {
-        User user = userRepository.findById(userId)
+    public Slice<User> getFollowingList(String clositId, Pageable pageable) {
+        User user = userRepository.findByClositId(clositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
         Slice<Follow> followings = followRepository.findByFollowing(user, pageable);
@@ -55,21 +55,18 @@ public class UserQueryServiceImpl implements UserQueryService {
     }
 
     @Override
-    public Slice<Mission> getMissionList(Long userId, Pageable pageable) {
-        User user = userRepository.findById(userId)
+    public Slice<Mission> getMissionList(String clositId, Pageable pageable) {
+        User user = userRepository.findByClositId(clositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
         return missionRepository.findAllByUser(user, pageable);
     }
 
     @Override
-    public User getUserInfo(Long userId) {
+    public User getUserInfo(String clositId) {
 
-        return userRepository.findById(userId)
+        return userRepository.findByClositId(clositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
     }
-
-
-
 
 }

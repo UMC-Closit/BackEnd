@@ -65,7 +65,7 @@ public class UserCommandServiceImpl implements UserCommandService {
         userRepository.save(user);
 
         return RegisterResponseDTO.builder()
-                .userId(user.getId())
+                .clositId(user.getClositId())
                 .name(userRequestDto.getName())
                 .email(userRequestDto.getEmail())
                 .build();
@@ -73,21 +73,15 @@ public class UserCommandServiceImpl implements UserCommandService {
     }
 
     @Override
-    public void deleteUser (Long user_id) {
+    public void deleteUser () {
         // 현재 로그인된 사용자 정보 가져오기
         User currentUser= securityUtil.getCurrentUser(); // 로그인한 사용자 (username 또는 userId 기반)
 
-//        log.info("현재 로그인된 사용자: username = {}", currentUser.getName());
-        User targetUser = getOrElseThrow(user_id);
-
-        // 자기 자신이거나 관리자 권한이 있는 경우만 삭제 가능
-        if (!currentUser.getId().equals(user_id) ||
-                !currentUser.getRole().equals(Role.ADMIN)) {
+        if(currentUser == null) {
             throw new UserHandler(ErrorStatus.USER_NOT_AUTHORIZED);
         }
 
-//        log.info("사용자 삭제 진행: userId={}, 삭제자={}", user_id, currentUser.getName());
-        userRepository.delete(targetUser);
+        userRepository.delete(currentUser);
     }
 
     @Override
@@ -124,12 +118,5 @@ public class UserCommandServiceImpl implements UserCommandService {
 
         return currentUser;
     }
-
-    private User getOrElseThrow (Long userId) {
-        log.info("Get user by userId: userId={}", userId);
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
-    }
-
 
 }

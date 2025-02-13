@@ -49,7 +49,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 
         refreshTokenRepository.save(new RefreshToken(user.getEmail(), refreshToken));
 
-        return new JwtResponse(user.getId(),accessToken, refreshToken);
+        return new JwtResponse(user.getClositId(),accessToken, refreshToken);
     }
 
     @Override
@@ -92,6 +92,6 @@ public class UserAuthServiceImpl implements UserAuthService {
         savedToken.updateRefreshToken(newRefreshToken);
         refreshTokenRepository.save(new RefreshToken(email, newRefreshToken));
 
-        return new JwtResponse(currentUser.getId(), newAccessToken, newRefreshToken);
+        return new JwtResponse(currentUser.getClositId(), newAccessToken, newRefreshToken);
     }
 }

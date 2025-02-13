@@ -24,10 +24,10 @@ public class BookmarkController {
     }
 
     @Operation(summary = "사용자의 북마크 목록 조회")
-    @GetMapping("/{user_id}")
+    @GetMapping("/{closit_id}")
     public ApiResponse<List<BookmarkResponseDTO.BookmarkStatusDTO>> getUserBookmarks(
-            @PathVariable("user_id") Long userId){
-        return ApiResponse.onSuccess(bookmarkService.getUserBookmarks(userId));
+            @PathVariable("closit_id") String clositId) {
+        return ApiResponse.onSuccess(bookmarkService.getUserBookmarks(clositId));
     }
 
     @Operation(summary = "게시글 북마크 삭제")
