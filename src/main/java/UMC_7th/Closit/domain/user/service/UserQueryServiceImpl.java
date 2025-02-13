@@ -64,7 +64,6 @@ public class UserQueryServiceImpl implements UserQueryService {
 
     @Override
     public User getUserInfo(String clositId) {
-
         return userRepository.findByClositId(clositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
     }

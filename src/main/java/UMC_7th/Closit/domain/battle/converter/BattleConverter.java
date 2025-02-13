@@ -29,9 +29,9 @@ public class BattleConverter {
 
     public static BattleResponseDTO.ChallengeBattleResultDTO challengeBattleResultDTO(Battle battle) {
         return BattleResponseDTO.ChallengeBattleResultDTO.builder()
-                .firstUserName(battle.getPost1().getUser().getName())
+                .firstClositId(battle.getPost1().getUser().getClositId())
                 .firstPostId(battle.getPost1().getId())
-                .secondUserName(battle.getPost2().getUser().getName())
+                .secondClositId(battle.getPost2().getUser().getClositId())
                 .secondPostId(battle.getPost2().getId())
                 .createdAt(battle.getCreatedAt())
                 .build();
@@ -47,9 +47,9 @@ public class BattleConverter {
     public static BattleResponseDTO.VoteBattleResultDTO voteBattleResultDTO(Vote vote) {
         return BattleResponseDTO.VoteBattleResultDTO.builder()
                 .battleId(vote.getBattle().getId())
-                .firstUserName(vote.getBattle().getPost1().getUser().getName())
+                .firstClositId(vote.getBattle().getPost1().getUser().getClositId())
                 .firstVotingRate(vote.getBattle().getFirstVotingRate())
-                .secondUserName(vote.getBattle().getPost2().getUser().getName())
+                .secondClositId(vote.getBattle().getPost2().getUser().getClositId())
                 .secondVotingRate(vote.getBattle().getSecondVotingRate())
                 .createdAt(vote.getBattle().getCreatedAt())
                 .build();
@@ -58,10 +58,10 @@ public class BattleConverter {
     public static BattleResponseDTO.BattlePreviewDTO battlePreviewDTO(Battle battle) { // 배틀 게시글 목록 조회
         return BattleResponseDTO.BattlePreviewDTO.builder()
                 .title(battle.getTitle())
-                .firstUserName(battle.getPost1().getUser().getName())
+                .firstClositId(battle.getPost1().getUser().getClositId())
                 .firstPostId(battle.getPost1().getId())
                 .firstVotingRate(battle.getFirstVotingRate())
-                .secondUserName(battle.getPost2().getUser().getName())
+                .secondClositId(battle.getPost2().getUser().getClositId())
                 .secondPostId(battle.getPost2().getId())
                 .secondVotingRate(battle.getSecondVotingRate())
                 .build();
@@ -82,7 +82,7 @@ public class BattleConverter {
 
     public static BattleResponseDTO.ChallengeBattlePreviewDTO challengeBattlePreviewDTO(Battle battle) { // 배틀 챌린지 게시글 목록 조회
         return BattleResponseDTO.ChallengeBattlePreviewDTO.builder()
-                .firstUserName(battle.getPost1().getUser().getName())
+                .firstClositId(battle.getPost1().getUser().getClositId())
                 .firstPostId(battle.getPost1().getId())
                 .title(battle.getTitle())
                 .build();

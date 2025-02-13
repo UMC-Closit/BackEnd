@@ -70,7 +70,6 @@ public class UserAuthServiceImpl implements UserAuthService {
 
         // Refresh Token에서 email 추출
         String email = currentUser.getEmail();
-        log.info("email: {}", email);
 
         // 서버에 저장된 refresh token과 비교
         RefreshToken savedToken = refreshTokenRepository.findByUsername(email)
@@ -80,7 +79,6 @@ public class UserAuthServiceImpl implements UserAuthService {
             log.info("savedToken not equals refreshToken");
             throw new GeneralException(ErrorStatus.INVALID_REFRESH_TOKEN);
         }
-        log.info("username: {}", email);
 
         Role role = currentUser.getRole();
 
