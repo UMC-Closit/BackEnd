@@ -45,7 +45,7 @@ public class UserAuthServiceImpl implements UserAuthService {
         String accessToken = jwtTokenProvider.createAccessToken(user.getEmail(), user.getRole());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getEmail(), user.getRole());
 
-        return new JwtResponse(accessToken, refreshToken);
+        return new JwtResponse(user.getId(),accessToken, refreshToken);
     }
 
     @Override

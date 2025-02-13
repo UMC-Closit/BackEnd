@@ -68,7 +68,7 @@ public class PostConverter {
                 .pointColor(post.getPointColor())             // 포인트 컬러
                 .visibility(post.getVisibility())             // 공개 여부
                 .hashtags(post.getPostHashtagList().stream()  // 해시태그
-                        .map(postHashTag -> postHashTag.getHashTag().getContent())
+                        .map(postHashtag -> postHashtag.getHashtag().getContent())
                         .collect(Collectors.toList()))
                 .frontItemtags(post.getItemTagList().stream() // Front ItemTags
                         .filter(itemTag -> "FRONT".equals(itemTag.getTagType()))
