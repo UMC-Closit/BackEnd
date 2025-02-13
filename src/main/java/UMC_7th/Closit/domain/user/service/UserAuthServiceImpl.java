@@ -12,6 +12,7 @@ import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
 import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
+import UMC_7th.Closit.security.SecurityUtil;
 import UMC_7th.Closit.security.jwt.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final SecurityUtil securityUtil;
 
     // login
     @Override
@@ -44,6 +46,8 @@ public class UserAuthServiceImpl implements UserAuthService {
 
         String accessToken = jwtTokenProvider.createAccessToken(user.getEmail(), user.getRole());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getEmail(), user.getRole());
+
+        refreshTokenRepository.save(new RefreshToken(user.getEmail(), refreshToken));
 
         return new JwtResponse(user.getId(),accessToken, refreshToken);
     }
@@ -62,23 +66,23 @@ public class UserAuthServiceImpl implements UserAuthService {
     public JwtResponse refresh(String refreshToken) {
         // Refresh Token 유효성 검사
         jwtTokenProvider.validateToken(refreshToken);
+        User currentUser = securityUtil.getCurrentUser();
 
         // Refresh Token에서 email 추출
-        String resolvedToken = jwtTokenProvider.resolveToken(refreshToken);
-        String email = jwtTokenProvider.getEmail(resolvedToken);
+        String email = currentUser.getEmail();
+        log.info("email: {}", email);
 
         // 서버에 저장된 refresh token과 비교
         RefreshToken savedToken = refreshTokenRepository.findByUsername(email)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
         if (!savedToken.getRefreshToken().equals(refreshToken)) {
+            log.info("savedToken not equals refreshToken");
             throw new GeneralException(ErrorStatus.INVALID_REFRESH_TOKEN);
         }
         log.info("username: {}", email);
 
-        // Token에서 Role 추출
-        Claims claims = jwtTokenProvider.getClaims(resolvedToken);
-        Role role = claims.get("role", Role.class);
+        Role role = currentUser.getRole();
 
         // 새로운 Access Token, Refresh Token 생성
         String newAccessToken = jwtTokenProvider.createAccessToken(email, role);
@@ -88,6 +92,6 @@ public class UserAuthServiceImpl implements UserAuthService {
         savedToken.updateRefreshToken(newRefreshToken);
         refreshTokenRepository.save(new RefreshToken(email, newRefreshToken));
 
-        return new JwtResponse(newAccessToken, newRefreshToken);
+        return new JwtResponse(currentUser.getId(), newAccessToken, newRefreshToken);
     }
 }

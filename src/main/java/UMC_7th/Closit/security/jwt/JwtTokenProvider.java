@@ -3,11 +3,8 @@ package UMC_7th.Closit.security.jwt;
 import UMC_7th.Closit.domain.user.entity.Role;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.handler.JwtHandler;
-import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -75,23 +72,26 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException e) {
+            log.info("🔍 Expired Token: {}", token);
             throw new JwtHandler(ErrorStatus.EXPIRED_TOKEN);
         } catch (MalformedJwtException e) {
+            log.info("🔍 Malformed Token: {}", token);
             throw new JwtHandler(ErrorStatus.INVALID_TOKEN);
         } catch (UnsupportedJwtException e) {
+            log.info("🔍 Unsupported Token: {}", token);
             throw new JwtHandler(ErrorStatus.UNSUPPORTED_TOKEN);
         } catch (IllegalArgumentException e) {
+            log.info("🔍 Empty Token: {}", token);
             throw new JwtHandler(ErrorStatus.EMPTY_TOKEN);
         }
     }
 
-    public String resolveToken(String bearerToken) {
+    public String resolveAccessToken(String bearerToken) {
         if (bearerToken == null || !bearerToken.startsWith("Bearer ")) {
             throw new JwtHandler(ErrorStatus.INVALID_TOKEN);
         }
 
         String token = bearerToken.substring(7);
-        log.info("🔍 Extracted Token: {}", token);
         return bearerToken.substring(7).trim();
     }
 
