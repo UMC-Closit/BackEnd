@@ -65,7 +65,7 @@ public class UserCommandServiceImpl implements UserCommandService {
         userRepository.save(user);
 
         return RegisterResponseDTO.builder()
-                .userId(user.getId())
+                .clositId(user.getClositId())
                 .name(userRequestDto.getName())
                 .email(userRequestDto.getEmail())
                 .build();
@@ -77,7 +77,7 @@ public class UserCommandServiceImpl implements UserCommandService {
         // 현재 로그인된 사용자 정보 가져오기
         User currentUser= securityUtil.getCurrentUser(); // 로그인한 사용자 (username 또는 userId 기반)
 
-//        log.info("현재 로그인된 사용자: username = {}", currentUser.getName());
+        //   log.info("현재 로그인된 사용자: username = {}", currentUser.getName());
         User targetUser = getOrElseThrow(user_id);
 
         // 자기 자신이거나 관리자 권한이 있는 경우만 삭제 가능
