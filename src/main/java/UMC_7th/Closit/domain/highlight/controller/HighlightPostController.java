@@ -10,7 +10,6 @@ import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,7 +30,6 @@ public class HighlightPostController {
     @Operation(summary = "하이라이트 게시글 삭제", description = "특정 하이라이트에서 게시글을 삭제합니다.")
     @DeleteMapping("/{highlight_post_id}")
     public ApiResponse<String> deleteHighlightPost(@PathVariable Long highlight_post_id) {
-
         highlightPostCommandService.deleteHighlightPost(highlight_post_id);
         return ApiResponse.onSuccess("Deleted Highlight Post with ID: " + highlight_post_id);
     }

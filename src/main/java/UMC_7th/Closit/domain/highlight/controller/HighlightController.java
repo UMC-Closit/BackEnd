@@ -7,6 +7,7 @@ import UMC_7th.Closit.domain.highlight.entity.Highlight;
 import UMC_7th.Closit.domain.highlight.service.HighlightCommandService;
 import UMC_7th.Closit.domain.highlight.service.HighlightQueryService;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
+import UMC_7th.Closit.security.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,8 @@ public class HighlightController {
 
     @Operation(summary = "하이라이트 상세 조회", description = "ID를 통해 특정 하이라이트의 상세 정보를 조회합니다.")
     @GetMapping("/{highlight_id}")
-    public ApiResponse<HighlightResponseDTO.HighlightDetailDTO> getHighlightById(@PathVariable Long highlight_id) {
-        Highlight highlight = highlightQueryService.findHighlight(highlight_id);
+    public ApiResponse<HighlightResponseDTO.HighlightDetailDTO> getHighlightById(@PathVariable("highlight_id") Long highlightId) {
+        Highlight highlight = highlightQueryService.findHighlight(highlightId);
         HighlightResponseDTO.HighlightDetailDTO detailDTO = HighlightConverter.toHighlightDetailDTO(highlight);
         return ApiResponse.onSuccess(detailDTO);
     }
@@ -38,9 +39,9 @@ public class HighlightController {
     @Operation(summary = "하이라이트 수정", description = "ID를 통해 특정 하이라이트를 수정합니다.")
     @PutMapping("/{highlight_id}")
     public ApiResponse<HighlightResponseDTO.UpdateHighlightResultDTO> updateHighlight(
-            @PathVariable Long highlight_id,
+            @PathVariable("highlight_id") Long highlightId,
             @RequestBody @Valid HighlightRequestDTO.UpdateHighlightDTO request) {
-        Highlight updatedHighlight = highlightCommandService.updateHighlight(highlight_id, request);
+        Highlight updatedHighlight = highlightCommandService.updateHighlight(highlightId, request);
         return ApiResponse.onSuccess(HighlightConverter.toUpdateHighlightResultDTO(updatedHighlight));
     }
 

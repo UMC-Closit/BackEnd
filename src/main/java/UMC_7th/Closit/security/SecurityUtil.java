@@ -6,6 +6,7 @@ import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -20,8 +21,9 @@ public class SecurityUtil {
     public User getCurrentUser () {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         log.info("authentication: {}", authentication);
-        if (authentication == null || authentication.getName() == null) {
-            throw new UserHandler(ErrorStatus.USER_NOT_FOUND);
+
+        if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
+            throw new UserHandler(ErrorStatus._UNAUTHORIZED);
         }
 
         return userRepository.findByEmail(authentication.getName()).orElseThrow(
