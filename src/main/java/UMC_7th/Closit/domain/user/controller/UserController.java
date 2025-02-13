@@ -31,17 +31,17 @@ public class UserController {
 
     @Operation(summary = "사용자 삭제", description = "특정 사용자를 삭제합니다.")
     @DeleteMapping("/{user_id}")
-    public ApiResponse<Void> deleteUser(@PathVariable Long user_id) {
+    public ApiResponse<String> deleteUser(@PathVariable Long user_id) {
 
         log.info("사용자 삭제 요청: userId={}", user_id);
 
         userCommandService.deleteUser(user_id);
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess("Deletion successful");
     }
 
     @Operation(summary = "사용자 프로필 이미지 등록", description = "특정 사용자의 프로필 이미지를 등록합니다.")
     @PostMapping(
-            value = "/{user_id}/profile-image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
+            value = "/{closit_id}/profile-image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
     )
     public ApiResponse<UserResponseDTO.UserInfoDTO> registerProfileImage(@RequestPart(value = "user_image", required = false) MultipartFile profileImage) {
         User userInfo = userCommandService.registerProfileImage(profileImage);
@@ -49,54 +49,54 @@ public class UserController {
     }
 
     @Operation(summary = "사용자 정보 조회", description = "특정 사용자의 정보를 조회합니다.")
-    @GetMapping("/{user_id}")
-    public ApiResponse<UserResponseDTO.UserInfoDTO> getUserInfo(@PathVariable Long user_id) {
-        User userInfo = userQueryService.getUserInfo(user_id);
+    @GetMapping("/{closit_id}")
+    public ApiResponse<UserResponseDTO.UserInfoDTO> getUserInfo(@PathVariable String closit_id) {
+        User userInfo = userQueryService.getUserInfo(closit_id);
         return ApiResponse.onSuccess(UserConverter.toUserInfoDTO(userInfo));
     }
 
     @Operation(summary = "사용자의 팔로워 목록 조회", description = "특정 사용자의 팔로워 목록을 조회합니다.")
-    @GetMapping("/{user_id}/followers")
+    @GetMapping("/{closit_id}/followers")
     public ApiResponse<UserResponseDTO.UserFollowerSliceDTO> getUserFollowers(
-            @PathVariable Long user_id,
+            @PathVariable String closit_id,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        Slice<User> followerSlice = userQueryService.getFollowerList(user_id, PageRequest.of(page, size));
+        Slice<User> followerSlice = userQueryService.getFollowerList(closit_id, PageRequest.of(page, size));
         return ApiResponse.onSuccess(UserConverter.toUserFollowerSliceDTO(followerSlice));
     }
 
     @Operation(summary = "사용자의 팔로잉 목록 조회", description = "특정 사용자의 팔로잉 목록을 조회합니다.")
-    @GetMapping("/{user_id}/following")
+    @GetMapping("/{closit_id}/following")
     public ApiResponse<UserResponseDTO.UserFollowingSliceDTO> getUserFollowing(
-            @PathVariable Long user_id,
+            @PathVariable String closit_id,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        Slice<User> followingSlice = userQueryService.getFollowingList(user_id, PageRequest.of(page, size));
+        Slice<User> followingSlice = userQueryService.getFollowingList(closit_id, PageRequest.of(page, size));
         return ApiResponse.onSuccess(UserConverter.toUserFollowingSliceDTO(followingSlice));
     }
 
     @Operation(summary = "사용자의 하이라이트 목록 조회", description = "특정 사용자의 하이라이트 목록을 조회합니다.")
-    @GetMapping("/{user_id}/highlights")
+    @GetMapping("/{closit_id}/highlights")
     public ApiResponse<UserResponseDTO.UserHighlightSliceDTO> getUserHighlights(
-            @PathVariable Long user_id,
+            @PathVariable String closit_id,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        Slice<Highlight> highlightSlice = userQueryService.getHighlightList(user_id, PageRequest.of(page, size));
+        Slice<Highlight> highlightSlice = userQueryService.getHighlightList(closit_id, PageRequest.of(page, size));
 
         return ApiResponse.onSuccess(UserConverter.toUserHighlightSliceDTO(highlightSlice));
     }
 
     @Operation(summary = "사용자의 미션 목록 조회", description = "특정 사용자의 미션 목록을 조회합니다.")
-    @GetMapping("/{user_id}/missions")
+    @GetMapping("/{closit_id}/missions")
     public ApiResponse<UserResponseDTO.UserMissionSliceDTO> getUserMissions(
-            @PathVariable Long user_id,
+            @PathVariable String closit_id,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        Slice<Mission> missionSlice = userQueryService.getMissionList(user_id, PageRequest.of(page, size));
+        Slice<Mission> missionSlice = userQueryService.getMissionList(closit_id, PageRequest.of(page, size));
 
         return ApiResponse.onSuccess(UserConverter.toUserMissionSliceDTO(missionSlice));
     }

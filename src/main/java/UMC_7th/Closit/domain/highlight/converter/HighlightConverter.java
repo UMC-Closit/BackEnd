@@ -33,7 +33,7 @@ public class HighlightConverter {
     public static HighlightResponseDTO.HighlightDTO toHighlightDTO(Highlight highlight) {
         return HighlightResponseDTO.HighlightDTO.builder()
                 .highlightId(highlight.getId())
-                .userId(highlight.getUser().getId())
+                .clositId(highlight.getUser().getClositId())
                 .title(highlight.getTitle())
                 .thumbnail(highlight.getThumbnail())
                 .createdAt(highlight.getCreatedAt())
@@ -44,7 +44,7 @@ public class HighlightConverter {
     public static HighlightResponseDTO.HighlightDetailDTO toHighlightDetailDTO(Highlight highlight) {
         return HighlightResponseDTO.HighlightDetailDTO.builder()
                 .highlightId(highlight.getId())
-                .userId(highlight.getUser().getId())
+                .clositId(highlight.getUser().getClositId())
                 .title(highlight.getTitle())
                 .thumbnail(highlight.getThumbnail())
                 .createdAt(highlight.getCreatedAt())
