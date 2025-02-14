@@ -5,8 +5,6 @@ import UMC_7th.Closit.domain.user.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
-import java.util.List;
-
 public interface UserQueryService {
 
     Slice<Highlight> getHighlightList(String clositId, Pageable pageable);
@@ -17,4 +15,5 @@ public interface UserQueryService {
 
     User getUserInfo(String clositId);
 
+    boolean isMissionDone();
 }

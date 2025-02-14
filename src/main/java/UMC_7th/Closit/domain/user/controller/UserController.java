@@ -85,4 +85,10 @@ public class UserController {
 
         return ApiResponse.onSuccess(UserConverter.toUserHighlightSliceDTO(highlightSlice));
     }
+
+    @Operation(summary = "사용자의 데일리 미션 완료 여부 조회", description = "특정 사용자가 데일리 미션을 완료했는지 여부를 조회합니다.")
+    @GetMapping("/mission")
+    public ApiResponse<Boolean> getUserMission() {
+        return ApiResponse.onSuccess(userQueryService.isMissionDone());
+    }
 }
