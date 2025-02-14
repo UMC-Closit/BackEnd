@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class NotiQueryServiceImpl implements NotiQueryService {
 
@@ -30,6 +30,12 @@ public class NotiQueryServiceImpl implements NotiQueryService {
 
         // 최신순으로 조회
         Slice<Notification> notificationList = notificationRepository.findByUserOrderByCreatedAtDesc(user, pageable);
+
+        // 전체 알림 읽음 처리
+        notificationList.forEach(notification -> {
+            notification.markAsRead();
+            notificationRepository.save(notification);
+        });
 
         return notificationList;
     }

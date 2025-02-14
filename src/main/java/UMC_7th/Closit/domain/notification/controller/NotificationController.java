@@ -56,7 +56,7 @@ public class NotificationController {
         return ApiResponse.onSuccess(NotificationConverter.notiPreviewDTO(notification));
     }
 
-    @GetMapping()
+    @PatchMapping()
     @Operation(summary = "알림 목록 조회",
             description = """
              ## 특정 사용자의 알림 목록 조회 (최신 순 정렬)
