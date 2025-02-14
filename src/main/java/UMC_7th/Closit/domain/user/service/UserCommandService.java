@@ -9,7 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 public interface UserCommandService {
 
     RegisterResponseDTO registerUser (UserRequestDTO.CreateUserDTO userRequestDto);
+
     void deleteUser(Long userId);
 
     User registerProfileImage (MultipartFile file);
+
+    boolean isClositIdUnique(String clositId);
 }

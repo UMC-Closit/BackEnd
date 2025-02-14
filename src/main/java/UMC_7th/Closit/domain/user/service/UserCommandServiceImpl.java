@@ -1,5 +1,6 @@
 package UMC_7th.Closit.domain.user.service;
 
+import UMC_7th.Closit.domain.follow.entity.Follow;
 import UMC_7th.Closit.domain.user.dto.RegisterResponseDTO;
 import UMC_7th.Closit.domain.user.dto.UserRequestDTO;
 import UMC_7th.Closit.domain.user.entity.Role;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -125,11 +127,16 @@ public class UserCommandServiceImpl implements UserCommandService {
         return currentUser;
     }
 
+    @Override
+    public boolean isClositIdUnique(String clositId) {
+        Optional<User> user = userRepository.findByClositId(clositId);
+        return !user.isPresent();
+
+    }
+
     private User getOrElseThrow (Long userId) {
         log.info("Get user by userId: userId={}", userId);
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
     }
-
-
 }
