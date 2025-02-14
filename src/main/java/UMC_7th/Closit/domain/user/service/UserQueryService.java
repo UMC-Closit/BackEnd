@@ -10,14 +10,14 @@ import java.util.List;
 
 public interface UserQueryService {
 
-    Slice<Highlight> getHighlightList(Long userId, Pageable pageable);
+    Slice<Highlight> getHighlightList(String clositId, Pageable pageable);
 
-    Slice<User> getFollowerList(Long userId, Pageable pageable);
+    Slice<User> getFollowerList(String clositId, Pageable pageable);
 
-    Slice<User> getFollowingList(Long userId, Pageable pageable);
+    Slice<User> getFollowingList(String clositId, Pageable pageable);
 
-    Slice<Mission> getMissionList(Long userId, Pageable pageable);
+    Slice<Mission> getMissionList(String clositId, Pageable pageable);
 
-    User getUserInfo(Long userId);
+    User getUserInfo(String clositId);
 
 }

@@ -46,8 +46,8 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public List<BookmarkResponseDTO.BookmarkStatusDTO> getUserBookmarks(Long userId) {
-        User user = userRepository.findById(userId)
+    public List<BookmarkResponseDTO.BookmarkStatusDTO> getUserBookmarks(String clositId) {
+        User user = userRepository.findByClositId(clositId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         return bookmarkRepository.findByUser(user).stream()

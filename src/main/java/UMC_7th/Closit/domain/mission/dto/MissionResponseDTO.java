@@ -37,7 +37,7 @@ public class MissionResponseDTO {
     @AllArgsConstructor
     public static class MissionDTO {
         private Long missionId;
-        private Long userId;
+        private String clositId;
         private String status;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;

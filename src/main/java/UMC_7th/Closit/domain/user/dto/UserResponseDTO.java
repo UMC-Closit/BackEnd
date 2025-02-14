@@ -23,7 +23,6 @@ public class UserResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UserDTO {
-        private Long userId;
         private String clositId;
         private String name;
         private String email;
