@@ -18,7 +18,7 @@ public class HighlightQueryServiceImpl implements HighlightQueryService {
     @Override
     public Highlight findHighlight(Long id) {
 
-        return highlightRepository.findByIdWithPosts(id)
+        return highlightRepository.findByIdWithPost(id)
                 .orElseThrow(() -> new HighlightHandler(ErrorStatus.HIGHLIGHT_NOT_FOUND));
     }
 }

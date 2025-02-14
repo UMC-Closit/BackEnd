@@ -11,8 +11,8 @@ import java.util.Optional;
 
 public interface HighlightRepository extends JpaRepository<Highlight, Long> {
 
-    @Query("SELECT h FROM Highlight h LEFT JOIN FETCH h.highlightPosts hp WHERE h.id = :highlightId")
-    Optional<Highlight> findByIdWithPosts(Long highlightId);
+    @Query("SELECT h FROM Highlight h LEFT JOIN FETCH h.post WHERE h.id = :highlightId")
+    Optional<Highlight> findByIdWithPost(Long highlightId);
 
     Slice<Highlight> findAllByUser(User user, Pageable pageable);
 }

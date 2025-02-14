@@ -38,7 +38,7 @@ public enum ErrorStatus implements BaseErrorCode {
     // 게시글 관련 에러
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4041", "게시글이 존재하지 않습니다."),
 
-    //북마크 관련 에러
+    // 북마크 관련 에러
     BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND,"BOOKMARK4041","북마크가 존재하지 않습니다."),
 
     //좋아요 관련 에러
@@ -71,9 +71,6 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 하이라이트 관련 에러
     HIGHLIGHT_NOT_FOUND(HttpStatus.NOT_FOUND, "HIGHLIGHT4041", "하이라이트가 존재하지 않습니다."),
-
-    // 하이라이트 게시글 관련 에러
-    HIGHLIGHT_POST_NOT_FOUND(HttpStatus.NOT_FOUND, "HIGHLIGHTPOST4041", "하이라이트 게시글이 존재하지 않습니다."),
 
     // 팔로우 관련 에러
     FOLLOW_SELF_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "FOLLOW4001", "자기 자신을 팔로우할 수 없습니다."),
