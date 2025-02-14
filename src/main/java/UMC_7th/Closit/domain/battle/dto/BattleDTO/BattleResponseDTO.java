@@ -56,6 +56,7 @@ public class BattleResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class BattlePreviewDTO { // 배틀 게시글 목록 조회
+        private Long battleId;
         private String title;
         private String firstClositId;
         private Long firstPostId;
@@ -82,6 +83,7 @@ public class BattleResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ChallengeBattlePreviewDTO { // 배틀 챌린지 게시글 목록 조회
+        private Long battleId;
         private String firstClositId;
         private Long firstPostId;
         private String title;
