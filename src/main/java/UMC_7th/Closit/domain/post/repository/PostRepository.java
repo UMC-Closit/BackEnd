@@ -6,8 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,4 +27,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Slice<Post> findByHashtagId(Long hashtagId, Pageable pageable);
 
     Slice<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
+    @Query("SELECT p FROM Post p WHERE p.user.id = :userId GROUP BY FUNCTION('DATE', p.createdAt) ORDER BY p.createdAt ASC") // 히스토리 썸네일 조회
+    Slice<Post> findFrontImageByUserId(@Param("userId") Long userId, Pageable pageable);
+
+    List<Post> findAllByUserIdAndCreatedAtBetween (Long userId, LocalDateTime start, LocalDateTime end); // 히스토리 게시글 상세 조회 - 하루 내 게시글 탐색
+
+    @Query("SELECT p FROM Post p WHERE p.user.id = :userId GROUP BY FUNCTION('DATE', p.createdAt) ORDER BY p.createdAt ASC")
+    Slice<Post> findPointColorByUserId(@Param("userId") Long userId, Pageable pageable); // 히스토리 포인트 색상 썸네일 조회
 }
