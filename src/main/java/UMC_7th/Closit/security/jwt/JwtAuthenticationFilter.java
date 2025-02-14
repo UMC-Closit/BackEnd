@@ -28,30 +28,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final CustomUserDetailService customUserDetailsService; // 🔹 UserDetailsService 추가
 
     @Override
-    protected void doFilterInternal (HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = resolveToken(request);
+    protected void doFilterInternal (
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
 
-//        log.info("🔍 Extracted Token: {}", token);
+        String token = resolveToken(request);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
             Claims claims = jwtTokenProvider.getClaims(token);
             String email = claims.getSubject();
             String roleString = claims.get("role", String.class);
 
-//            log.info("✅ Valid Token - User: {}, Role: {}", email, roleString);
-
             Role role = Role.valueOf(roleString); // String->Role 반환
-
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
-            // 🔹 SecurityContext에 UserDetails 설정
+            // SecurityContext에 UserDetails 설정
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     userDetails, // principal을 UserDetails 객체로 설정
                     null,
                     List.of(new SimpleGrantedAuthority("ROLE_"+role.name())) // authorities를 SimpleGrantedAuthority 객체로 설정
             );
-
-//            log.info("🔹 Setting SecurityContextHolder: {}", authentication);
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
@@ -61,6 +59,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private String resolveToken (HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
+
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }

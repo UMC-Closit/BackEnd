@@ -9,5 +9,7 @@ public interface UserAuthService {
 
     JwtResponse login(LoginRequestDTO loginRequestDto);
 
-    UserResponseDTO.UserInfoDTO updateUserRole (Long userId, Role role);
+    UserResponseDTO.UserInfoDTO updateUserRole(Long userId, Role role);
+
+    JwtResponse refresh(String refreshToken);
 }

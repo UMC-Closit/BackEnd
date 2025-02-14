@@ -26,7 +26,7 @@ public class BattleCommentResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class BattleCommentPreviewDTO { // 배틀 댓글 조회
-        private String userName;
+        private String clositId;
         private Long battleCommentId;
         private String content;
         @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")

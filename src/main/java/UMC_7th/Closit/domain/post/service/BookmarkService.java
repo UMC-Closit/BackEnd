@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface BookmarkService {
     BookmarkResponseDTO.BookmarkStatusDTO addBookmark(BookmarkRequestDTO.BookmarkDTO request);
-    List<BookmarkResponseDTO.BookmarkStatusDTO> getUserBookmarks(Long userId);
+    List<BookmarkResponseDTO.BookmarkStatusDTO> getUserBookmarks(String clositId);
     void removeBookmark(Long bookmarkId);
 }

@@ -40,7 +40,7 @@ public class HighlightResponseDTO {
     @AllArgsConstructor
     public static class HighlightDTO {
         private Long highlightId;
-        private Long userId;
+        private String clositId;
         private String title;
         private String thumbnail;
         private LocalDateTime createdAt;
@@ -53,7 +53,7 @@ public class HighlightResponseDTO {
     @AllArgsConstructor
     public static class HighlightDetailDTO {
         private Long highlightId;
-        private Long userId;
+        private String clositId;
         private String title;
         private String thumbnail;
         private LocalDateTime createdAt;
