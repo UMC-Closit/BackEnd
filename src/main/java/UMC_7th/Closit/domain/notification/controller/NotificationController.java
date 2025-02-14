@@ -51,7 +51,7 @@ public class NotificationController {
         User user = securityUtil.getCurrentUser();
         Long userId = user.getId();
 
-        Notification notification = notiCommandService.readNotification(userId, notification_id);
+        Notification notification = notiQueryService.readNotification(userId, notification_id);
 
         return ApiResponse.onSuccess(NotificationConverter.notiPreviewDTO(notification));
     }
