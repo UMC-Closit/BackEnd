@@ -24,11 +24,11 @@ public class HistoryController {
     private final HistoryQueryService historyQueryService;
 
     @GetMapping
-    @Operation(summary = "사용자의 히스토리 썸네일 조회",
+    @Operation(summary = "사용자의 히스토리 게시글 썸네일 조회",
             description = """
-                    ## 사용자 날짜 별 히스토리 썸네일 조회
+                    ## 사용자 날짜 별 히스토리 게시글 썸네일 조회
                     ### Parameters
-                    page [조회할 페이지 번호] - 0부터 시작, 50개씩 보여줌
+                    page [조회할 페이지 번호] - 0부터 시작, 30개씩 보여줌
                     """)
     public ApiResponse<HistoryResponseDTO.DataHistoryThumbnailListDTO> dateThumbnailList (@RequestParam(name = "page") Integer page) { // 히스토리 썸네일 조회
 
@@ -56,7 +56,7 @@ public class HistoryController {
             description = """
                     ## 사용자 날짜 별 히스토리 포인트 컬러 썸네일 조회
                     ### Parameters
-                    page [조회할 페이지 번호] - 0부터 시작, 50개씩 보여줌
+                    page [조회할 페이지 번호] - 0부터 시작, 30개씩 보여줌
                     """)
     public ApiResponse<HistoryResponseDTO.ColorHistoryThumbnailListDTO> colorThumbnailList (@RequestParam(name = "page") Integer page) { // 히스토리 포인트 색상 썸네일 조회
 

@@ -29,7 +29,7 @@ public class HistoryQueryServiceImpl implements HistoryQueryService{
         User user = securityUtil.getCurrentUser();
         Long userId = user.getId();
 
-        Pageable pageable = PageRequest.of(page, 50);
+        Pageable pageable = PageRequest.of(page, 30);
 
         Slice<Post> postList = postRepository.findFrontImageByUserId(userId, pageable);
 
@@ -52,7 +52,7 @@ public class HistoryQueryServiceImpl implements HistoryQueryService{
         User user = securityUtil.getCurrentUser();
         Long userId = user.getId();
 
-        Pageable pageable = PageRequest.of(page, 50);
+        Pageable pageable = PageRequest.of(page, 30);
 
         Slice<Post> postList = postRepository.findPointColorByUserId(userId, pageable);
 
