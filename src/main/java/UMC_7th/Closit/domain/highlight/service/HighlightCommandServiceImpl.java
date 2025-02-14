@@ -56,7 +56,7 @@ public class HighlightCommandServiceImpl implements HighlightCommandService {
                 .orElseThrow(() -> new HighlightHandler(ErrorStatus.HIGHLIGHT_NOT_FOUND));
 
         // 자기 자신이거나 관리자 권한이 있는 경우만 허용
-        if (!user.getId().equals(highlight.getUser().getId()) &&
+        if (!user.getId().equals(highlight.getUser().getId()) ||
                 !user.getRole().equals(Role.ADMIN)) {
             throw new UserHandler(ErrorStatus.USER_NOT_AUTHORIZED);
         }
