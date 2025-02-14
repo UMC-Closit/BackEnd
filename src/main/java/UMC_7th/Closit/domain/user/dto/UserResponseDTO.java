@@ -1,9 +1,6 @@
 package UMC_7th.Closit.domain.user.dto;
 
 import UMC_7th.Closit.domain.highlight.dto.HighlightResponseDTO;
-import UMC_7th.Closit.domain.mission.converter.MissionConverter;
-import UMC_7th.Closit.domain.mission.dto.MissionResponseDTO;
-import UMC_7th.Closit.domain.mission.entity.Mission;
 import UMC_7th.Closit.domain.user.converter.UserConverter;
 import UMC_7th.Closit.domain.user.entity.Role;
 import UMC_7th.Closit.domain.user.entity.User;

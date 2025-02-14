@@ -1,7 +1,6 @@
 package UMC_7th.Closit.domain.user.controller;
 
 import UMC_7th.Closit.domain.highlight.entity.Highlight;
-import UMC_7th.Closit.domain.mission.entity.Mission;
 import UMC_7th.Closit.domain.user.converter.UserConverter;
 import UMC_7th.Closit.domain.user.dto.UserResponseDTO;
 import UMC_7th.Closit.domain.user.entity.User;
