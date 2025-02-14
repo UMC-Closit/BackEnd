@@ -47,7 +47,7 @@ public class UserCommandServiceImpl implements UserCommandService {
 
         // ClositId Already Exists
         if (userRepository.existsByClositId(userRequestDto.getClositId())) {
-            throw new UserHandler(ErrorStatus.CLOSITID_ALREADY_EXISTS);
+            throw new UserHandler(ErrorStatus.CLOSIT_ID_ALREADY_EXISTS);
         }
 
         // Password Encoding
