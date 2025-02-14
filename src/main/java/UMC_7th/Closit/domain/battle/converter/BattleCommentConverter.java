@@ -29,8 +29,8 @@ public class BattleCommentConverter {
 
     public static BattleCommentResponseDTO.BattleCommentPreviewDTO battleCommentPreviewDTO (BattleComment battleComment) { // 배틀 댓글 조회
         return BattleCommentResponseDTO.BattleCommentPreviewDTO.builder()
-                .clositId(battleComment.getUser().getClositId())
                 .battleCommentId(battleComment.getId())
+                .clositId(battleComment.getUser().getClositId())
                 .content(battleComment.getContent())
                 .createdAt(battleComment.getCreatedAt())
                 .build();
