@@ -94,26 +94,6 @@ public class UserResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UserMissionSliceDTO {
-        private List<MissionResponseDTO.MissionDTO> missions;
-        private boolean hasNext;
-        private int pageNumber;
-        private int size;
-
-        public static UserMissionSliceDTO from(Slice<Mission> slice) {
-            return UserMissionSliceDTO.builder()
-                    .missions(slice.map(MissionConverter::toMissionDTO).getContent())
-                    .hasNext(slice.hasNext())
-                    .pageNumber(slice.getNumber())
-                    .size(slice.getSize())
-                    .build();
-        }
-    }
-
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class UserInfoDTO {
         private Long id;                // User ID
         private Role role;              // USer role

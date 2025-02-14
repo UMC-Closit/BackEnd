@@ -55,14 +55,6 @@ public class UserQueryServiceImpl implements UserQueryService {
     }
 
     @Override
-    public Slice<Mission> getMissionList(String clositId, Pageable pageable) {
-        User user = userRepository.findByClositId(clositId)
-                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
-
-        return missionRepository.findAllByUser(user, pageable);
-    }
-
-    @Override
     public User getUserInfo(String clositId) {
         return userRepository.findByClositId(clositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));

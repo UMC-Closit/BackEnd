@@ -16,8 +16,6 @@ public interface UserQueryService {
 
     Slice<User> getFollowingList(String clositId, Pageable pageable);
 
-    Slice<Mission> getMissionList(String clositId, Pageable pageable);
-
     User getUserInfo(String clositId);
 
 }

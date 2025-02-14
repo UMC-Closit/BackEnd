@@ -55,8 +55,4 @@ public class UserConverter {
     public static UserResponseDTO.UserFollowingSliceDTO toUserFollowingSliceDTO(Slice<User> followingSlice) {
         return UserResponseDTO.UserFollowingSliceDTO.from(followingSlice);
     }
-
-    public static UserResponseDTO.UserMissionSliceDTO toUserMissionSliceDTO(Slice<Mission> missionSlice) {
-        return UserResponseDTO.UserMissionSliceDTO.from(missionSlice);
-    }
 }
