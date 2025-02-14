@@ -40,6 +40,7 @@ public class PostConverter {
                 .backItemtags(backItemtags)
                 .pointColor(post.getPointColor())
                 .visibility(post.getVisibility())
+                .isMission(post.isMission())
                 .build();
 
     }
@@ -67,6 +68,7 @@ public class PostConverter {
                 .backImage(post.getBackImage())              // 뒷면 이미지
                 .pointColor(post.getPointColor())             // 포인트 컬러
                 .visibility(post.getVisibility())             // 공개 여부
+                .isMission(post.isMission())
                 .hashtags(post.getPostHashtagList().stream()  // 해시태그
                         .map(postHashtag -> postHashtag.getHashtag().getContent())
                         .collect(Collectors.toList()))

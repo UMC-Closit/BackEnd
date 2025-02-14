@@ -27,6 +27,7 @@ public class PostResponseDTO {
         private List<ItemTagDTO> backItemtags;
         private String pointColor;
         private Visibility visibility;
+        private boolean isMission;
     }
 
     @Getter

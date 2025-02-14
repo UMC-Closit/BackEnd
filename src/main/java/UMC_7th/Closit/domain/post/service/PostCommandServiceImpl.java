@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,17 +39,23 @@ public class PostCommandServiceImpl implements PostCommandService {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus._NOT_FOUND));
 
-        // 2. Post 생성 및 저장
+        // 2. 사용자가 오늘 작성한 게시글이 있는지 확인
+        LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
+        LocalDateTime now = LocalDateTime.now();
+        boolean isMission = postRepository.findAllByUserIdAndCreatedAtBetween(user.getId(), startOfDay, now).isEmpty();
+
+        // 3. Post 생성 및 저장
         Post post = Post.builder()
                 .frontImage(request.getFrontImage())
                 .backImage(request.getBackImage())
                 .pointColor(request.getPointColor())
                 .visibility(request.getVisibility())
+                .isMission(isMission)
                 .user(user)
                 .build();
         postRepository.save(post);
 
-        // 3. 해시태그 처리
+        // 4. 해시태그 처리
         List<PostHashtag> postHashtags = request.getHashtags().stream()
                 .map(tagContent -> {
                     Hashtag hashTag = hashtagRepository.findByContent(tagContent)
@@ -58,7 +65,7 @@ public class PostCommandServiceImpl implements PostCommandService {
                 .collect(Collectors.toList());
         postHashtagRepository.saveAll(postHashtags);
 
-        // 4. Front ItemTags 처리
+        // 5. Front ItemTags 처리
         List<ItemTag> frontItemTags = request.getFrontItemtags().stream()
                 .map(itemTagDTO -> ItemTag.builder()
                         .post(post)
@@ -69,7 +76,7 @@ public class PostCommandServiceImpl implements PostCommandService {
                 .collect(Collectors.toList());
         itemTagRepository.saveAll(frontItemTags);
 
-        // 5. Back ItemTags 처리
+        // 6. Back ItemTags 처리
         List<ItemTag> backItemTags = request.getBackItemtags().stream()
                 .map(itemTagDTO -> ItemTag.builder()
                         .post(post)
