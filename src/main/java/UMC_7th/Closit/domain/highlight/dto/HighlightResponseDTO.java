@@ -15,7 +15,7 @@ public class HighlightResponseDTO {
     @AllArgsConstructor
     public static class CreateHighlightResultDTO {
         private Long highlightId;
-        private Long userId;
+        private String clositId;
         private Long postId;
         private LocalDateTime createdAt;
     }

@@ -13,7 +13,7 @@ public class HighlightConverter {
     public static HighlightResponseDTO.CreateHighlightResultDTO toCreateHighlightResultDTO(Highlight highlight) {
         return HighlightResponseDTO.CreateHighlightResultDTO.builder()
                 .highlightId(highlight.getId())
-                .userId(highlight.getUser().getId())
+                .clositId(highlight.getUser().getClositId())
                 .postId(highlight.getPost().getId())
                 .createdAt(LocalDateTime.now())
                 .build();

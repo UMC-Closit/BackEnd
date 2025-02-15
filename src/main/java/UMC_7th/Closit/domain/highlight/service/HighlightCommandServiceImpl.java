@@ -34,6 +34,11 @@ public class HighlightCommandServiceImpl implements HighlightCommandService {
 
         Post post = postRepository.findById(request.getPost())
                 .orElseThrow(() -> new PostHandler(ErrorStatus.POST_NOT_FOUND));
+        
+        // 자신이 작성한 게시글이어야 함
+        if (post.getUser().getId() != user.getId()) {
+            throw new GeneralException(ErrorStatus.USER_NOT_AUTHORIZED);
+        }
 
         Highlight newHighlight = HighlightConverter.toHighlight(request, user, post);
 
