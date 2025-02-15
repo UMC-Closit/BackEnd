@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class NotiQueryServiceImpl implements NotiQueryService {
 
@@ -22,7 +22,18 @@ public class NotiQueryServiceImpl implements NotiQueryService {
     private final NotificationRepository notificationRepository;
 
     @Override
-    public Slice<Notification> getNotificationList(Long userId, Integer page) { // 알림 목록 조회
+    public Notification readNotification(Long userId, Long notificationId) { // 알림 단건 조회 - 읽음 처리
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.NOTIFICATION_NOT_FOUND));
+
+        // 읽음 처리
+        notification.markAsRead();
+
+        return notificationRepository.save(notification);
+    }
+
+    @Override
+    public Slice<Notification> getNotificationList(Long userId, Integer page) { // 알림 목록 조회 - 읽음 처리
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
@@ -30,6 +41,12 @@ public class NotiQueryServiceImpl implements NotiQueryService {
 
         // 최신순으로 조회
         Slice<Notification> notificationList = notificationRepository.findByUserOrderByCreatedAtDesc(user, pageable);
+
+        // 전체 알림 읽음 처리
+        notificationList.forEach(notification -> {
+            notification.markAsRead();
+            notificationRepository.save(notification);
+        });
 
         return notificationList;
     }

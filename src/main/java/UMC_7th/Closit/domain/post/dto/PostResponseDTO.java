@@ -1,11 +1,13 @@
 package UMC_7th.Closit.domain.post.dto;
 
 import UMC_7th.Closit.domain.post.entity.Visibility;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class PostResponseDTO {
@@ -50,6 +52,17 @@ public class PostResponseDTO {
         private boolean isLast;
         private boolean hasNext;
     }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CreatePostResultDTO { // 게시글 업로드 응답 DTO
+        private Long postId;
 
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+        private LocalDateTime createdAt;
+
+        private Visibility visibility; // 게시글 공개 여부
+    }
 
 }

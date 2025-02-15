@@ -12,4 +12,6 @@ public interface UserCommandService {
     void deleteUser();
 
     User registerProfileImage (MultipartFile file);
+
+    boolean isClositIdUnique(String clositId);
 }

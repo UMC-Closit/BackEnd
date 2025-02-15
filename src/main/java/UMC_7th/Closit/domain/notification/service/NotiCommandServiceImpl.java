@@ -123,8 +123,8 @@ public class NotiCommandServiceImpl implements NotiCommandService {
 
     @Override
     public void followNotification(Follow follow) { // 팔로우 알림
-        User receiver = follow.getFollowing(); // 팔로잉
-        String content = follow.getFollower().getName() + "님이 회원님을 팔로우하기 시작했습니다. ";
+        User receiver = follow.getFollower(); // 팔로워 알림 받는 사용자
+        String content = follow.getFollowing().getName() + "님이 회원님을 팔로우하기 시작했습니다. ";
 
         NotificationRequestDTO.SendNotiRequestDTO request = NotificationConverter.sendNotiRequest(receiver, content, NotificationType.FOLLOW);
 
@@ -149,17 +149,6 @@ public class NotiCommandServiceImpl implements NotiCommandService {
 //            scheduler.shutdown(); // 작업 완료 후, 스레드 종료
 //        }, 10, TimeUnit.SECONDS); // SSE 연결 10초 후, 한 번만 실행
 //    }
-
-    @Override
-    public Notification readNotification(Long userId, Long notificationId) { // 알림 단건 조회 - 읽음 처리
-        Notification notification = notificationRepository.findById(notificationId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.NOTIFICATION_NOT_FOUND));
-
-        // 읽음 처리
-        notification.markAsRead();
-
-        return notificationRepository.save(notification);
-    }
 
     @Override
     public void deleteNotification(Long userId, Long notificationId) { // 알림 삭제

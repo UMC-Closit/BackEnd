@@ -16,7 +16,6 @@ public interface NotiCommandService {
     void commentNotification(Comment comment); // 댓글 알림
     void likeNotification(Likes likes); // 좋아요 알림
     void followNotification(Follow follow); // 팔로우 알림
-    //void missionNotification(SseEmitter emitter, String emitterId, Object data); // 미션 알림
-    Notification readNotification(Long userId, Long notificationId); // 알람 단건 조회 - 읽음 처리
+    // void missionNotification(SseEmitter emitter, String emitterId, Object data); // 미션 알림
     void deleteNotification(Long userId, Long notificationId); // 알림 삭제
 }

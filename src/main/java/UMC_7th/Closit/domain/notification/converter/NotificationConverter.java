@@ -40,6 +40,8 @@ public class NotificationConverter {
 
     public static NotificationResponseDTO.NotiPreviewDTO notiPreviewDTO (Notification notification) { // 알림 단건 조회
         return NotificationResponseDTO.NotiPreviewDTO.builder()
+                .notificationId(notification.getId())
+                .clositId(notification.getUser().getClositId())
                 .userName(notification.getUser().getName())
                 .imageUrl(notification.getUser().getProfileImage())
                 .content(notification.getContent())

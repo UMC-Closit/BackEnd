@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final LikesRepository likesRepository;
+    private final LikeRepository likeRepository;
     private final BookmarkRepository bookmarkRepository;
     private final FollowRepository followRepository;
     private final PostHashTagRepository postHashTagRepository;
@@ -32,7 +32,7 @@ public class PostService {
                 .orElseThrow(() -> new GeneralException(ErrorStatus._NOT_FOUND));
 
         // 좋아요 여부 확인
-        Boolean isLiked = likesRepository.existsByUserAndPost(currentUser, post);
+        Boolean isLiked = likeRepository.existsByUserAndPost(currentUser, post);
 
         // 북마크 여부 확인
         Boolean isSaved = bookmarkRepository.existsByUserAndPost(currentUser, post);
