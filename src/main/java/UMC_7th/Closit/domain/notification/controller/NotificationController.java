@@ -51,15 +51,15 @@ public class NotificationController {
         User user = securityUtil.getCurrentUser();
         Long userId = user.getId();
 
-        Notification notification = notiCommandService.readNotification(userId, notification_id);
+        Notification notification = notiQueryService.readNotification(userId, notification_id);
 
         return ApiResponse.onSuccess(NotificationConverter.notiPreviewDTO(notification));
     }
 
-    @GetMapping()
+    @PatchMapping()
     @Operation(summary = "알림 목록 조회",
             description = """
-             ## 특정 사용자의 알림 목록 조회 (최신 순 정렬)
+             ## 특정 사용자의 알림 목록 조회 후 읽음 처리 (최신 순 정렬)
              ### Parameters
              page [조회할 페이지 번호] - 0부터 시작, 10개씩 보여줌
              """)
