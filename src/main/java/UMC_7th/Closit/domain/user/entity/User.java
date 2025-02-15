@@ -35,7 +35,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private Role role; // USER, ADMIN
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 20, nullable = false, unique = true)
     private String clositId;
 
     @Column(length = 20, nullable = false)
@@ -44,7 +44,7 @@ public class User extends BaseEntity {
     @Column(length = 255, nullable = false)
     private String password;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 30, nullable = false, unique = true)
     private String email;
 
     @Column
