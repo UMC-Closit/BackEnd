@@ -86,6 +86,12 @@ public class PostConverter {
                         .collect(Collectors.toList()))
                 .build();
     }
-
+    public static PostResponseDTO.CreatePostResultDTO toCreatePostResultDTO(Post post) {
+        return PostResponseDTO.CreatePostResultDTO.builder()
+                .postId(post.getId())
+                .createdAt(post.getCreatedAt())
+                .visibility(post.getVisibility())
+                .build();
+    }
 }
 

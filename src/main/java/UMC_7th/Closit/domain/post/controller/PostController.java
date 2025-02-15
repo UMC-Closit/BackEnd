@@ -29,9 +29,9 @@ public class PostController {
 
     @Operation(summary = "게시글 업로드")
     @PostMapping
-    public ApiResponse<Long> createPost(@RequestBody @Valid PostRequestDTO.CreatePostDTO request) {
+    public ApiResponse<PostResponseDTO.CreatePostResultDTO> createPost(@RequestBody @Valid PostRequestDTO.CreatePostDTO request) {
         Post post = postCommandService.createPost(request);
-        return ApiResponse.onSuccess(post.getId());
+        return ApiResponse.onSuccess(PostConverter.toCreatePostResultDTO(post));
     }
 
     @Operation(summary = "특정 게시글 조회")
