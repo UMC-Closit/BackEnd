@@ -6,15 +6,13 @@ import UMC_7th.Closit.domain.user.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
-import java.util.List;
-
 public interface UserQueryService {
 
-    Slice<Highlight> getHighlightList(Pageable pageable);
+    Slice<Highlight> getHighlightList(String clositId, Pageable pageable);
 
-    Slice<User> getFollowerList(Pageable pageable);
+    Slice<User> getFollowerList(String clositId, Pageable pageable);
 
-    Slice<User> getFollowingList(Pageable pageable);
+    Slice<User> getFollowingList(String clositId, Pageable pageable);
 
     Slice<Mission> getMissionList(String clositId, Pageable pageable);
 

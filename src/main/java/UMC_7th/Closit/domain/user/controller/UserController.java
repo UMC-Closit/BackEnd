@@ -18,8 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth/users")
@@ -54,32 +52,35 @@ public class UserController {
     }
 
     @Operation(summary = "사용자의 팔로워 목록 조회", description = "특정 사용자의 팔로워 목록을 조회합니다.")
-    @GetMapping("/followers")
+    @GetMapping("/{closit_id}/followers")
     public ApiResponse<UserResponseDTO.UserFollowerSliceDTO> getUserFollowers(
+            @PathVariable String closit_id,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        Slice<User> followerSlice = userQueryService.getFollowerList(PageRequest.of(page, size));
+        Slice<User> followerSlice = userQueryService.getFollowerList(closit_id, PageRequest.of(page, size));
         return ApiResponse.onSuccess(UserConverter.toUserFollowerSliceDTO(followerSlice));
     }
 
     @Operation(summary = "사용자의 팔로잉 목록 조회", description = "특정 사용자의 팔로잉 목록을 조회합니다.")
-    @GetMapping("/following")
+    @GetMapping("/{closit_id}/following")
     public ApiResponse<UserResponseDTO.UserFollowingSliceDTO> getUserFollowing(
+            @PathVariable String closit_id,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        Slice<User> followingSlice = userQueryService.getFollowingList(PageRequest.of(page, size));
+        Slice<User> followingSlice = userQueryService.getFollowingList(closit_id, PageRequest.of(page, size));
         return ApiResponse.onSuccess(UserConverter.toUserFollowingSliceDTO(followingSlice));
     }
 
     @Operation(summary = "사용자의 하이라이트 목록 조회", description = "특정 사용자의 하이라이트 목록을 조회합니다.")
-    @GetMapping("/highlights")
+    @GetMapping("/{closit_id}/highlights")
     public ApiResponse<UserResponseDTO.UserHighlightSliceDTO> getUserHighlights(
+            @PathVariable String closit_id,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        Slice<Highlight> highlightSlice = userQueryService.getHighlightList(PageRequest.of(page, size));
+        Slice<Highlight> highlightSlice = userQueryService.getHighlightList(closit_id, PageRequest.of(page, size));
 
         return ApiResponse.onSuccess(UserConverter.toUserHighlightSliceDTO(highlightSlice));
     }
