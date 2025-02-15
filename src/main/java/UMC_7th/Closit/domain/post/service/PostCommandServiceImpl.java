@@ -136,7 +136,7 @@ public class PostCommandServiceImpl implements PostCommandService {
     @Override
     public void deletePost(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus._NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
         postRepository.delete(post);
     }
 }

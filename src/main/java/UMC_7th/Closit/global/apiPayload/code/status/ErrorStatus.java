@@ -24,10 +24,8 @@ public enum ErrorStatus implements BaseErrorCode {
     USER_NOT_AUTHORIZED (HttpStatus.FORBIDDEN, "USER4003", "사용자 권한이 없습니다."), // 권한 부족
     USER_NOT_MATCH (HttpStatus.FORBIDDEN, "USER4004", "사용자가 일치하지 않습니다."), // 권한 부족
     EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "USER4005","이미 존재하는 이메일입니다"), // 리소스 충돌
-    USER_NOT_FOUND (HttpStatus.NOT_FOUND, "USER4041", "사용자가 존재하지 않습니다."), // 존재하지 않는 사용자
-
-    // ClositId 관련 에러
-    CLOSITID_ALREADY_EXISTS(HttpStatus.CONFLICT, "USER4004", "이미 존재하는 ClositId입니다."), // 리소스 충돌
+    USER_NOT_FOUND (HttpStatus.NOT_FOUND, "USER4006", "사용자가 존재하지 않습니다."), // 존재하지 않는 사용자
+    CLOSIT_ID_ALREADY_EXISTS(HttpStatus.CONFLICT, "USER4007", "이미 존재하는 ClositId입니다."), // 리소스 충돌
 
     // 토큰 관련 에러
     EXPIRED_TOKEN(HttpStatus.BAD_REQUEST, "TOKEN4001", "토큰이 만료되었습니다."),
@@ -35,6 +33,7 @@ public enum ErrorStatus implements BaseErrorCode {
     UNSUPPORTED_TOKEN(HttpStatus.BAD_REQUEST, "TOKEN4003", "지원하지 않는 토큰입니다."),
     EMPTY_TOKEN(HttpStatus.BAD_REQUEST, "TOKEN4004", "토큰이 비어있습니다."),
     INVALID_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "TOKEN4005", "유효하지 않은 리프레시 토큰입니다."),
+
     // 게시글 관련 에러
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4041", "게시글이 존재하지 않습니다."),
 
