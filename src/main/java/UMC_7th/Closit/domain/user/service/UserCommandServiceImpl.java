@@ -117,13 +117,48 @@ public class UserCommandServiceImpl implements UserCommandService {
     @Override
     public boolean isClositIdUnique(String clositId) {
         Optional<User> user = userRepository.findByClositId(clositId);
-        return !user.isPresent();
-
+        return user.isEmpty();
     }
 
-    private User getOrElseThrow (Long userId) {
-        log.info("Get user by userId: userId={}", userId);
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
+
+    @Override
+    public User updateUserInfo(UserRequestDTO.UpdateUserDTO updateUserDTO) {
+
+        User currentUser = securityUtil.getCurrentUser();
+        Boolean isChanged = false;
+
+        if (updateUserDTO.getName() != null) {
+            currentUser.setName(updateUserDTO.getName());
+            isChanged = true;
+        }
+
+        if (updateUserDTO.getClositId() != null) {
+            if (!isClositIdUnique(updateUserDTO.getClositId())) {
+                throw new UserHandler(ErrorStatus.CLOSIT_ID_ALREADY_EXISTS);
+            }
+            currentUser.setClositId(updateUserDTO.getClositId());
+            isChanged = true;
+        }
+
+        if (!passwordEncoder.matches(updateUserDTO.getCurrentPassword(), currentUser.getPassword())) {
+            throw new UserHandler(ErrorStatus.INVALID_PASSWORD);
+        } else {
+            if (updateUserDTO.getPassword() != null) {
+                currentUser.setPassword(passwordEncoder.encode(updateUserDTO.getPassword()));
+                isChanged = true;
+            }
+        }
+
+        if (updateUserDTO.getBirth() != null) {
+            currentUser.setBirth(updateUserDTO.getBirth());
+            isChanged = true;
+        }
+
+        if (!isChanged) {
+            throw new UserHandler(ErrorStatus.NO_CHANGE_DETECTED);
+        }
+
+        return currentUser;
     }
+
 }

@@ -3,12 +3,14 @@ package UMC_7th.Closit.domain.user.controller;
 import UMC_7th.Closit.domain.highlight.entity.Highlight;
 import UMC_7th.Closit.domain.mission.entity.Mission;
 import UMC_7th.Closit.domain.user.converter.UserConverter;
+import UMC_7th.Closit.domain.user.dto.UserRequestDTO;
 import UMC_7th.Closit.domain.user.dto.UserResponseDTO;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.service.UserCommandService;
 import UMC_7th.Closit.domain.user.service.UserQueryService;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +37,15 @@ public class UserController {
 
         userCommandService.deleteUser();
         return ApiResponse.onSuccess("Deletion successful");
+    }
+
+    @Operation(summary = "사용자 정보 수정", description = "사용자 정보를 수정합니다.")
+    @PatchMapping("/")
+    public ApiResponse<UserResponseDTO.UserInfoDTO> updateUserInfo(@Valid @RequestBody UserRequestDTO.UpdateUserDTO updateUserDTO) {
+
+        User userInfo = userCommandService.updateUserInfo(updateUserDTO);
+
+        return ApiResponse.onSuccess(UserConverter.toUserInfoDTO(userInfo));
     }
 
     @Operation(summary = "사용자 프로필 이미지 등록", description = "특정 사용자의 프로필 이미지를 등록합니다.")
