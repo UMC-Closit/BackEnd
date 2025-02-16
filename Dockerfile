@@ -6,7 +6,7 @@ WORKDIR /app
 
 # 타임존 설정 (Asia/Seoul)
 RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && \
-    echo "Asia/Seoul" > /etc/timezone \
+    echo "Asia/Seoul" > /etc/timezone
 
 # JAR 파일 복사
 COPY build/libs/*.jar app.jar
