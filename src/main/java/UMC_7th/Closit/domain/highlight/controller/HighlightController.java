@@ -35,15 +35,6 @@ public class HighlightController {
         return ApiResponse.onSuccess(detailDTO);
     }
 
-    @Operation(summary = "하이라이트 수정", description = "ID를 통해 특정 하이라이트를 수정합니다.")
-    @PutMapping("/{highlight_id}")
-    public ApiResponse<HighlightResponseDTO.UpdateHighlightResultDTO> updateHighlight(
-            @PathVariable Long highlight_id,
-            @RequestBody @Valid HighlightRequestDTO.UpdateHighlightDTO request) {
-        Highlight updatedHighlight = highlightCommandService.updateHighlight(highlight_id, request);
-        return ApiResponse.onSuccess(HighlightConverter.toUpdateHighlightResultDTO(updatedHighlight));
-    }
-
     @Operation(summary = "하이라이트 삭제", description = "ID를 통해 특정 하이라이트를 삭제합니다.")
     @DeleteMapping("/{highlight_id}")
     public ApiResponse<String> deleteHighlight(@PathVariable Long highlight_id) {

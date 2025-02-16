@@ -22,7 +22,7 @@ public class HighlightQueryServiceImpl implements HighlightQueryService {
         // 현재 로그인 상태 확인
         securityUtil.getCurrentUser();
 
-        return highlightRepository.findByIdWithPosts(id)
+        return highlightRepository.findByIdWithPost(id)
                 .orElseThrow(() -> new HighlightHandler(ErrorStatus.HIGHLIGHT_NOT_FOUND));
     }
 }

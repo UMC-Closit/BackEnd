@@ -10,13 +10,12 @@ import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
+import UMC_7th.Closit.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +26,7 @@ public class UserQueryServiceImpl implements UserQueryService {
     private final HighlightRepository highlightRepository;
     private final FollowRepository followRepository;
     private final MissionRepository missionRepository;
+    private final SecurityUtil securityUtil;
 
     @Override
     public Slice<Highlight> getHighlightList(String clositId, Pageable pageable) {
