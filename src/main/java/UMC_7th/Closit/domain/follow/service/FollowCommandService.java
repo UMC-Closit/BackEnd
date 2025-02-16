@@ -7,7 +7,7 @@ public interface FollowCommandService {
 
     Follow createFollow(FollowRequestDTO.CreateFollowDTO request);
 
-    boolean isFollowing(String followerClositId);
+    boolean isFollowing(String receiverClositId);
 
-    void deleteFollow(String followerClositId, String followingClositId);
+    void deleteFollow(String receiverClositId);
 }

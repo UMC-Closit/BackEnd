@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "follow", uniqueConstraints = {
-        @UniqueConstraint(name = "UK_follower_following", columnNames = {"follower_id", "following_id"})
+        @UniqueConstraint(name = "UK_sender_receiver", columnNames = {"sender_id", "receiver_id"})
 })
 public class Follow extends BaseEntity {
 
@@ -21,10 +21,10 @@ public class Follow extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "follower_id", nullable = false)
-    private User follower;
+    @JoinColumn(name = "sender_id", nullable = false)
+    private User sender;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "following_id", nullable = false)
-    private User following;
+    @JoinColumn(name = "receiver_id", nullable = false)
+    private User receiver;
 }
