@@ -59,17 +59,15 @@ public class BattleLikeController {
             description = """
             ## 배틀 게시글 내 특정 좋아요 취소
             ### PathVariable
-            battle_id [배틀 ID] \n
-            battle_like_id [배틀 좋아요 ID]
+            battle_id [배틀 ID]
             """)
-    @DeleteMapping("{battle_id}/likes/{battle_like_id}")
-    public ApiResponse<String> deleteBattleLike(@PathVariable("battle_id") Long battleId,
-                                                @PathVariable("battle_like_id") Long battleLikeId) {
+    @DeleteMapping("{battle_id}/likes")
+    public ApiResponse<String> deleteBattleLike(@PathVariable("battle_id") Long battleId) {
 
         User user = securityUtil.getCurrentUser();
         Long userId = user.getId();
 
-        battleLikeCommandService.deleteBattleLike(userId, battleId, battleLikeId);
+        battleLikeCommandService.deleteBattleLike(userId, battleId);
 
         return ApiResponse.onSuccess("Deletion successful");
     }
