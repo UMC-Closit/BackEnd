@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class HighlightResponseDTO {
 
@@ -16,22 +15,9 @@ public class HighlightResponseDTO {
     @AllArgsConstructor
     public static class CreateHighlightResultDTO {
         private Long highlightId;
-        private Long userId;
-        private String title;
-        private String thumbnail;
+        private String clositId;
+        private Long postId;
         private LocalDateTime createdAt;
-    }
-
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class UpdateHighlightResultDTO {
-        private Long highlightId;
-        private Long userId;
-        private String title;
-        private String thumbnail;
-        private LocalDateTime updatedAt;
     }
 
     @Builder
@@ -41,8 +27,7 @@ public class HighlightResponseDTO {
     public static class HighlightDTO {
         private Long highlightId;
         private String clositId;
-        private String title;
-        private String thumbnail;
+        private Long postId;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -54,10 +39,18 @@ public class HighlightResponseDTO {
     public static class HighlightDetailDTO {
         private Long highlightId;
         private String clositId;
-        private String title;
-        private String thumbnail;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
-        private List<HighlightPostResponseDTO.HighlightPostDTO> highlightPosts;
+        private PostInfoDTO post;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PostInfoDTO {
+        private Long id;
+        private String backImage;
+        private LocalDateTime createdAt;
     }
 }
