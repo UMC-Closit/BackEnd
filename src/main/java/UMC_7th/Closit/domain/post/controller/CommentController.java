@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
     private final CommentCommandService commentCommandService;
     private final CommentQueryService commentQueryService;
-    private final SecurityUtil securityUtil;
 
     @Operation(summary = "새로운 댓글 생성")
     @PostMapping
