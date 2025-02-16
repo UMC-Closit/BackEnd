@@ -1,5 +1,6 @@
 package UMC_7th.Closit.domain.post.controller;
 
+import UMC_7th.Closit.domain.post.converter.LikeConverter;
 import UMC_7th.Closit.domain.post.dto.LikeRequestDTO;
 import UMC_7th.Closit.domain.post.dto.LikeResponseDTO;
 import UMC_7th.Closit.domain.post.service.LikeService;
@@ -21,20 +22,21 @@ public class LikeController {
     @PostMapping
     public ApiResponse<LikeResponseDTO.LikeStatusDTO> likePost(@PathVariable("post_id") Long postId) {
         User user = securityUtil.getCurrentUser();
-        Long userId = user.getId();
-        LikeRequestDTO.CreateLikeDTO request = new LikeRequestDTO.CreateLikeDTO(userId, postId);
+        String clositId = user.getClositId();
+        LikeRequestDTO.CreateLikeDTO request = new LikeRequestDTO.CreateLikeDTO(postId, clositId);
         return ApiResponse.onSuccess(likeService.likePost(request));
     }
 
     @Operation(summary = "게시글 좋아요 삭제")
     @DeleteMapping("/{like_id}")
-    public ApiResponse<Void> unlikePost(
+    public ApiResponse<LikeResponseDTO.LikeStatusDTO> unlikePost(
             @PathVariable("post_id") Long postId,
             @PathVariable("like_id") Long likeId){
         User user = securityUtil.getCurrentUser();
-        Long userId = user.getId();
-        LikeRequestDTO.UnlikeDTO request = new LikeRequestDTO.UnlikeDTO(userId, postId, likeId);
-        likeService.unlikePost(request);
-        return ApiResponse.onSuccess(null);
+        String clositId = user.getClositId();
+        LikeRequestDTO.UnlikeDTO request = new LikeRequestDTO.UnlikeDTO(postId, clositId, likeId);
+        LikeResponseDTO.LikeStatusDTO likeStatusDTO = likeService.unlikePost(request);
+
+        return ApiResponse.onSuccess(likeStatusDTO);
     }
 }

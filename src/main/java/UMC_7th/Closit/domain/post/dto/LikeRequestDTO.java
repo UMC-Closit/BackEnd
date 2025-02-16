@@ -11,7 +11,7 @@ public class LikeRequestDTO {
     @NoArgsConstructor
     public static class CreateLikeDTO{
         private Long postId;
-        private Long userId;
+        private String clositId;
     }
 
     @Getter
@@ -19,7 +19,7 @@ public class LikeRequestDTO {
     @NoArgsConstructor
     public static class UnlikeDTO{
         private Long postId;
-        private Long userId;
+        private String clositId;
         private Long likeId;
     }
 

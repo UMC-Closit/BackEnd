@@ -11,12 +11,14 @@ import java.util.stream.Collectors;
 
 public class PostConverter {
 
-    public static PostResponseDTO.PostPreviewDTO toPostPreviewDTO(Post post, Boolean isLiked, Boolean isSaved, Boolean isFriend,
-                                                                  List<String> hashtags, List<ItemTag> frontTags, List<ItemTag> backTags) {
+    public static PostResponseDTO.PostPreviewDTO toPostPreviewDTO (Post post, Boolean isLiked, Boolean isSaved, Boolean isFriend,
+                                                                   List<String> hashtags, List<ItemTag> frontTags, List<ItemTag> backTags) {
+
         List<PostResponseDTO.ItemTagDTO> frontItemtags = frontTags.stream()
                 .map(tag -> PostResponseDTO.ItemTagDTO.builder()
                         .x(tag.getItemTagX())
                         .y(tag.getItemTagY())
+                        .content(tag.getItemTagContent())
                         .build())
                 .collect(Collectors.toList());
 
@@ -24,8 +26,10 @@ public class PostConverter {
                 .map(tag -> PostResponseDTO.ItemTagDTO.builder()
                         .x(tag.getItemTagX())
                         .y(tag.getItemTagY())
+                        .content(tag.getItemTagContent())
                         .build())
                 .collect(Collectors.toList());
+
         return PostResponseDTO.PostPreviewDTO.builder()
                 .postId(post.getId())
                 .userId(post.getUser().getId())
@@ -63,9 +67,8 @@ public class PostConverter {
 
     public static PostRequestDTO.CreatePostDTO toPost(Post post) {
         return PostRequestDTO.CreatePostDTO.builder()
-                .userId(post.getUser().getId())               // User ID
                 .frontImage(post.getFrontImage())             // 앞면 이미지
-                .backImage(post.getBackImage())              // 뒷면 이미지
+                .backImage(post.getBackImage())               // 뒷면 이미지
                 .pointColor(post.getPointColor())             // 포인트 컬러
                 .visibility(post.getVisibility())             // 공개 여부
                 .isMission(post.isMission())
@@ -77,6 +80,7 @@ public class PostConverter {
                         .map(itemTag -> PostResponseDTO.ItemTagDTO.builder()
                                 .x(itemTag.getItemTagX())
                                 .y(itemTag.getItemTagY())
+                                .content(itemTag.getItemTagContent())
                                 .build())
                         .collect(Collectors.toList()))
                 .backItemtags(post.getItemTagList().stream()  // Back ItemTags
@@ -84,12 +88,24 @@ public class PostConverter {
                         .map(itemTag -> PostResponseDTO.ItemTagDTO.builder()
                                 .x(itemTag.getItemTagX())
                                 .y(itemTag.getItemTagY())
+                                .content(itemTag.getItemTagContent())
                                 .build())
                         .collect(Collectors.toList()))
                 .build();
     }
+
     public static PostResponseDTO.CreatePostResultDTO toCreatePostResultDTO(Post post) {
         return PostResponseDTO.CreatePostResultDTO.builder()
+                .clositId(post.getUser().getClositId())
+                .postId(post.getId())
+                .createdAt(post.getCreatedAt())
+                .visibility(post.getVisibility())
+                .build();
+    }
+
+    public static PostResponseDTO.UpdatePostResultDTO toUpdatePostResultDTO(Post post) {
+        return PostResponseDTO.UpdatePostResultDTO.builder()
+                .clositId(post.getUser().getClositId())
                 .postId(post.getId())
                 .createdAt(post.getCreatedAt())
                 .visibility(post.getVisibility())
