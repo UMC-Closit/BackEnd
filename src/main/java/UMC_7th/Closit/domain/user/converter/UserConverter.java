@@ -61,6 +61,7 @@ public class UserConverter {
                 .clositId(post.getUser().getClositId())
                 .userName(post.getUser().getName())
                 .postId(post.getId())
+                .thumbnail(post.getFrontImage())
                 .createdAt(post.getCreatedAt())
                 .build();
     }
