@@ -5,5 +5,5 @@ import UMC_7th.Closit.domain.post.dto.LikeResponseDTO;
 
 public interface LikeService {
     LikeResponseDTO.LikeStatusDTO likePost(LikeRequestDTO.CreateLikeDTO request);
-    void unlikePost(LikeRequestDTO.UnlikeDTO request);
+    LikeResponseDTO.LikeStatusDTO unlikePost(LikeRequestDTO.UnlikeDTO request);
 }
