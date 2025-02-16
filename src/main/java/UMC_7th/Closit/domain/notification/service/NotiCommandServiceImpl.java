@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -141,13 +142,14 @@ public class NotiCommandServiceImpl implements NotiCommandService {
 
         List<Post> posts = postRepository.findByUserId(receiver.getId());
 
-        // 24시간 이내에 사용자가 올린 게시물이 있는지 확인
+        // 하루 이내에 사용자가 올린 게시물이 있는지 확인
+        LocalDateTime today = LocalDateTime.now().with(LocalTime.MIDNIGHT);
         boolean existsPost = posts.stream()
-                .anyMatch(post -> post.getCreatedAt().isAfter(LocalDateTime.now().minusDays(1)));
+                .anyMatch(post -> post.getCreatedAt().isAfter(today));
 
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.schedule(() -> {
-            // 24시간 이내 사용자가 올린 게시글이 없을 경우, 알림 전송
+            // 하루 이내 사용자가 올린 게시글이 없을 경우, 알림 전송
             if (!existsPost) {
                 sendToClient(emitter, emitterId, content.getBytes(StandardCharsets.UTF_8));
             } scheduler.shutdown(); // 작업 완료 후, 스레드 종료
