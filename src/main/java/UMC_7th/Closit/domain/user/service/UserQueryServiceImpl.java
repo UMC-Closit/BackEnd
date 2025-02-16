@@ -5,6 +5,7 @@ import UMC_7th.Closit.domain.follow.repository.FollowRepository;
 import UMC_7th.Closit.domain.highlight.entity.Highlight;
 import UMC_7th.Closit.domain.highlight.repository.HighlightRepository;
 import UMC_7th.Closit.domain.post.entity.Post;
+import UMC_7th.Closit.domain.post.repository.PostRepository;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
@@ -27,13 +28,11 @@ public class UserQueryServiceImpl implements UserQueryService {
     private final UserRepository userRepository;
     private final HighlightRepository highlightRepository;
     private final FollowRepository followRepository;
+    private final PostRepository postRepository;
     private final SecurityUtil securityUtil;
 
     @Override
-    public Slice<Highlight> getHighlight
-      
-      
- (String clositId, Pageable pageable) {
+    public Slice<Highlight> getHighlight(String clositId, Pageable pageable) {
         User user = userRepository.findByClositId(clositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
