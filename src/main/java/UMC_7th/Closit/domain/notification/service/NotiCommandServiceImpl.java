@@ -9,6 +9,8 @@ import UMC_7th.Closit.domain.notification.repository.NotificationRepository;
 import UMC_7th.Closit.domain.notification.repository.EmitterRepository;
 import UMC_7th.Closit.domain.post.entity.Comment;
 import UMC_7th.Closit.domain.post.entity.Likes;
+import UMC_7th.Closit.domain.post.entity.Post;
+import UMC_7th.Closit.domain.post.repository.PostRepository;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -34,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 public class NotiCommandServiceImpl implements NotiCommandService {
 
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
     private final NotificationRepository notificationRepository;
     private final EmitterRepository emitterRepository;
     private final SecurityUtil securityUtil;
@@ -60,7 +64,7 @@ public class NotiCommandServiceImpl implements NotiCommandService {
                     .forEach(entry -> sendToClient(emitter, entry.getKey(), entry.getValue()));
         }
         // 미션 알림
-        // missionNotification(emitter, emitterId, "MISSION");
+        missionNotification(emitter, emitterId, "MISSION");
 
         return emitter;
     }
@@ -131,24 +135,26 @@ public class NotiCommandServiceImpl implements NotiCommandService {
         sendNotification(request);
     }
 
-//    @Override
-//    public void missionNotification(SseEmitter emitter, String emitterId, Object data) { // 미션 알림
-//        User receiver = securityUtil.getCurrentUser(); // 현재 로그인한 사용자
-//        String content = receiver.getName() + "님 오늘의 미션을 수행해주세요!";
-//
-//        List<Mission> missions = missionRepository.findByUserId(receiver.getId());
-//
-//        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-//        scheduler.schedule(() -> {
-//            for (Mission mission : missions) {
-//                // 24시간 이내 미완료일 경우, 알림 전송
-//                if (mission.getStatus().equals(MissionStatus.INCOMPLETE) && mission.getCreatedAt().plusDays(1).isAfter(LocalDateTime.now())) {
-//                    sendToClient(emitter, emitterId, content.getBytes(StandardCharsets.UTF_8));
-//                }
-//            }
-//            scheduler.shutdown(); // 작업 완료 후, 스레드 종료
-//        }, 10, TimeUnit.SECONDS); // SSE 연결 10초 후, 한 번만 실행
-//    }
+    @Override
+    public void missionNotification(SseEmitter emitter, String emitterId, Object data) { // 미션 알림
+        User receiver = securityUtil.getCurrentUser(); // 현재 로그인한 사용자
+        String content = receiver.getName() + "님 오늘의 미션을 수행해주세요!";
+
+        List<Post> posts = postRepository.findByUserId(receiver.getId());
+
+        // 하루 이내에 사용자가 올린 게시물이 있는지 확인
+        LocalDateTime today = LocalDateTime.now().with(LocalTime.MIDNIGHT);
+        boolean existsPost = posts.stream()
+                .anyMatch(post -> post.getCreatedAt().isAfter(today));
+
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.schedule(() -> {
+            // 하루 이내 사용자가 올린 게시글이 없을 경우, 알림 전송
+            if (!existsPost) {
+                sendToClient(emitter, emitterId, content.getBytes(StandardCharsets.UTF_8));
+            } scheduler.shutdown(); // 작업 완료 후, 스레드 종료
+        }, 10, TimeUnit.SECONDS); // SSE 연결 10초 후, 한 번만 실행
+    }
 
     @Override
     public void deleteNotification(Long userId, Long notificationId) { // 알림 삭제
