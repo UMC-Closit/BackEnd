@@ -4,8 +4,8 @@ import UMC_7th.Closit.domain.follow.entity.Follow;
 import UMC_7th.Closit.domain.follow.repository.FollowRepository;
 import UMC_7th.Closit.domain.highlight.entity.Highlight;
 import UMC_7th.Closit.domain.highlight.repository.HighlightRepository;
-import UMC_7th.Closit.domain.mission.entity.Mission;
-import UMC_7th.Closit.domain.mission.repository.MissionRepository;
+import UMC_7th.Closit.domain.post.entity.Post;
+import UMC_7th.Closit.domain.post.repository.PostRepository;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
@@ -17,6 +17,9 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -25,7 +28,7 @@ public class UserQueryServiceImpl implements UserQueryService {
     private final UserRepository userRepository;
     private final HighlightRepository highlightRepository;
     private final FollowRepository followRepository;
-    private final MissionRepository missionRepository;
+    private final PostRepository postRepository;
     private final SecurityUtil securityUtil;
 
     @Override
@@ -55,17 +58,20 @@ public class UserQueryServiceImpl implements UserQueryService {
     }
 
     @Override
-    public Slice<Mission> getMissionList(String clositId, Pageable pageable) {
-        User user = userRepository.findByClositId(clositId)
-                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
-
-        return missionRepository.findAllByUser(user, pageable);
-    }
-
-    @Override
     public User getUserInfo(String clositId) {
         return userRepository.findByClositId(clositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
     }
 
+    @Override
+    public boolean isMissionDone() {
+        // 현재 로그인된 사용자 정보 가져오기
+        User user = securityUtil.getCurrentUser();
+
+        LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
+        LocalDateTime now = LocalDateTime.now();
+
+        return !postRepository.findAllByUserIdAndCreatedAtBetween(user.getId(), startOfDay, now).isEmpty();
+
+    }
 }

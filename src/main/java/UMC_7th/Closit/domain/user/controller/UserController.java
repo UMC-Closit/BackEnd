@@ -1,7 +1,6 @@
 package UMC_7th.Closit.domain.user.controller;
 
 import UMC_7th.Closit.domain.highlight.entity.Highlight;
-import UMC_7th.Closit.domain.mission.entity.Mission;
 import UMC_7th.Closit.domain.user.converter.UserConverter;
 import UMC_7th.Closit.domain.user.dto.UserResponseDTO;
 import UMC_7th.Closit.domain.user.entity.User;
@@ -85,16 +84,10 @@ public class UserController {
         return ApiResponse.onSuccess(UserConverter.toUserHighlightSliceDTO(highlightSlice));
     }
 
-    @Operation(summary = "사용자의 미션 목록 조회", description = "특정 사용자의 미션 목록을 조회합니다.")
-    @GetMapping("/{closit_id}/missions")
-    public ApiResponse<UserResponseDTO.UserMissionSliceDTO> getUserMissions(
-            @PathVariable String closit_id,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-
-        Slice<Mission> missionSlice = userQueryService.getMissionList(closit_id, PageRequest.of(page, size));
-
-        return ApiResponse.onSuccess(UserConverter.toUserMissionSliceDTO(missionSlice));
+    @Operation(summary = "사용자의 데일리 미션 완료 여부 조회", description = "특정 사용자가 데일리 미션을 완료했는지 여부를 조회합니다.")
+    @GetMapping("/mission")
+    public ApiResponse<Boolean> getUserMission() {
+        return ApiResponse.onSuccess(userQueryService.isMissionDone());
     }
 
     @Operation(summary = "closit id 중복 여부 조회", description = "특정 closit id가 이미 있는 id인지 조회합니다.")
