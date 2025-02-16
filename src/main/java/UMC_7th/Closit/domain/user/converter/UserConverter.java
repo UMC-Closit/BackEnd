@@ -3,6 +3,7 @@ package UMC_7th.Closit.domain.user.converter;
 import UMC_7th.Closit.domain.highlight.converter.HighlightConverter;
 import UMC_7th.Closit.domain.highlight.dto.HighlightResponseDTO;
 import UMC_7th.Closit.domain.highlight.entity.Highlight;
+import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.domain.user.dto.UserResponseDTO;
 import UMC_7th.Closit.domain.user.entity.User;
 import jakarta.validation.constraints.NotNull;
@@ -53,5 +54,27 @@ public class UserConverter {
 
     public static UserResponseDTO.UserFollowingSliceDTO toUserFollowingSliceDTO(Slice<User> followingSlice) {
         return UserResponseDTO.UserFollowingSliceDTO.from(followingSlice);
+    }
+
+    public static UserResponseDTO.UserRecentPostDTO userRecentPostDTO(Post post) { // 특정 사용자의 최근 게시물 조회
+        return UserResponseDTO.UserRecentPostDTO.builder()
+                .clositId(post.getUser().getClositId())
+                .userName(post.getUser().getName())
+                .postId(post.getId())
+                .createdAt(post.getCreatedAt())
+                .build();
+    }
+
+    public static UserResponseDTO.UserRecentPostListDTO userRecentPostListDTO(Slice<Post> postList) {
+        List<UserResponseDTO.UserRecentPostDTO> userRecentPostDTOList = postList.stream()
+                .map(UserConverter::userRecentPostDTO).collect(Collectors.toList());
+
+        return UserResponseDTO.UserRecentPostListDTO.builder()
+                .userRecentPostDTOList(userRecentPostDTOList)
+                .listSize(userRecentPostDTOList.size())
+                .isFirst(postList.isFirst())
+                .isLast(postList.isLast())
+                .hasNext(postList.hasNext())
+                .build();
     }
 }

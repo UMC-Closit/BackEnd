@@ -2,6 +2,7 @@ package UMC_7th.Closit.domain.post.service;
 
 import UMC_7th.Closit.domain.follow.entity.Follow;
 import UMC_7th.Closit.domain.follow.repository.FollowRepository;
+import UMC_7th.Closit.domain.post.dto.PostRequestDTO;
 import UMC_7th.Closit.domain.post.entity.Hashtag;
 import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.domain.post.repository.HashTagRepository;
@@ -10,6 +11,7 @@ import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
+import UMC_7th.Closit.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -28,14 +30,19 @@ public class PostQueryServiceImpl implements PostQueryService {
     private final FollowRepository followRepository;
     private final HashTagRepository hashtagRepository;
     private final UserRepository userRepository;
+    private final SecurityUtil securityUtil;
 
-    public Slice<Post> getPostListByFollowerAndHashtag(Long userId, boolean follower, String hashtag, Pageable pageable) {
-        User user = userRepository.findById(userId).orElse(null);
+    public Slice<Post> getPostListByFollowerAndHashtag (PostRequestDTO.GetPostDTO request, Pageable pageable) {
+        User currentUser = securityUtil.getCurrentUser();
+
+
+        boolean follower = request.isFollower();
+        String hashtag = request.getHashtag();
 
         // 팔로워가 `true`인 경우
         if (follower) {
             // 팔로워 기반 조회
-            List<User> followingUsers = followRepository.findByFollowing(user).stream()
+            List<User> followingUsers = followRepository.findByFollowing(currentUser).stream()
                     .map(Follow::getFollower)
                     .collect(Collectors.toList());
 

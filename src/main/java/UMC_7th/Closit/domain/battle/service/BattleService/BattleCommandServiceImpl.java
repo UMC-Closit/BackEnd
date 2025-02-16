@@ -136,6 +136,11 @@ public class BattleCommandServiceImpl implements BattleCommandService {
         Battle battle = battleRepository.findById(battleId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
 
+        // 배틀 게시글을 생성한 이가 아닐 경우 , 삭제 불가능
+        if (!battle.getPost1().getUser().getId().equals(userId)) {
+            throw new GeneralException(ErrorStatus.POST_NOT_MINE);
+        }
+
         battleRepository.delete(battle);
     }
 }

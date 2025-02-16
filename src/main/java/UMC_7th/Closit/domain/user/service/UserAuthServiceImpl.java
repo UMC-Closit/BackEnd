@@ -66,10 +66,11 @@ public class UserAuthServiceImpl implements UserAuthService {
     public JwtResponse refresh(String refreshToken) {
         // Refresh Token 유효성 검사
         jwtTokenProvider.validateToken(refreshToken);
-        User currentUser = securityUtil.getCurrentUser();
+        Claims claims = getClaims(refreshToken);
+        String email = claims.getSubject();
 
-        // Refresh Token에서 email 추출
-        String email = currentUser.getEmail();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
         // 서버에 저장된 refresh token과 비교
         RefreshToken savedToken = refreshTokenRepository.findByUsername(email)
@@ -80,7 +81,7 @@ public class UserAuthServiceImpl implements UserAuthService {
             throw new GeneralException(ErrorStatus.INVALID_REFRESH_TOKEN);
         }
 
-        Role role = currentUser.getRole();
+        Role role = user.getRole();
 
         // 새로운 Access Token, Refresh Token 생성
         String newAccessToken = jwtTokenProvider.createAccessToken(email, role);
@@ -90,6 +91,11 @@ public class UserAuthServiceImpl implements UserAuthService {
         savedToken.updateRefreshToken(newRefreshToken);
         refreshTokenRepository.save(new RefreshToken(email, newRefreshToken));
 
-        return new JwtResponse(currentUser.getClositId(), newAccessToken, newRefreshToken);
+        return new JwtResponse(user.getClositId(), newAccessToken, newRefreshToken);
+    }
+
+    // Get Claims from Token
+    private Claims getClaims(String token) {
+        return jwtTokenProvider.getClaims(token);
     }
 }

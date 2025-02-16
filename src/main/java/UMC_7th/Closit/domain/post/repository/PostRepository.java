@@ -37,4 +37,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p WHERE p.user.id = :userId GROUP BY FUNCTION('DATE', p.createdAt) ORDER BY p.createdAt ASC")
     Slice<Post> findPointColorByUserId(@Param("userId") Long userId, Pageable pageable); // 히스토리 포인트 색상 썸네일 조회
+
+    @Query("SELECT p FROM Post p WHERE p.user.clositId = :clositId AND p.createdAt >= :week ORDER BY p.createdAt DESC")
+    Slice<Post> findRecentPostList(@Param("clositId") String clositId, @Param("week") LocalDateTime week, Pageable pageable); // 특정 사용자의 최근 게시글 조회
 }

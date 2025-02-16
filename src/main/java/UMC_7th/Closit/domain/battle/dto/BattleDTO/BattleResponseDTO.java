@@ -57,6 +57,7 @@ public class BattleResponseDTO {
     @AllArgsConstructor
     public static class BattlePreviewDTO { // 배틀 게시글 목록 조회
         private Long battleId;
+        private boolean isLiked;
         private String title;
         private String firstClositId;
         private Long firstPostId;

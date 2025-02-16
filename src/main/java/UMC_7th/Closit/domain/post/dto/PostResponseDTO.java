@@ -32,6 +32,7 @@ public class PostResponseDTO {
         private boolean isMission;
     }
 
+
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
@@ -39,6 +40,7 @@ public class PostResponseDTO {
     public static class ItemTagDTO {
         private Double x; // X 좌표
         private Double y; // Y 좌표
+        private String content; // 태그 내용
     }
 
     @Builder
@@ -57,6 +59,23 @@ public class PostResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreatePostResultDTO { // 게시글 업로드 응답 DTO
+        private String clositId;
+
+        private Long postId;
+
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+        private LocalDateTime createdAt;
+
+        private Visibility visibility; // 게시글 공개 여부
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdatePostResultDTO { // 게시글 업로드 응답 DTO
+        private String clositId;
+
         private Long postId;
 
         @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
