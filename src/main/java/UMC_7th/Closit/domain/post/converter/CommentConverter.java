@@ -23,14 +23,15 @@ public class CommentConverter {
     public static CommentResponseDTO.CreateCommentResultDTO createCommentResponseDTO(Comment comment) {
         return CommentResponseDTO.CreateCommentResultDTO.builder()
                 .commentId(comment.getId())
+                .clositId(comment.getUser().getClositId())
                 .createdAt(comment.getCreatedAt())
                 .build();
     }
 
     public static CommentResponseDTO.CommentPreviewDTO commentPreviewDTO(Comment comment) {
         return CommentResponseDTO.CommentPreviewDTO.builder()
-                .userId(comment.getUser().getId())
                 .commentId(comment.getId())
+                .clositId(comment.getUser().getClositId())
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt())
                 .build();

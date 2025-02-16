@@ -11,6 +11,7 @@ import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
+import UMC_7th.Closit.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,17 +23,16 @@ public class CommentCommandServiceImpl implements CommentCommandService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
-
     private final NotiCommandService notiCommandService;
+    private final SecurityUtil securityUtil;
 
     @Override
     @Transactional
     public Comment createComment(Long postId, CommentRequestDTO.CreateCommentRequestDTO request) {
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
-
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
+
+        User user = securityUtil.getCurrentUser();
 
         Comment comment = CommentConverter.toComment(user, post, request);
 

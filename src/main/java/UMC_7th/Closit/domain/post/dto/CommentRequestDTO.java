@@ -7,8 +7,6 @@ import lombok.Getter;
 public class CommentRequestDTO {
     @Getter
     public static class CreateCommentRequestDTO{
-        @NotNull
-        private Long userId;
         @NotBlank
         private String content;
     }

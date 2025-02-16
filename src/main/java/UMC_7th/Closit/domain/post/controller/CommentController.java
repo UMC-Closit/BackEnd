@@ -6,7 +6,9 @@ import UMC_7th.Closit.domain.post.dto.CommentResponseDTO;
 import UMC_7th.Closit.domain.post.entity.Comment;
 import UMC_7th.Closit.domain.post.service.CommentCommandService;
 import UMC_7th.Closit.domain.post.service.CommentQueryService;
+import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
+import UMC_7th.Closit.security.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
     private final CommentCommandService commentCommandService;
     private final CommentQueryService commentQueryService;
+    private final SecurityUtil securityUtil;
 
     @Operation(summary = "새로운 댓글 생성")
     @PostMapping
