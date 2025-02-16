@@ -141,22 +141,16 @@ public class NotiCommandServiceImpl implements NotiCommandService {
 
         List<Post> posts = postRepository.findByUserId(receiver.getId());
 
-        // 미리 미션 여부 체크
-        boolean postIsMission = posts.stream()
-                .anyMatch(post -> post.isMission() && post.getCreatedAt().plusDays(1).isAfter(LocalDateTime.now()));
+        // 24시간 이내에 사용자가 올린 게시물이 있는지 확인
+        boolean existsPost = posts.stream()
+                .anyMatch(post -> post.getCreatedAt().isAfter(LocalDateTime.now().minusDays(1)));
 
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.schedule(() -> {
-            // 24시간 내 isMission = true가 없을 때만 실행
-            if (!postIsMission) {
-                for (Post post : posts) {
-                    // 24시간 이내 올린 게시글이 없을 경우, 알림 전송
-                    if (!post.isMission() && post.getCreatedAt().plusDays(1).isAfter(LocalDateTime.now())) {
-                        sendToClient(emitter, emitterId, content.getBytes(StandardCharsets.UTF_8));
-                    }
-                }
-                scheduler.shutdown(); // 작업 완료 후, 스레드 종료
-            }
+            // 24시간 이내 사용자가 올린 게시글이 없을 경우, 알림 전송
+            if (!existsPost) {
+                sendToClient(emitter, emitterId, content.getBytes(StandardCharsets.UTF_8));
+            } scheduler.shutdown(); // 작업 완료 후, 스레드 종료
         }, 10, TimeUnit.SECONDS); // SSE 연결 10초 후, 한 번만 실행
     }
 
