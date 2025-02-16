@@ -58,6 +58,7 @@ public class BattleConverter {
     public static BattleResponseDTO.BattlePreviewDTO battlePreviewDTO(Battle battle) { // 배틀 게시글 목록 조회
         return BattleResponseDTO.BattlePreviewDTO.builder()
                 .battleId(battle.getId())
+                .isLiked(!battle.getBattleLikesList().isEmpty())
                 .title(battle.getTitle())
                 .firstClositId(battle.getPost1().getUser().getClositId())
                 .firstPostId(battle.getPost1().getId())
