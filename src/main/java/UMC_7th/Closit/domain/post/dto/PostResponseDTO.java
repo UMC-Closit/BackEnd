@@ -17,7 +17,7 @@ public class PostResponseDTO {
     @AllArgsConstructor
     public static class PostPreviewDTO { // 게시글 목록 조회
         private Long postId;
-        private Long userId;
+        private String clositId;
         private String profileImage;
         private String frontImage;
         private String backImage;

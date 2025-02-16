@@ -103,7 +103,7 @@ public class UserController {
 
     @Operation(summary = "closit id 중복 여부 조회", description = "특정 closit id가 이미 있는 id인지 조회합니다.")
     @GetMapping("/isunique/{closit_id}")
-    public ApiResponse<Boolean> getUserMissions(@PathVariable String closit_id) {
+    public ApiResponse<Boolean> isUniqueClositId(@PathVariable String closit_id) {
         return ApiResponse.onSuccess(userCommandService.isClositIdUnique(closit_id));
     }
 }

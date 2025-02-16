@@ -32,7 +32,7 @@ public class PostConverter {
 
         return PostResponseDTO.PostPreviewDTO.builder()
                 .postId(post.getId())
-                .userId(post.getUser().getId())
+                .clositId(post.getUser().getClositId())
                 .profileImage(post.getUser().getProfileImage())
                 .frontImage(post.getFrontImage())
                 .backImage(post.getBackImage())

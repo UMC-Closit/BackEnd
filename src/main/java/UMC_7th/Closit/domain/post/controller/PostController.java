@@ -46,15 +46,29 @@ public class PostController {
         return ApiResponse.onSuccess(postPreviewDTO);
     }
 
-    @Operation(summary = "게시글 목록 조회")
+    @Operation(summary = "팔로우 기반 게시글 조회")
     @GetMapping
-    public ApiResponse<PostResponseDTO.PostPreviewListDTO> getPostList(
-            PostRequestDTO.GetPostDTO request,
+    public ApiResponse<PostResponseDTO.PostPreviewListDTO> getPostListByFollowing(
+            @RequestParam(name = "follower", defaultValue = "false") boolean follower,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Slice<Post> posts = postQueryService.getPostListByFollowerAndHashtag(request, pageable);
+        Slice<Post> posts = postQueryService.getPostListByFollowing(follower, pageable);
+        PostResponseDTO.PostPreviewListDTO response = PostConverter.toPostPreviewListDTO(posts);
+
+        return ApiResponse.onSuccess(response);
+    }
+
+    @Operation(summary = "해시태그 기반 게시글 검색")
+    @GetMapping("/hashtag")
+    public ApiResponse<PostResponseDTO.PostPreviewListDTO> getPostListByHashtag(
+            @RequestParam(name = "hashtag", required = false) String hashtag,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Slice<Post> posts = postQueryService.getPostListByHashtag(hashtag, pageable);
         PostResponseDTO.PostPreviewListDTO response = PostConverter.toPostPreviewListDTO(posts);
 
         return ApiResponse.onSuccess(response);

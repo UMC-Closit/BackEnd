@@ -12,9 +12,9 @@ import java.util.Optional;
 
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
-    List<Follow> findByFollowing(User follower);
+    List<Follow> findBySender(User sender);
 
-    boolean existsByFollowerAndFollowing(User follower, User following);
+    boolean existsBySenderAndReceiver(User sender, User receiver);
 
     // senderId와 receiverId로 특정 팔로우 관계 조회
     Optional<Follow> findBySenderClositIdAndReceiverClositId(String senderClositId, String receiverClositId);

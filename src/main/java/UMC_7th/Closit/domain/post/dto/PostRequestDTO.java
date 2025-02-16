@@ -11,14 +11,6 @@ import java.util.List;
 public class PostRequestDTO {
 
     @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class GetPostDTO {
-        private boolean follower;
-        private String hashtag;
-    }
-
-    @Getter
     @Builder
     public static class CreatePostDTO{
         private String frontImage;
@@ -36,7 +28,6 @@ public class PostRequestDTO {
     @AllArgsConstructor
     @Builder
     public static class UpdatePostDTO {
-        private String clositId;
         private String frontImage;
         private String backImage;
         private List<String> hashtags;
