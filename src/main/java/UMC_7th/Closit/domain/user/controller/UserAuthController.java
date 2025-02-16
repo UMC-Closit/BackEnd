@@ -47,6 +47,7 @@ public class UserAuthController {
 
         JwtResponse jwtResponse = userAuthService.refresh(refreshToken);
 
+        log.info("🔁 Refreshed Token: new access token: {}", jwtResponse.getAccessToken());
         return ApiResponse.onSuccess(jwtResponse);
     }
 

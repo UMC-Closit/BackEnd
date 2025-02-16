@@ -64,6 +64,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Override
     public JwtResponse refresh(String refreshToken) {
+        log.info("🔁 Refreshing Token");
         // Refresh Token 유효성 검사
         jwtTokenProvider.validateToken(refreshToken);
         Claims claims = getClaims(refreshToken);
@@ -76,6 +77,8 @@ public class UserAuthServiceImpl implements UserAuthService {
         RefreshToken savedToken = refreshTokenRepository.findByUsername(email)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
+        log.info("🔁 Refreshing Token -> savedToken: {}", savedToken.getRefreshToken());
+
         if (!savedToken.getRefreshToken().equals(refreshToken)) {
             log.info("savedToken not equals refreshToken");
             throw new GeneralException(ErrorStatus.INVALID_REFRESH_TOKEN);
@@ -86,6 +89,9 @@ public class UserAuthServiceImpl implements UserAuthService {
         // 새로운 Access Token, Refresh Token 생성
         String newAccessToken = jwtTokenProvider.createAccessToken(email, role);
         String newRefreshToken = jwtTokenProvider.createRefreshToken(email, role);
+
+        log.info("🔁 Refreshing Token -> newAccessToken : {}", newAccessToken);
+        log.info("🔁 Refreshing Token -> newRefreshToken : {}", newRefreshToken);
 
         // Refresh Token 업데이트
         savedToken.updateRefreshToken(newRefreshToken);
