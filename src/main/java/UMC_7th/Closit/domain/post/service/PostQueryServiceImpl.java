@@ -2,13 +2,11 @@ package UMC_7th.Closit.domain.post.service;
 
 import UMC_7th.Closit.domain.follow.entity.Follow;
 import UMC_7th.Closit.domain.follow.repository.FollowRepository;
-import UMC_7th.Closit.domain.post.dto.PostRequestDTO;
 import UMC_7th.Closit.domain.post.entity.Hashtag;
 import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.domain.post.repository.HashTagRepository;
 import UMC_7th.Closit.domain.post.repository.PostRepository;
 import UMC_7th.Closit.domain.user.entity.User;
-import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
 import UMC_7th.Closit.security.SecurityUtil;
@@ -29,43 +27,37 @@ public class PostQueryServiceImpl implements PostQueryService {
     private final PostRepository postRepository;
     private final FollowRepository followRepository;
     private final HashTagRepository hashtagRepository;
-    private final UserRepository userRepository;
     private final SecurityUtil securityUtil;
 
-    public Slice<Post> getPostListByFollowerAndHashtag (PostRequestDTO.GetPostDTO request, Pageable pageable) {
+    public Slice<Post> getPostListByFollowing (boolean follower, Pageable pageable) {
         User currentUser = securityUtil.getCurrentUser();
 
-
-        boolean follower = request.isFollower();
-        String hashtag = request.getHashtag();
-
-        // 팔로워가 `true`인 경우
+        // `follower`가 `true`인 경우, 팔로우한 유저들의 게시글만 조회
         if (follower) {
             // 팔로워 기반 조회
-            List<User> followingUsers = followRepository.findByFollowing(currentUser).stream()
-                    .map(Follow::getFollower)
+            List<User> followingUsers = followRepository.findBySender(currentUser).stream()
+                    .map(Follow::getReceiver)
                     .collect(Collectors.toList());
 
-            // 해시태그가 있을 경우 → 팔로우한 유저의 글 중 해당 해시태그 포함한 글 검색
-            if (hashtag != null && !hashtag.isBlank()) {
-                Hashtag foundHashtag = hashtagRepository.findByContent(hashtag)
-                        .orElseThrow(() -> new GeneralException(ErrorStatus.HASHTAG_NOT_FOUND));
-                return postRepository.findByUsersAndHashtagId(followingUsers, foundHashtag.getId(), pageable);
-            }
-
-            // 해시태그가 없을 경우 → 그냥 팔로우한 유저들의 전체 게시글 반환
             return postRepository.findByUsers(followingUsers, pageable);
         }
 
-        // 팔로워가 `false`인 경우 → 전체 게시글 중 해시태그 여부에 따라 검색
-        if (hashtag != null && !hashtag.isBlank()) {
-            Hashtag foundHashtag = hashtagRepository.findByContent(hashtag)
-                    .orElseThrow(() -> new GeneralException(ErrorStatus.HASHTAG_NOT_FOUND));
-            return postRepository.findByHashtagId(foundHashtag.getId(), pageable);
+        // `follower`가 `false`인 경우, 모든 사용자의 최신 게시글 조회
+        return postRepository.findAllByOrderByCreatedAtDesc(pageable);
+    }
+
+    public Slice<Post> getPostListByHashtag(String hashtag, Pageable pageable) {
+        // 해시태그 값이 없으면 예외 처리
+        if (hashtag == null || hashtag.isBlank()) {
+            throw new GeneralException(ErrorStatus.HASHTAG_NOT_FOUND);
         }
 
-        // 팔로워가 `false`이고 해시태그도 없으면 전체 게시글 최신순 반환
-        return postRepository.findAllByOrderByCreatedAtDesc(pageable);
+        // 해당 해시태그가 존재하는지 확인
+        Hashtag foundHashtag = hashtagRepository.findByContent(hashtag)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.HASHTAG_NOT_FOUND));
+
+        // 해당 해시태그가 포함된 게시글 조회
+        return postRepository.findByHashtagId(foundHashtag.getId(), pageable);
     }
 }
 

@@ -26,17 +26,15 @@ public class FollowController {
     }
 
     @Operation(summary = "팔로우 여부 조회", description = "특정 유저를 팔로우하는지 여부를 조회합니다.")
-    @GetMapping("/{follower_closit_id}/{following_closit_id}")
-    public ApiResponse<Boolean> checkFollow(@PathVariable String follower_closit_id) {
-        return ApiResponse.onSuccess(followCommandService.isFollowing(follower_closit_id));
+    @GetMapping("/{receiver_closit_id}")
+    public ApiResponse<Boolean> checkFollow(@PathVariable String receiver_closit_id) {
+        return ApiResponse.onSuccess(followCommandService.isFollowing(receiver_closit_id));
     }
 
     @Operation(summary = "팔로우 삭제", description = "특정 팔로우를 삭제합니다.")
-    @DeleteMapping("/{follower_closit_id}/{following_closit_id}")
-    public ApiResponse<String> deleteFollow(
-            @PathVariable String follower_closit_id,
-            @PathVariable String following_closit_id ) {
-        followCommandService.deleteFollow(follower_closit_id, following_closit_id);
-        return ApiResponse.onSuccess("Deleted Follow with follower closit ID: " + follower_closit_id + ", following closit ID: " + following_closit_id);
+    @DeleteMapping("/{receiver_closit_id}")
+    public ApiResponse<String> deleteFollow(@PathVariable String receiver_closit_id) {
+        followCommandService.deleteFollow(receiver_closit_id);
+        return ApiResponse.onSuccess("Deleted Follow with receiver closit ID: " + receiver_closit_id);
     }
 }

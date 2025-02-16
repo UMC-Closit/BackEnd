@@ -88,11 +88,11 @@ public class User extends BaseEntity {
     @Builder.Default
     private List<BattleLike> battleLikesList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Follow> followerList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Follow> followingList = new ArrayList<>();
 
