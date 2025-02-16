@@ -6,7 +6,6 @@ import UMC_7th.Closit.domain.post.dto.PostResponseDTO;
 import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.domain.post.service.PostCommandService;
 import UMC_7th.Closit.domain.post.service.PostQueryService;
-import UMC_7th.Closit.domain.post.service.PostService;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth/posts")
 public class PostController {
 
-    private final PostService postService;
     private final PostQueryService postQueryService;
     private final PostCommandService postCommandService;
 
@@ -41,7 +39,7 @@ public class PostController {
     public ApiResponse<PostResponseDTO.PostPreviewDTO> getPostById(@PathVariable("post_id") Long postId,
                                                                    @AuthenticationPrincipal User currentUser) {
 
-        PostResponseDTO.PostPreviewDTO postPreviewDTO = postService.getPostById(postId, currentUser);
+        PostResponseDTO.PostPreviewDTO postPreviewDTO = postQueryService.getPostById(postId, currentUser);
 
         return ApiResponse.onSuccess(postPreviewDTO);
     }
@@ -54,10 +52,9 @@ public class PostController {
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Slice<Post> posts = postQueryService.getPostListByFollowing(follower, pageable);
-        PostResponseDTO.PostPreviewListDTO response = PostConverter.toPostPreviewListDTO(posts);
+        Slice<PostResponseDTO.PostPreviewDTO> posts = postQueryService.getPostListByFollowing(follower, pageable);
 
-        return ApiResponse.onSuccess(response);
+        return ApiResponse.onSuccess(PostConverter.toPostPreviewListDTO(posts));
     }
 
     @Operation(summary = "해시태그 기반 게시글 검색")
@@ -68,10 +65,9 @@ public class PostController {
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Slice<Post> posts = postQueryService.getPostListByHashtag(hashtag, pageable);
-        PostResponseDTO.PostPreviewListDTO response = PostConverter.toPostPreviewListDTO(posts);
+        Slice<PostResponseDTO.PostPreviewDTO> posts = postQueryService.getPostListByHashtag(hashtag, pageable);
 
-        return ApiResponse.onSuccess(response);
+        return ApiResponse.onSuccess(PostConverter.toPostPreviewListDTO(posts));
     }
 
     @Operation(summary = "게시글 수정")

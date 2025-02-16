@@ -18,12 +18,12 @@ public class PostResponseDTO {
     public static class PostPreviewDTO { // 게시글 목록 조회
         private Long postId;
         private String clositId;
+        private String userName;
         private String profileImage;
         private String frontImage;
         private String backImage;
         private Boolean isLiked;
         private Boolean isSaved;
-        private Boolean isFriend;
         private List<String> hashtags;
         private List<ItemTagDTO> frontItemtags;
         private List<ItemTagDTO> backItemtags;
@@ -60,13 +60,10 @@ public class PostResponseDTO {
     @AllArgsConstructor
     public static class CreatePostResultDTO { // 게시글 업로드 응답 DTO
         private String clositId;
-
         private Long postId;
-
+        private Visibility visibility;
         @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         private LocalDateTime createdAt;
-
-        private Visibility visibility; // 게시글 공개 여부
     }
 
     @Builder
@@ -75,13 +72,10 @@ public class PostResponseDTO {
     @AllArgsConstructor
     public static class UpdatePostResultDTO { // 게시글 업로드 응답 DTO
         private String clositId;
-
         private Long postId;
-
+        private Visibility visibility;
         @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         private LocalDateTime createdAt;
-
-        private Visibility visibility; // 게시글 공개 여부
     }
 
 }
