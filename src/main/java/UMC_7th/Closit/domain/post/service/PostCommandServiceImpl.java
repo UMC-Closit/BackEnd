@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,18 +41,25 @@ public class PostCommandServiceImpl implements PostCommandService {
 
         User currentUser = securityUtil.getCurrentUser();
 
-        // 2. Post 생성 및 저장
+        // 2. 사용자가 오늘 작성한 게시글이 있는지 확인
+        LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
+        LocalDateTime now = LocalDateTime.now();
+        boolean isMission = postRepository.findAllByUserIdAndCreatedAtBetween(user.getId(), startOfDay, now).isEmpty();
+
+        // 3. Post 생성 및 저장
         Post post = Post.builder()
                 .frontImage(request.getFrontImage())
                 .backImage(request.getBackImage())
                 .pointColor(request.getPointColor())
                 .visibility(request.getVisibility())
                 .user(currentUser)
+                .isMission(isMission)
+                .user(currentUser)
                 .build();
 
         postRepository.save(post);
 
-        // 3. 해시태그 처리
+        // 4. 해시태그 처리
         List<PostHashtag> postHashtags = request.getHashtags().stream()
                 .map(tagContent -> {
                     Hashtag hashTag = hashtagRepository.findByContent(tagContent)
@@ -61,13 +69,12 @@ public class PostCommandServiceImpl implements PostCommandService {
                 .collect(Collectors.toList());
         postHashtagRepository.saveAll(postHashtags);
 
-        // 4. Front ItemTags 처리
+        // 5. Front ItemTags 처리
         List<ItemTag> frontItemTags = request.getFrontItemtags().stream()
                 .map(itemTagDTO -> ItemTag.builder()
                         .post(post)
                         .itemTagX(itemTagDTO.getX())
                         .itemTagY(itemTagDTO.getY())
-                        .itemTagContent(itemTagDTO.getContent())
                         .tagType("FRONT")
                         .build())
                 .collect(Collectors.toList());
@@ -79,7 +86,6 @@ public class PostCommandServiceImpl implements PostCommandService {
                         .post(post)
                         .itemTagX(itemTagDTO.getX())
                         .itemTagY(itemTagDTO.getY())
-                        .itemTagContent(itemTagDTO.getContent())
                         .tagType("BACK")
                         .build())
                 .collect(Collectors.toList());
@@ -119,7 +125,6 @@ public class PostCommandServiceImpl implements PostCommandService {
                         .post(post)
                         .itemTagX(itemTagDTO.getX())
                         .itemTagY(itemTagDTO.getY())
-                        .itemTagContent(itemTagDTO.getContent())
                         .tagType("FRONT")
                         .build())
                 .collect(Collectors.toList()));
@@ -129,10 +134,10 @@ public class PostCommandServiceImpl implements PostCommandService {
                         .post(post)
                         .itemTagX(itemTagDTO.getX())
                         .itemTagY(itemTagDTO.getY())
-                        .itemTagContent(itemTagDTO.getContent())
                         .tagType("BACK")
                         .build())
                 .collect(Collectors.toList()));
+
         post.getItemTagList().addAll(newItemTags);
 
         // 변경된 post 객체를 저장
@@ -145,7 +150,6 @@ public class PostCommandServiceImpl implements PostCommandService {
     public void deletePost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
-
         postRepository.delete(post);
     }
 }

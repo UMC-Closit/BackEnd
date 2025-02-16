@@ -14,4 +14,6 @@ public interface UserCommandService {
     User registerProfileImage (MultipartFile file);
 
     boolean isClositIdUnique(String clositId);
+
+    User updateUserInfo(UserRequestDTO.UpdateUserDTO updateUserDTO);
 }

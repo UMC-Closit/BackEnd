@@ -3,7 +3,6 @@ package UMC_7th.Closit.domain.user.converter;
 import UMC_7th.Closit.domain.highlight.converter.HighlightConverter;
 import UMC_7th.Closit.domain.highlight.dto.HighlightResponseDTO;
 import UMC_7th.Closit.domain.highlight.entity.Highlight;
-import UMC_7th.Closit.domain.mission.entity.Mission;
 import UMC_7th.Closit.domain.user.dto.UserResponseDTO;
 import UMC_7th.Closit.domain.user.entity.User;
 import jakarta.validation.constraints.NotNull;
@@ -54,9 +53,5 @@ public class UserConverter {
 
     public static UserResponseDTO.UserFollowingSliceDTO toUserFollowingSliceDTO(Slice<User> followingSlice) {
         return UserResponseDTO.UserFollowingSliceDTO.from(followingSlice);
-    }
-
-    public static UserResponseDTO.UserMissionSliceDTO toUserMissionSliceDTO(Slice<Mission> missionSlice) {
-        return UserResponseDTO.UserMissionSliceDTO.from(missionSlice);
     }
 }

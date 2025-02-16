@@ -5,7 +5,6 @@ import UMC_7th.Closit.domain.battle.entity.BattleLike;
 import UMC_7th.Closit.domain.battle.entity.Vote;
 import UMC_7th.Closit.domain.follow.entity.Follow;
 import UMC_7th.Closit.domain.highlight.entity.Highlight;
-import UMC_7th.Closit.domain.mission.entity.Mission;
 import UMC_7th.Closit.domain.notification.entity.Notification;
 import UMC_7th.Closit.domain.post.entity.Bookmark;
 import UMC_7th.Closit.domain.post.entity.Comment;
@@ -13,6 +12,10 @@ import UMC_7th.Closit.domain.post.entity.Likes;
 import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.global.common.BaseEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -71,10 +74,6 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Builder.Default
-    private List<Mission> missionList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @Builder.Default
     private List<Highlight> highlightList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -109,5 +108,21 @@ public class User extends BaseEntity {
     public User updateProfileImage(String profileImage) {
         this.profileImage = profileImage;
         return this;
+    }
+
+    public void setName(@Size(min = 2, max = 20, message = "이름은 2~20자 사이여야 합니다.") String name) {
+        this.name = name;
+    }
+
+    public void setClositId(@Size(min = 2, max = 20, message = "clositId는 2~20자 사이여야 합니다.") String clositId) {
+        this.clositId = clositId;
+    }
+
+    public void setPassword(String encode) {
+        this.password = encode;
+    }
+
+    public void setBirth(@PastOrPresent(message = "생년월일은 과거나 현재 날짜여야 합니다.") LocalDate birth) {
+        this.birth = birth;
     }
 }

@@ -1,12 +1,8 @@
 package UMC_7th.Closit.domain.post.entity;
 
-import UMC_7th.Closit.domain.mission.entity.Mission;
 import UMC_7th.Closit.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.parameters.P;
-
-import java.util.List;
 
 @Entity
 @Getter
