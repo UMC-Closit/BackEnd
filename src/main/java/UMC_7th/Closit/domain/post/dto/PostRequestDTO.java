@@ -14,7 +14,6 @@ public class PostRequestDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class GetPostDTO {
-        private String clositID;
         private boolean follower;
         private String hashtag;
     }
