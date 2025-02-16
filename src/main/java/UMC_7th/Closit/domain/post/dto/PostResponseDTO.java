@@ -32,6 +32,7 @@ public class PostResponseDTO {
         private boolean isMission;
     }
 
+
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
