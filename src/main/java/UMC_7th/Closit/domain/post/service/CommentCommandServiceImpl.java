@@ -50,6 +50,14 @@ public class CommentCommandServiceImpl implements CommentCommandService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.COMMENT_NOT_FOUND));
 
+        User user = securityUtil.getCurrentUser();
+        Long userId = user.getId();
+
+        // 본인의 댓글이 아닐 경우, 댓글 삭제 불가능
+        if (!comment.getUser().getId().equals(userId)) {
+            throw new GeneralException(ErrorStatus.COMMENT_NOT_MINE);
+        }
+
         commentRepository.delete(comment);
     }
 }

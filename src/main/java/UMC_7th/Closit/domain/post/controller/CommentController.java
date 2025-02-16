@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/auth/posts/{post_id}/comments")
 public class CommentController {
+
     private final CommentCommandService commentCommandService;
     private final CommentQueryService commentQueryService;
 
@@ -58,6 +59,7 @@ public class CommentController {
         return ApiResponse.onSuccess(CommentConverter.commentPreviewListDTO(commentList));
     }
 
+    @DeleteMapping("/{comment_id}")
     @Operation(summary = "댓글 삭제",
             description = """
             ## 게시글 내 특정 댓글 삭제
@@ -65,7 +67,6 @@ public class CommentController {
             post_id [게시글 ID] \n
             comment_id [댓글 ID]
             """)
-    @DeleteMapping("/{comment_id}")
     public ApiResponse<String> deleteComment(
             @PathVariable("post_id") Long postId,
             @PathVariable("comment_id") Long commentId) {
