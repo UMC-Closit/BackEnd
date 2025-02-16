@@ -1,5 +1,6 @@
 package UMC_7th.Closit.domain.post.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +16,8 @@ public class CommentResponseDTO {
     @AllArgsConstructor
     public static class CreateCommentResultDTO { // 댓글 생성 응답
         private Long commentId;
+        private String clositId;
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         private LocalDateTime createdAt;
     }
 
@@ -23,9 +26,10 @@ public class CommentResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CommentPreviewDTO { // 댓글 조회
-        private Long userId;
+        private String clositId;
         private Long commentId;
         private String content;
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         private LocalDateTime createdAt;
     }
 
