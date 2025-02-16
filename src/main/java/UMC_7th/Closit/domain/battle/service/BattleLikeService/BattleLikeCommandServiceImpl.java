@@ -43,12 +43,12 @@ public class BattleLikeCommandServiceImpl implements BattleLikeCommandService {
     }
 
     @Override
-    public void deleteBattleLike (Long userId, Long battleId, Long battleLikeId) {
+    public void deleteBattleLike (Long userId, Long battleId) { // 배틀 좋아요 삭제
         Battle battle = battleRepository.findById(battleId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_NOT_FOUND));
 
-        BattleLike battleLike = battleLikeRepository.findById(battleLikeId)
-                        .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_LIKES_NOT_FOUND));
+        BattleLike battleLike = battleLikeRepository.findByUserIdAndBattleId(userId, battleId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.BATTLE_LIKES_NOT_FOUND));
 
         battle.decreaseLikeCount();
 

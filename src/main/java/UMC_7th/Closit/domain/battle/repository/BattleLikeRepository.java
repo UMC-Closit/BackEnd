@@ -5,8 +5,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BattleLikeRepository extends JpaRepository<BattleLike, Long> {
+import java.util.Optional;
 
+public interface BattleLikeRepository extends JpaRepository<BattleLike, Long> {
    boolean existsBattleLikeByBattleIdAndUserId(Long battleId, Long userId); // 배틀 좋아요 생성
    Slice<BattleLike> findAllByBattleId(Long battleId, Pageable pageable);
+   Optional<BattleLike> findByUserIdAndBattleId(Long userId, Long battleId); // 배틀 좋아요 삭제
 }
