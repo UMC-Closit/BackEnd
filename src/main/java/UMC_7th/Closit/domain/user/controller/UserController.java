@@ -1,6 +1,7 @@
 package UMC_7th.Closit.domain.user.controller;
 
 import UMC_7th.Closit.domain.highlight.entity.Highlight;
+import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.domain.user.converter.UserConverter;
 import UMC_7th.Closit.domain.user.dto.UserRequestDTO;
 import UMC_7th.Closit.domain.user.dto.UserResponseDTO;
@@ -105,5 +106,22 @@ public class UserController {
     @GetMapping("/isunique/{closit_id}")
     public ApiResponse<Boolean> getUserMissions(@PathVariable String closit_id) {
         return ApiResponse.onSuccess(userCommandService.isClositIdUnique(closit_id));
+    }
+
+    @GetMapping("/{closit_id}/recent-post")
+    @Operation(summary = "사용자의 최근 게시물 조회",
+            description = """
+            ## 특정 사용자의 최근 게시글 조회
+            ### PathVariable
+            closit_id [사용자의 closit ID]
+            ### Parameters
+            page [조회할 페이지 번호] - 0부터 시작, 10개씩 보여줌
+            """)
+    public ApiResponse<UserResponseDTO.UserRecentPostListDTO> getRecentPostList(@PathVariable("closit_id") String closit_id,
+                                                                                @RequestParam(name = "page") Integer page) {
+
+        Slice<Post> recentPostList = userQueryService.getRecentPostList(closit_id, page);
+
+        return ApiResponse.onSuccess(UserConverter.userRecentPostListDTO(recentPostList));
     }
 }

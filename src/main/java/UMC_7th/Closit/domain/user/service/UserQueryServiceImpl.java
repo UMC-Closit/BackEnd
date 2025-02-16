@@ -12,6 +12,7 @@ import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
 import UMC_7th.Closit.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -73,5 +74,16 @@ public class UserQueryServiceImpl implements UserQueryService {
 
         return !postRepository.findAllByUserIdAndCreatedAtBetween(user.getId(), startOfDay, now).isEmpty();
 
+    }
+
+    @Override
+    public Slice<Post> getRecentPostList(String clositId, Integer page) { // 특정 사용자의 최근 게시글 조회
+        Pageable pageable = PageRequest.of(page, 10);
+
+        LocalDateTime week = LocalDateTime.now().minusWeeks(1);
+
+        Slice<Post> recentPostList = postRepository.findRecentPostList(clositId, week, pageable);
+
+        return recentPostList;
     }
 }
