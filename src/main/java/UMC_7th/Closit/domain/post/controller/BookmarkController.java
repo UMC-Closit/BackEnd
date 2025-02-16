@@ -18,14 +18,14 @@ public class BookmarkController {
     private final BookmarkService bookmarkService;
     @Operation(summary = "게시글 북마크 추가")
     @PostMapping
-    public ApiResponse<BookmarkResponseDTO.BookmarkStatusDTO> addBookmark(
-            @RequestBody @Valid BookmarkRequestDTO.BookmarkDTO request){
+    public ApiResponse<BookmarkResponseDTO.CreateBookmarkResultDTO> addBookmark(
+            @RequestBody @Valid BookmarkRequestDTO.CreateBookmarkDTO request){
         return ApiResponse.onSuccess(bookmarkService.addBookmark(request));
     }
 
     @Operation(summary = "사용자의 북마크 목록 조회")
     @GetMapping("/{closit_id}")
-    public ApiResponse<List<BookmarkResponseDTO.BookmarkStatusDTO>> getUserBookmarks(
+    public ApiResponse<List<BookmarkResponseDTO.CreateBookmarkResultDTO>> getUserBookmarks(
             @PathVariable("closit_id") String clositId) {
         return ApiResponse.onSuccess(bookmarkService.getUserBookmarks(clositId));
     }

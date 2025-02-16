@@ -5,15 +5,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 public class BookmarkResponseDTO {
 
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class BookmarkStatusDTO{
+    public static class CreateBookmarkResultDTO { // 북마크 생성
+        private String clositId;
+        private String userName;
         private Long bookmarkId;
         private Long postId;
-        private Long userId;
+        private LocalDateTime createdAt;
     }
 }
