@@ -4,6 +4,7 @@ import UMC_7th.Closit.domain.notification.service.NotiCommandService;
 import UMC_7th.Closit.domain.post.converter.LikeConverter;
 import UMC_7th.Closit.domain.post.dto.LikeRequestDTO;
 import UMC_7th.Closit.domain.post.dto.LikeResponseDTO;
+import UMC_7th.Closit.domain.post.dto.PostResponseDTO;
 import UMC_7th.Closit.domain.post.entity.Likes;
 import UMC_7th.Closit.domain.post.entity.Post;
 import UMC_7th.Closit.domain.post.repository.LikeRepository;
@@ -28,10 +29,12 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public LikeResponseDTO.LikeStatusDTO likePost(LikeRequestDTO.CreateLikeDTO request) {
-        User user = userRepository.findById(request.getUserId())
+        User user = userRepository.findByClositId(request.getClositId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
         Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
+
         if (likeRepository.existsByUserAndPost(user, post)) {
             throw new GeneralException(ErrorStatus.LIKES_ALREADY_EXIST);
         }
@@ -46,8 +49,8 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public void unlikePost(LikeRequestDTO.UnlikeDTO request) {
-        User user = userRepository.findById(request.getUserId())
+    public LikeResponseDTO.LikeStatusDTO unlikePost(LikeRequestDTO.UnlikeDTO request) {
+        User user = userRepository.findByClositId(request.getClositId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
         Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
@@ -58,6 +61,8 @@ public class LikeServiceImpl implements LikeService {
         }
 
         likeRepository.delete(like);
+
+        return LikeConverter.toLikeStatusDTO(post, user, false);
     }
 
 }

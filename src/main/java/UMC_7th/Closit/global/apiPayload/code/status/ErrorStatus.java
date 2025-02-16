@@ -26,6 +26,7 @@ public enum ErrorStatus implements BaseErrorCode {
     EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "USER4005","이미 존재하는 이메일입니다"), // 리소스 충돌
     USER_NOT_FOUND (HttpStatus.NOT_FOUND, "USER4006", "사용자가 존재하지 않습니다."), // 존재하지 않는 사용자
     CLOSIT_ID_ALREADY_EXISTS(HttpStatus.CONFLICT, "USER4007", "이미 존재하는 ClositId입니다."), // 리소스 충돌
+    CLOSIT_ID_NOT_FOUND(HttpStatus.NOT_FOUND, "USER4008", "ClositId가 존재하지 않습니다."), // 존재하지 않는 ClositId
 
     // 토큰 관련 에러
     EXPIRED_TOKEN(HttpStatus.BAD_REQUEST, "TOKEN4001", "토큰이 만료되었습니다."),

@@ -9,10 +9,19 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 public class PostRequestDTO {
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetPostDTO {
+        private String clositID;
+        private boolean follower;
+        private String hashtag;
+    }
+
     @Getter
     @Builder
     public static class CreatePostDTO{
-        private Long userId;
         private String frontImage;
         private String backImage;
         private List<String> hashtags;
@@ -27,6 +36,7 @@ public class PostRequestDTO {
     @AllArgsConstructor
     @Builder
     public static class UpdatePostDTO {
+        private String clositId;
         private String frontImage;
         private String backImage;
         private List<String> hashtags;

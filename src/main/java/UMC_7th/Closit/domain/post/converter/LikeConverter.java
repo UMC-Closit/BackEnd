@@ -9,7 +9,7 @@ public class LikeConverter {
     public static LikeResponseDTO.LikeStatusDTO toLikeStatusDTO(Post post, User user, boolean isLiked) {
         return LikeResponseDTO.LikeStatusDTO.builder()
                 .postId(post.getId())
-                .userId(user.getId())
+                .clositId(user.getClositId())
                 .isLiked(isLiked)
                 .build();
     }

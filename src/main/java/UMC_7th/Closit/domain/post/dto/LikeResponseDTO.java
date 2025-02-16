@@ -13,6 +13,6 @@ public class LikeResponseDTO {
     public static class LikeStatusDTO{
         private Boolean isLiked;
         private Long postId;
-        private Long userId;
+        private String clositId;
     }
 }

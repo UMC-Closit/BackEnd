@@ -27,6 +27,9 @@ public class ItemTag extends BaseEntity {
     private Double itemTagY;
 
     @Column(nullable = false)
+    private String itemTagContent;
+
+    @Column(nullable = false)
     private String tagType; // FRONT 또는 BACK 태그 구분
 
     @ManyToOne(fetch = FetchType.LAZY)
