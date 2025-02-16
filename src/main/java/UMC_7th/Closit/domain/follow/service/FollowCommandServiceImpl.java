@@ -31,57 +31,57 @@ public class FollowCommandServiceImpl implements FollowCommandService {
     @Override
     @Transactional
     public Follow createFollow(FollowRequestDTO.CreateFollowDTO request) {
-        String followerClositId = request.getFollower();
-        // 현재 로그인된 사용자 정보를 following으로 가져오기
-        String followingClositId = securityUtil.getCurrentUser().getClositId();
+        // 현재 로그인된 사용자 정보를 sender로 가져오기
+        String senderClositId = securityUtil.getCurrentUser().getClositId();
+        String receiverClositId = request.getReceiver();
 
         // 자기 자신은 팔로우 할 수 없음
-        if (followerClositId.equals(followingClositId)) {
+        if (receiverClositId.equals(senderClositId)) {
             throw new GeneralException(ErrorStatus.FOLLOW_SELF_NOT_ALLOWED);
         }
 
-        User follower = userRepository.findByClositId(followerClositId)
+        User sender = userRepository.findByClositId(senderClositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
-        User following = userRepository.findByClositId(followingClositId)
+        User receiver = userRepository.findByClositId(receiverClositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
         try {
-            Follow newFollow = FollowConverter.toFollow(request, follower, following);
+            Follow newFollow = FollowConverter.toFollow(request, sender, receiver);
 
             // 팔로우 알림
             notiCommandService.followNotification(newFollow);
 
             return followRepository.save(newFollow);
         } catch (DataIntegrityViolationException e) {
-            // 이미 팔로우한 사용자를 팔로우 할 수 없음 ({"follower_id", "following_id"}가 unique)
+            // 이미 팔로우한 사용자를 팔로우 할 수 없음 ({"sender_id", "receiver_id"}가 unique)
             throw new GeneralException(ErrorStatus.FOLLOW_ALREADY_EXIST);
         }
     }
 
     @Override
     @Transactional
-    public boolean isFollowing(String followerClositId) {
-        // 현재 로그인된 사용자 정보를 following으로 가져오기
-        String followingClositId = securityUtil.getCurrentUser().getClositId();
+    public boolean isFollowing(String receiverClositId) {
+        // 현재 로그인된 사용자 정보를 sender로 가져오기
+        String senderClositId = securityUtil.getCurrentUser().getClositId();
 
-        userRepository.findByClositId(followerClositId)
+        userRepository.findByClositId(receiverClositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
-        Optional<Follow> follow = followRepository.findByFollowerClositIdAndFollowingClositId(followerClositId, followingClositId);
+        Optional<Follow> follow = followRepository.findBySenderClositIdAndReceiverClositId(senderClositId, receiverClositId);
         return follow.isPresent();
     }
 
     @Override
     @Transactional
-    public void deleteFollow(String followerClositId, String followingClositId) {
-        userRepository.findByClositId(followerClositId)
+    public void deleteFollow(String receiverClositId) {
+        // 현재 로그인된 사용자 정보를 sender로 가져오기
+        String senderClositId = securityUtil.getCurrentUser().getClositId();
+
+        userRepository.findByClositId(receiverClositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
-        userRepository.findByClositId(followingClositId)
-                .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
-
-        Follow follow = followRepository.findByFollowerClositIdAndFollowingClositId(followerClositId, followingClositId)
+        Follow follow = followRepository.findBySenderClositIdAndReceiverClositId(senderClositId, receiverClositId)
                 .orElseThrow(() -> new FollowHandler(ErrorStatus.FOLLOW_NOT_FOUND));
 
         followRepository.delete(follow);

@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -45,8 +44,8 @@ public class UserQueryServiceImpl implements UserQueryService {
         User user = userRepository.findByClositId(clositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
-        Slice<Follow> followers = followRepository.findByFollower(user, pageable);
-        return followers.map(Follow::getFollowing);
+        Slice<Follow> followers = followRepository.findByReceiver(user, pageable);
+        return followers.map(Follow::getSender);
     }
 
     @Override
@@ -54,8 +53,8 @@ public class UserQueryServiceImpl implements UserQueryService {
         User user = userRepository.findByClositId(clositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
-        Slice<Follow> followings = followRepository.findByFollowing(user, pageable);
-        return followings.map(Follow::getFollower);
+        Slice<Follow> followings = followRepository.findBySender(user, pageable);
+        return followings.map(Follow::getReceiver);
     }
 
     @Override

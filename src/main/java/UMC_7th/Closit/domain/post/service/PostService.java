@@ -38,8 +38,8 @@ public class PostService {
         Boolean isSaved = bookmarkRepository.existsByUserAndPost(currentUser, post);
 
         // 친구 여부 확인
-        Boolean isFriend = followRepository.existsByFollowerAndFollowing(currentUser, post.getUser()) &&
-                followRepository.existsByFollowerAndFollowing(post.getUser(), currentUser);
+        Boolean isFriend = followRepository.existsBySenderAndReceiver(currentUser, post.getUser()) &&
+                followRepository.existsBySenderAndReceiver(post.getUser(), currentUser);
 
         // 해시태그 조회
         List<String> hashtags = postHashTagRepository.findByPost(post).stream()

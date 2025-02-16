@@ -15,8 +15,8 @@ public class FollowResponseDTO {
     @AllArgsConstructor
     public static class CreateFollowResultDTO {
         private Long followId;
-        private Long followerId;
-        private Long followingId;
+        private Long senderId;
+        private Long receiverId;
         private LocalDateTime createdAt;
     }
 
@@ -26,8 +26,8 @@ public class FollowResponseDTO {
     @AllArgsConstructor
     public static class FollowDTO {
         private Long followId;
-        private Long followerId;
-        private Long followingId;
+        private Long senderId;
+        private Long receiverId;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
