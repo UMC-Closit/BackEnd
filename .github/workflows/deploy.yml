@@ -82,6 +82,7 @@ jobs:
             docker stop my-app || true
             docker rm my-app || true
             docker run -d -p 8080:8080 --name my-app \
+              -e TZ=Asia/Seoul \
               -e SPRING_DATASOURCE_URL=jdbc:mysql://${{ secrets.RDS_ENDPOINT }}:3306/closit \
               -e SPRING_DATASOURCE_USERNAME=${{ secrets.RDS_USERNAME }} \
               -e SPRING_DATASOURCE_PASSWORD=${{ secrets.RDS_PASSWORD }} \
