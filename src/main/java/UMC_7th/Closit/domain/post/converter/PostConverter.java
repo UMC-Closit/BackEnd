@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class PostConverter {
 
-    public static PostResponseDTO.PostPreviewDTO toPostPreviewDTO (Post post, Boolean isLiked, Boolean isSaved, Boolean isFriend,
+    public static PostResponseDTO.PostPreviewDTO toPostPreviewDTO (Post post, Boolean isLiked, Boolean isSaved,
                                                                    List<String> hashtags, List<ItemTag> frontTags, List<ItemTag> backTags) {
 
         List<PostResponseDTO.ItemTagDTO> frontItemtags = frontTags.stream()
@@ -33,12 +33,12 @@ public class PostConverter {
         return PostResponseDTO.PostPreviewDTO.builder()
                 .postId(post.getId())
                 .clositId(post.getUser().getClositId())
+                .userName(post.getUser().getName())
                 .profileImage(post.getUser().getProfileImage())
                 .frontImage(post.getFrontImage())
                 .backImage(post.getBackImage())
                 .isLiked(isLiked)
                 .isSaved(isSaved)
-                .isFriend(isFriend)
                 .hashtags(hashtags)
                 .frontItemtags(frontItemtags)
                 .backItemtags(backItemtags)
@@ -46,19 +46,12 @@ public class PostConverter {
                 .visibility(post.getVisibility())
                 .isMission(post.isMission())
                 .build();
-
     }
 
-    public static PostResponseDTO.PostPreviewListDTO toPostPreviewListDTO(Slice<Post> posts) {
-        List<PostResponseDTO.PostPreviewDTO> postPreviewList = posts.stream()
-                .map(post -> {
-                    return toPostPreviewDTO(post, false, false, false, List.of(), List.of(), List.of());
-                })
-                .collect(Collectors.toList());
-
+    public static PostResponseDTO.PostPreviewListDTO toPostPreviewListDTO(Slice<PostResponseDTO.PostPreviewDTO> posts) {
         return PostResponseDTO.PostPreviewListDTO.builder()
-                .postPreviewList(postPreviewList)
-                .listSize(postPreviewList.size())
+                .postPreviewList(posts.getContent())
+                .listSize(posts.getNumberOfElements())
                 .isFirst(posts.isFirst())
                 .isLast(posts.isLast())
                 .hasNext(posts.hasNext())
