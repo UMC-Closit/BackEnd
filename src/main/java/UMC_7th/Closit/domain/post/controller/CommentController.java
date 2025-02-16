@@ -22,8 +22,15 @@ public class CommentController {
     private final CommentCommandService commentCommandService;
     private final CommentQueryService commentQueryService;
 
-    @Operation(summary = "새로운 댓글 생성")
     @PostMapping
+    @Operation(summary = "새로운 댓글 생성",
+            description = """
+            ## 게시글 내 새로운 댓글 작성
+            ### PathVariable
+            post_id [게시글 ID] \n
+            ### RequestBody
+            content [댓글 내용]
+            """)
     public ApiResponse<CommentResponseDTO.CreateCommentResultDTO> createComment(
             @RequestBody @Valid CommentRequestDTO.CreateCommentRequestDTO request,
             @PathVariable("post_id") Long postId) {
@@ -33,8 +40,15 @@ public class CommentController {
         return ApiResponse.onSuccess(CommentConverter.createCommentResponseDTO(comment));
     }
 
-    @Operation(summary = "댓글 조회")
     @GetMapping
+    @Operation(summary = "댓글 조회",
+            description = """
+            ## 게시글 내 댓글 목록 조회
+            ### PathVariable
+            post_id [게시글 ID] \n
+            ### RequestParam
+            page [조회할 페이지 번호] - 0부터 시작, 10개씩 보여줌
+            """)
     public ApiResponse<CommentResponseDTO.CommentPreviewListDTO> getComments(
             @PathVariable("post_id") Long postId,
             @RequestParam(name = "page") Integer page) {
@@ -44,7 +58,13 @@ public class CommentController {
         return ApiResponse.onSuccess(CommentConverter.commentPreviewListDTO(commentList));
     }
 
-    @Operation(summary = "댓글 삭제")
+    @Operation(summary = "댓글 삭제",
+            description = """
+            ## 게시글 내 특정 댓글 삭제
+            ### PathVariable
+            post_id [게시글 ID] \n
+            comment_id [댓글 ID]
+            """)
     @DeleteMapping("/{comment_id}")
     public ApiResponse<String> deleteComment(
             @PathVariable("post_id") Long postId,
