@@ -32,7 +32,7 @@ public class UserQueryServiceImpl implements UserQueryService {
     private final SecurityUtil securityUtil;
 
     @Override
-    public Slice<Highlight> getHighlight(String clositId, Pageable pageable) {
+    public Slice<Highlight> getHighlightList(String clositId, Pageable pageable) {
         User user = userRepository.findByClositId(clositId)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
