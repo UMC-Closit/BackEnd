@@ -12,7 +12,6 @@ import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
 import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
-import UMC_7th.Closit.security.SecurityUtil;
 import UMC_7th.Closit.security.jwt.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -31,18 +30,16 @@ public class UserAuthServiceImpl implements UserAuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final SecurityUtil securityUtil;
 
     // login
     @Override
     public JwtResponse login(LoginRequestDTO loginRequestDto) {
-        User user = userRepository.findByEmail(loginRequestDto.getEmail())
+        User user = userRepository.findByClositId(loginRequestDto.getClositId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
             throw new GeneralException(ErrorStatus.PASSWORD_NOT_CORRESPOND);
         }
-
 
         String accessToken = jwtTokenProvider.createAccessToken(user.getEmail(), user.getRole());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getEmail(), user.getRole());
