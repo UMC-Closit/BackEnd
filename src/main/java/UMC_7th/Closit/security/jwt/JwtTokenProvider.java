@@ -74,6 +74,9 @@ public class JwtTokenProvider {
             return true;
         } catch (ExpiredJwtException e) {
             log.info("🔍 Expired Token: {}", token);
+            log.info("🔍 Expired At: {}", e.getClaims().getExpiration());
+            log.info("🔍 Expired At System: {}", new Date(System.currentTimeMillis()));
+            log.info("🔍 Expired At Instant: {}", Instant.ofEpochMilli(e.getClaims().getExpiration().getTime()));
             throw new JwtHandler(ErrorStatus.EXPIRED_TOKEN);
         } catch (MalformedJwtException e) {
             log.info("🔍 Malformed Token: {}", token);
