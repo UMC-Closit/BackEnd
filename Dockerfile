@@ -4,6 +4,10 @@ FROM openjdk:17-jdk-slim
 # 작업 디렉토리 설정
 WORKDIR /app
 
+# 타임존 설정 (Asia/Seoul)
+RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && \
+    echo "Asia/Seoul" > /etc/timezone \
+
 # JAR 파일 복사
 COPY build/libs/*.jar app.jar
 
