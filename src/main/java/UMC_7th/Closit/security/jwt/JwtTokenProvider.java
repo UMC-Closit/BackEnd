@@ -59,14 +59,14 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
-        log.info("🔍 Validating Token: {}", token);
-        Claims claims = getClaims(token);
-        log.info("🔍 Token Claims: {}", claims);
-        log.info("🔍 Token Subject: {}", claims.getSubject());
-        log.info("🔍 Token Expiration: {}", claims.getExpiration());
-        log.info("🔍 Token Issued At: {}", claims.getIssuedAt());
-
         try {
+            log.info("🔍 Validating Token: {}", token);
+            Claims claims = getClaims(token);
+            log.info("🔍 Token Claims: {}", claims);
+            log.info("🔍 Token Subject: {}", claims.getSubject());
+            log.info("🔍 Token Expiration: {}", claims.getExpiration());
+            log.info("🔍 Token Issued At: {}", claims.getIssuedAt());
+
             Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
