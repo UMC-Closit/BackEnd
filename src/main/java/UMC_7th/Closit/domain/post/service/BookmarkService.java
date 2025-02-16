@@ -6,7 +6,7 @@ import UMC_7th.Closit.domain.post.dto.BookmarkResponseDTO;
 import java.util.List;
 
 public interface BookmarkService {
-    BookmarkResponseDTO.BookmarkStatusDTO addBookmark(BookmarkRequestDTO.BookmarkDTO request);
-    List<BookmarkResponseDTO.BookmarkStatusDTO> getUserBookmarks(String clositId);
+    BookmarkResponseDTO.CreateBookmarkResultDTO addBookmark(BookmarkRequestDTO.CreateBookmarkDTO request);
+    List<BookmarkResponseDTO.CreateBookmarkResultDTO> getUserBookmarks(String clositId);
     void removeBookmark(Long bookmarkId);
 }

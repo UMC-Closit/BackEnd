@@ -11,12 +11,11 @@ import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
-import io.swagger.v3.oas.annotations.Operation;
+import UMC_7th.Closit.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,20 +24,26 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class BookmarkServiceImpl implements BookmarkService {
+
     private final BookmarkRepository bookmarkRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final SecurityUtil securityUtil;
 
     @Override
-    public BookmarkResponseDTO.BookmarkStatusDTO addBookmark(BookmarkRequestDTO.BookmarkDTO request) {
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+    public BookmarkResponseDTO.CreateBookmarkResultDTO addBookmark(BookmarkRequestDTO.CreateBookmarkDTO request) {
+        User user = securityUtil.getCurrentUser();
+        Long userId = user.getId();
+
         Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
+
         Optional <Bookmark> existingBookmark = bookmarkRepository.findByUserAndPost(user, post);
+
         if (existingBookmark.isPresent()) {
             return BookmarkConverter.toBookmarkStatusDTO(existingBookmark.get());
         }
+
         Bookmark bookmark = Bookmark.createBookmark(user, post);
         bookmarkRepository.save(bookmark);
 
@@ -46,7 +51,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public List<BookmarkResponseDTO.BookmarkStatusDTO> getUserBookmarks(String clositId) {
+    public List<BookmarkResponseDTO.CreateBookmarkResultDTO> getUserBookmarks(String clositId) {
         User user = userRepository.findByClositId(clositId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
