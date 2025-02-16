@@ -36,7 +36,7 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String pointColor;
 
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    @Column(nullable = false)
     private boolean isMission;
 
     @ManyToOne(fetch = FetchType.LAZY)

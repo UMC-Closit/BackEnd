@@ -28,6 +28,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Slice<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
+    List<Post> findByUserId(Long userId); // 미션 알림
+
     @Query("SELECT p FROM Post p WHERE p.user.id = :userId GROUP BY FUNCTION('DATE', p.createdAt) ORDER BY p.createdAt ASC") // 히스토리 썸네일 조회
     Slice<Post> findFrontImageByUserId(@Param("userId") Long userId, Pageable pageable);
 
