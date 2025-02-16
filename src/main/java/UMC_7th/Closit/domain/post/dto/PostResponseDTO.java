@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class PostResponseDTO {
+
     @Builder
     @Getter
     @NoArgsConstructor
@@ -53,6 +54,7 @@ public class PostResponseDTO {
         private boolean isLast;
         private boolean hasNext;
     }
+
     @Builder
     @Getter
     @NoArgsConstructor
