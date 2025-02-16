@@ -47,7 +47,6 @@ public class PostResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PostPreviewListDTO {
-        private String clositId;
         private List<PostPreviewDTO> postPreviewList;
         private Integer listSize;
         private boolean isFirst;

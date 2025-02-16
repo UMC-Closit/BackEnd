@@ -18,6 +18,7 @@ public class PostConverter {
                 .map(tag -> PostResponseDTO.ItemTagDTO.builder()
                         .x(tag.getItemTagX())
                         .y(tag.getItemTagY())
+                        .content(tag.getItemTagContent())
                         .build())
                 .collect(Collectors.toList());
 
@@ -25,6 +26,7 @@ public class PostConverter {
                 .map(tag -> PostResponseDTO.ItemTagDTO.builder()
                         .x(tag.getItemTagX())
                         .y(tag.getItemTagY())
+                        .content(tag.getItemTagContent())
                         .build())
                 .collect(Collectors.toList());
 
@@ -55,7 +57,6 @@ public class PostConverter {
                 .collect(Collectors.toList());
 
         return PostResponseDTO.PostPreviewListDTO.builder()
-                .clositId(posts.getContent().get(0).getUser().getClositId())
                 .postPreviewList(postPreviewList)
                 .listSize(postPreviewList.size())
                 .isFirst(posts.isFirst())
@@ -79,6 +80,7 @@ public class PostConverter {
                         .map(itemTag -> PostResponseDTO.ItemTagDTO.builder()
                                 .x(itemTag.getItemTagX())
                                 .y(itemTag.getItemTagY())
+                                .content(itemTag.getItemTagContent())
                                 .build())
                         .collect(Collectors.toList()))
                 .backItemtags(post.getItemTagList().stream()  // Back ItemTags
@@ -86,6 +88,7 @@ public class PostConverter {
                         .map(itemTag -> PostResponseDTO.ItemTagDTO.builder()
                                 .x(itemTag.getItemTagX())
                                 .y(itemTag.getItemTagY())
+                                .content(itemTag.getItemTagContent())
                                 .build())
                         .collect(Collectors.toList()))
                 .build();

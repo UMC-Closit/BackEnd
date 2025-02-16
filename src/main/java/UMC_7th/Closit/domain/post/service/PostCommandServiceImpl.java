@@ -32,7 +32,6 @@ public class PostCommandServiceImpl implements PostCommandService {
     private final HashTagRepository hashtagRepository;
     private final PostHashTagRepository postHashtagRepository;
     private final ItemTagRepository itemTagRepository;
-    private final UserRepository userRepository;
     private final SecurityUtil securityUtil;
 
     @Override
@@ -44,7 +43,7 @@ public class PostCommandServiceImpl implements PostCommandService {
         // 2. 사용자가 오늘 작성한 게시글이 있는지 확인
         LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
         LocalDateTime now = LocalDateTime.now();
-        boolean isMission = postRepository.findAllByUserIdAndCreatedAtBetween(user.getId(), startOfDay, now).isEmpty();
+        boolean isMission = postRepository.findAllByUserIdAndCreatedAtBetween(currentUser.getId(), startOfDay, now).isEmpty();
 
         // 3. Post 생성 및 저장
         Post post = Post.builder()
@@ -75,6 +74,7 @@ public class PostCommandServiceImpl implements PostCommandService {
                         .post(post)
                         .itemTagX(itemTagDTO.getX())
                         .itemTagY(itemTagDTO.getY())
+                        .itemTagContent(itemTagDTO.getContent())
                         .tagType("FRONT")
                         .build())
                 .collect(Collectors.toList());
@@ -86,6 +86,7 @@ public class PostCommandServiceImpl implements PostCommandService {
                         .post(post)
                         .itemTagX(itemTagDTO.getX())
                         .itemTagY(itemTagDTO.getY())
+                        .itemTagContent(itemTagDTO.getContent())
                         .tagType("BACK")
                         .build())
                 .collect(Collectors.toList());
@@ -114,7 +115,7 @@ public class PostCommandServiceImpl implements PostCommandService {
                             .orElseGet(() -> hashtagRepository.save(Hashtag.builder().content(tagContent).build()));
                     return PostHashtag.builder().post(post).hashtag(hashTag).build();
                 })
-                .collect(Collectors.toList());
+                .toList();
         post.getPostHashtagList().addAll(newPostHashtags); // 새로운 태그 추가
 
         // 4. 기존 아이템 태그 삭제 후 새로운 태그 추가
@@ -125,25 +126,25 @@ public class PostCommandServiceImpl implements PostCommandService {
                         .post(post)
                         .itemTagX(itemTagDTO.getX())
                         .itemTagY(itemTagDTO.getY())
+                        .itemTagContent(itemTagDTO.getContent())
                         .tagType("FRONT")
                         .build())
-                .collect(Collectors.toList()));
+                .toList());
 
         newItemTags.addAll(request.getBackItemtags().stream()
                 .map(itemTagDTO -> ItemTag.builder()
                         .post(post)
                         .itemTagX(itemTagDTO.getX())
                         .itemTagY(itemTagDTO.getY())
+                        .itemTagContent(itemTagDTO.getContent())
                         .tagType("BACK")
                         .build())
-                .collect(Collectors.toList()));
+                .toList());
 
         post.getItemTagList().addAll(newItemTags);
 
         // 변경된 post 객체를 저장
-        Post savedPost = postRepository.save(post);
-
-        return savedPost;
+        return postRepository.save(post);
     }
 
     @Override
