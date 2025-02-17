@@ -81,5 +81,13 @@ public class AmazonS3Manager {
         return amazonConfig.getProfileImagePath() + '/' + uuid;
     }
 
+    public String generatePostFrontImageKeyName(String uuid) {
+        return amazonConfig.getPostFrontPath() + '/' + uuid;
+    }
+
+    public String generatePostBackImageKeyName(String uuid) {
+        return amazonConfig.getPostBackPath() + '/' + uuid;
+    }
+
 
 }
