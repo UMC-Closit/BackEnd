@@ -70,14 +70,14 @@ public class UserAuthServiceImpl implements UserAuthService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
-        // 서버에 저장된 refresh token과 비교
         RefreshToken savedToken = refreshTokenRepository.findByUsername(email)
                 .orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
         log.info("🔁 Refreshing Token -> savedToken: {}", savedToken.getRefreshToken());
 
-        if (!savedToken.getRefreshToken().equals(refreshToken)) {
-            log.info("savedToken not equals refreshToken");
+        // 저장된 Refresh Token과 비교 (공백 제거)
+        if (!savedToken.getRefreshToken().trim().equals(refreshToken.trim())) {
+            log.warn("❌ Refresh Token Mismatch!");
             throw new GeneralException(ErrorStatus.INVALID_REFRESH_TOKEN);
         }
 
