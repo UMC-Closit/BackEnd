@@ -66,11 +66,11 @@ public class AmazonS3Manager {
         String bucketUrl = amazonS3.getUrl(amazonConfig.getBucket(), "").toString();
 
         log.info("bucketUrl: {}", bucketUrl);
-        log.info("fileUrl: {}", fileUrl);
+
         if (fileUrl.startsWith(bucketUrl)) {
+            log.info("fileUrl: {}", fileUrl);
             return fileUrl.substring(bucketUrl.length());
         }
-
 
         log.error("❌ Invalid S3 file URL: {}", fileUrl);
         throw new GeneralException(ErrorStatus.INVALID_S3_FILE_URL);

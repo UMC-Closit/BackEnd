@@ -11,6 +11,7 @@ import UMC_7th.Closit.global.s3.AmazonS3Manager;
 import UMC_7th.Closit.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,9 @@ public class UserCommandServiceImpl implements UserCommandService {
     private final SecurityUtil securityUtil;
 
     private final AmazonS3Manager amazonS3Manager;
+
+    @Value("${cloud.aws.s3.default-profile-image}")
+    private String defaultProfileImage;
 
     @Override
     public RegisterResponseDTO registerUser (UserRequestDTO.CreateUserDTO userRequestDto) {
@@ -56,7 +60,7 @@ public class UserCommandServiceImpl implements UserCommandService {
                 .clositId(userRequestDto.getClositId())
                 .password(encodedPassword)
                 .birth(userRequestDto.getBirth())
-                .profileImage(userRequestDto.getProfileImage())
+                .profileImage(defaultProfileImage)
                 .role(UMC_7th.Closit.domain.user.entity.Role.USER) // 기본적으로 USER 부여
                 .build();
 
@@ -66,6 +70,7 @@ public class UserCommandServiceImpl implements UserCommandService {
                 .clositId(user.getClositId())
                 .name(userRequestDto.getName())
                 .email(userRequestDto.getEmail())
+                .profileImage(user.getProfileImage())
                 .build();
 
     }
@@ -97,7 +102,7 @@ public class UserCommandServiceImpl implements UserCommandService {
         }
 
         // 기존 프로필 이미지 삭제
-        if (currentUser.getProfileImage() != null) {
+        if (currentUser.getProfileImage() != null && !currentUser.getProfileImage().equals(defaultProfileImage)) {
             amazonS3Manager.deleteFile(currentUser.getProfileImage());
         }
 

@@ -31,9 +31,6 @@ public class UserRequestDTO {
 
         @PastOrPresent(message = "생년월일은 과거나 현재 날짜여야 합니다.")
         private LocalDate birth;
-
-        @Builder.Default
-        private String profileImage = "https://closit-bucket.s3.ap-northeast-2.amazonaws.com/zzang.png";
     }
 
     @Getter
