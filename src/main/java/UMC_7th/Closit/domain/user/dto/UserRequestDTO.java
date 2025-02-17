@@ -10,6 +10,7 @@ import java.time.LocalDate;
 public class UserRequestDTO {
 
     @Getter
+    @Builder
     @AllArgsConstructor
     public static class CreateUserDTO {
         @NotBlank(message = "이름은 필수 입력 값입니다.")
@@ -31,7 +32,8 @@ public class UserRequestDTO {
         @PastOrPresent(message = "생년월일은 과거나 현재 날짜여야 합니다.")
         private LocalDate birth;
 
-        private String profileImage;
+        @Builder.Default
+        private String profileImage = "https://closit-bucket.s3.ap-northeast-2.amazonaws.com/zzang.png";
     }
 
     @Getter

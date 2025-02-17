@@ -3,14 +3,11 @@ package UMC_7th.Closit.domain.user.service;
 import UMC_7th.Closit.domain.follow.entity.Follow;
 import UMC_7th.Closit.domain.user.dto.RegisterResponseDTO;
 import UMC_7th.Closit.domain.user.dto.UserRequestDTO;
-import UMC_7th.Closit.domain.user.entity.Role;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
 import UMC_7th.Closit.global.s3.AmazonS3Manager;
-import UMC_7th.Closit.global.s3.UuidRepository;
-import UMC_7th.Closit.global.s3.entity.Uuid;
 import UMC_7th.Closit.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +32,6 @@ public class UserCommandServiceImpl implements UserCommandService {
     private final SecurityUtil securityUtil;
 
     private final AmazonS3Manager amazonS3Manager;
-    private final UuidRepository uuidRepository;
 
     @Override
     public RegisterResponseDTO registerUser (UserRequestDTO.CreateUserDTO userRequestDto) {
@@ -94,6 +90,7 @@ public class UserCommandServiceImpl implements UserCommandService {
 
         // 사용자가 프로필 이미지를 삭제하려는 경우
         if (file == null || file.isEmpty()) {
+            log.info("file is null or empty");
             amazonS3Manager.deleteFile(currentUser.getProfileImage());
             currentUser.updateProfileImage(null);
             return currentUser;
@@ -106,8 +103,7 @@ public class UserCommandServiceImpl implements UserCommandService {
 
         // 새로운 프로필 이미지 등록
         String uuid = UUID.randomUUID().toString();
-        Uuid savedUuid = uuidRepository.save(Uuid.builder().uuid(uuid).build());
-        String storedLocation = amazonS3Manager.uploadFile(amazonS3Manager.generateProfileImageKeyName(savedUuid), file);
+        String storedLocation = amazonS3Manager.uploadFile(amazonS3Manager.generateProfileImageKeyName(uuid), file);
 
         currentUser.updateProfileImage(storedLocation);
 

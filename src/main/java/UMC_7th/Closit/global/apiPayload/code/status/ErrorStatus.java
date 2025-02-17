@@ -91,7 +91,11 @@ public enum ErrorStatus implements BaseErrorCode {
     // 알림 관련 에러
     SSE_CONNECT_FAILED (HttpStatus.INTERNAL_SERVER_ERROR, "SSE5001", "SSE 연결에 실패했습니다"),
     NOTIFICATION_PUSH_FAILED (HttpStatus.BAD_REQUEST, "NOTIFICATION4001", "알림 전송에 실패했습니다."),
-    NOTIFICATION_NOT_FOUND (HttpStatus.NOT_FOUND, "NOTIFICATION4041", "알림을 찾을 수 없습니다.");
+    NOTIFICATION_NOT_FOUND (HttpStatus.NOT_FOUND, "NOTIFICATION4041", "알림을 찾을 수 없습니다."),
+
+    // S3 관련 에러
+    INVALID_S3_FILE_URL(HttpStatus.BAD_REQUEST, "S3_4001", "유효하지 않은 S3 파일 URL입니다.");
+
 
     private final HttpStatus httpStatus;
     private final String code;
