@@ -5,11 +5,14 @@ import UMC_7th.Closit.domain.user.service.CustomUserDetailService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +20,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -35,11 +40,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         String token = resolveToken(request);
+        Cookie[] cookies = request.getCookies();
+        String header = request.getHeader("Authorization");
+        HttpSession session = request.getSession();
+
+        log.info("🔍 [JwtAuthenticationFilter] - Incoming Request: {}", request.getRequestURI());
+        log.info("🔍 [JwtAuthenticationFilter] - Authorization Header: {}", header);
+        log.info("🔍 [JwtAuthenticationFilter] - Session: {}", session);
+        log.info("🔍 [JwtAuthenticationFilter] - Cookies: {}", (cookies != null ? Arrays.toString(cookies) : "No Cookies Found"));
+        log.info("🔍 [JwtAuthenticationFilter] - Extracted Token: {}", token);
+
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
             Claims claims = jwtTokenProvider.getClaims(token);
             String email = claims.getSubject();
             String roleString = claims.get("role", String.class);
+            Date issuedAt = claims.getIssuedAt();
+            Date expiration = claims.getExpiration();
+
+            log.info("✅ [JwtAuthenticationFilter] - Token Claims: {}", claims);
+            log.info("✅ [JwtAuthenticationFilter] - Extracted Email: {}", email);
+            log.info("✅ [JwtAuthenticationFilter] - Extracted Role: {}", roleString);
+            log.info("✅ [JwtAuthenticationFilter] - Issued At: {}", issuedAt);
+            log.info("✅ [JwtAuthenticationFilter] - Expiration: {}", expiration);
 
             Role role = Role.valueOf(roleString); // String->Role 반환
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
@@ -52,6 +75,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
         }
 
         filterChain.doFilter(request, response);

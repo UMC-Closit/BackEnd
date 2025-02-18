@@ -10,8 +10,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -39,15 +44,22 @@ public class NotiQueryServiceImpl implements NotiQueryService {
 
         Pageable pageable = PageRequest.of(page, 10);
 
-        // 최신순으로 조회
-        Slice<Notification> notificationList = notificationRepository.findByUserOrderByCreatedAtDesc(user, pageable);
+        // new 알림 (isRead = false)
+        Slice<Notification> newNotificationList = notificationRepository.findByUserAndIsReadFalseOrderByCreatedAtDesc(user, pageable);
 
-        // 전체 알림 읽음 처리
-        notificationList.forEach(notification -> {
-            notification.markAsRead();
-            notificationRepository.save(notification);
-        });
+        // last 알림 (isRead = true)
+        Slice<Notification> lastNotificationList = notificationRepository.findByUserAndIsReadTrueOrderByUpdatedAtDesc(user, pageable);
 
-        return notificationList;
+        // new 알림 읽음 처리
+        notificationRepository.updateReadStatusByUserId(userId, LocalDateTime.now());
+
+        // new 알림 리스트 + last 알림 리스트
+        List<Notification> notificationList = new ArrayList<>();
+        notificationList.addAll(newNotificationList.getContent());
+        notificationList.addAll(lastNotificationList.getContent());
+
+        boolean hasNext = newNotificationList.hasNext() || lastNotificationList.hasNext();
+
+        return new SliceImpl<>(notificationList, pageable, hasNext);
     }
 }

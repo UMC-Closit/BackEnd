@@ -61,6 +61,8 @@ public class PostResponseDTO {
     public static class CreatePostResultDTO { // 게시글 업로드 응답 DTO
         private String clositId;
         private Long postId;
+        private String frontImage;
+        private String backImage;
         private Visibility visibility;
         @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         private LocalDateTime createdAt;

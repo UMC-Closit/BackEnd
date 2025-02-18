@@ -36,13 +36,19 @@ public class JwtTokenProvider {
     }
 
     public String createToken(String email, Role role, long validity) {
+        Instant now = Instant.now();
+        Date issuedAt = Date.from(now);
+        Date expiration = Date.from(now.plusMillis(validity));
+
+        log.info("🔑 Creating JWT Token...");
+        log.info("🕒 Issued At: {}", issuedAt);
+        log.info("⏳ Expiration: {}", expiration);
+
         return Jwts.builder()
                 .setSubject(email)
                 .claim("role", role)
-                .setIssuedAt(Date.from(ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toInstant()))
-                .setExpiration(Date.from(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
-                        .plus(Duration.ofMillis(validity))
-                        .toInstant()))
+                .setIssuedAt(issuedAt)
+                .setExpiration(expiration)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -56,11 +62,20 @@ public class JwtTokenProvider {
     }
 
     public Claims getClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            log.info("-------------------- JwtTokenProvider.getClaims ---------------------");
+            log.info("⏳ Expired Token: {}", token);
+            log.info("⏳ Expired Token: {}", token);
+            log.info("⏳ Expired At: {}", e.getClaims().getExpiration());
+            log.info("⏳ Current Time: {}", new Date(System.currentTimeMillis()));
+            return e.getClaims();
+        }
     }
 
     public boolean validateToken(String token) {
@@ -74,38 +89,26 @@ public class JwtTokenProvider {
 
             Jwts.parserBuilder()
                     .setSigningKey(key)
+                    .setAllowedClockSkewSeconds(60) // ✅ Clock Skew 적용 (2분 오차 허용)
                     .build()
                     .parseClaimsJws(token);
+
             return true;
         } catch (ExpiredJwtException e) {
-            log.info("🔍 Expired Token: {}", token);
-            log.info("🔍 Expired At: {}", e.getClaims().getExpiration());
-            log.info("🔍 Expired At System: {}", new Date(System.currentTimeMillis()));
-            log.info("🔍 Expired At Instant: {}", Instant.ofEpochMilli(e.getClaims().getExpiration().getTime()));
+            log.info("⏳ Expired Token: {}", token);
+            log.info("⏳ Expired At: {}", e.getClaims().getExpiration());
+            log.info("⏳ Current Time: {}", new Date(System.currentTimeMillis()));
             throw new JwtHandler(ErrorStatus.EXPIRED_TOKEN);
         } catch (MalformedJwtException e) {
-            log.info("🔍 Malformed Token: {}", token);
+            log.info("🚨 Malformed Token: {}", token);
             throw new JwtHandler(ErrorStatus.INVALID_TOKEN);
         } catch (UnsupportedJwtException e) {
-            log.info("🔍 Unsupported Token: {}", token);
+            log.info("🚨 Unsupported Token: {}", token);
             throw new JwtHandler(ErrorStatus.UNSUPPORTED_TOKEN);
         } catch (IllegalArgumentException e) {
-            log.info("🔍 Empty Token: {}", token);
+            log.info("🚨 Empty Token: {}", token);
             throw new JwtHandler(ErrorStatus.EMPTY_TOKEN);
         }
-    }
-
-    public String resolveAccessToken(String bearerToken) {
-        if (bearerToken == null || !bearerToken.startsWith("Bearer ")) {
-            throw new JwtHandler(ErrorStatus.INVALID_TOKEN);
-        }
-
-        String token = bearerToken.substring(7);
-        return bearerToken.substring(7).trim();
-    }
-
-    public String getEmail(String token) {
-        return getClaims(token).getSubject();
     }
 
 }

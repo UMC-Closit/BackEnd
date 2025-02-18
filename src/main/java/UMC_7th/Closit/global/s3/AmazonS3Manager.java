@@ -1,5 +1,7 @@
 package UMC_7th.Closit.global.s3;
 
+import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
+import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
 import UMC_7th.Closit.global.config.AmazonConfig;
 import UMC_7th.Closit.global.s3.entity.Uuid;
 import com.amazonaws.services.s3.AmazonS3;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.UUID;
 
 @Slf4j
@@ -22,20 +25,20 @@ public class AmazonS3Manager {
 
     private final AmazonConfig amazonConfig;
 
-    private final UuidRepository uuidRepository;
-
-    public String uploadFile(String keyName, MultipartFile file){
+    public String uploadFile(String keyName, MultipartFile file) {
         ObjectMetadata metadata = new ObjectMetadata();
-        log.info("File size: {}", file.getSize());
+        log.info("File size: {} bytes", file.getSize());
         log.info("File extension: {}", file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")));
         log.info("Original file name: {}", file.getOriginalFilename());
 
         metadata.setContentType(file.getContentType());
         metadata.setContentLength(file.getSize());
-        try {
-            amazonS3.putObject(new PutObjectRequest(amazonConfig.getBucket(), keyName, file.getInputStream(), metadata));
-        } catch (IOException e){
-            log.error("error at AmazonS3Manager uploadFile : {}", (Object) e.getStackTrace());
+
+        try (InputStream inputStream = file.getInputStream()) { // ✅ try-with-resources 사용하여 자원 해제 보장
+            amazonS3.putObject(new PutObjectRequest(amazonConfig.getBucket(), keyName, inputStream, metadata));
+        } catch (IOException e) {
+            log.error("❌ Failed to upload file to S3: {}", e.getMessage(), e);
+            throw new RuntimeException("S3 파일 업로드 실패: " + e.getMessage(), e);
         }
 
         return amazonS3.getUrl(amazonConfig.getBucket(), keyName).toString();
@@ -43,7 +46,7 @@ public class AmazonS3Manager {
 
     public void deleteFile (String profileImage) {
         if (profileImage == null || profileImage.isEmpty()) {
-            log.info("profileImage is null or empty");
+            log.error("profileImage is null or empty");
             return;
         }
 
@@ -60,21 +63,30 @@ public class AmazonS3Manager {
     }
 
     private String extractS3Key(String fileUrl) {
-        String bucketUrl = "https://" + amazonConfig.getBucket() + ".s3." + amazonConfig.getRegion() + ".amazonaws.com/";
+        String bucketUrl = amazonS3.getUrl(amazonConfig.getBucket(), "").toString();
+
+        log.info("bucketUrl: {}", bucketUrl);
 
         if (fileUrl.startsWith(bucketUrl)) {
+            log.info("fileUrl: {}", fileUrl);
             return fileUrl.substring(bucketUrl.length());
         }
 
-        throw new IllegalArgumentException("잘못된 S3 파일 URL: " + fileUrl);
+        log.error("❌ Invalid S3 file URL: {}", fileUrl);
+        throw new GeneralException(ErrorStatus.INVALID_S3_FILE_URL);
     }
 
-    public String generateTestKeyName(Uuid uuid) {
-        return amazonConfig.getTestPath() + '/' + uuid.getUuid();
+
+    public String generateProfileImageKeyName(String uuid) {
+        return amazonConfig.getProfileImagePath() + '/' + uuid;
     }
 
-    public String generateProfileImageKeyName(Uuid uuid) {
-        return amazonConfig.getProfileImagePath() + '/' + uuid.getUuid();
+    public String generatePostFrontImageKeyName(String uuid) {
+        return amazonConfig.getPostFrontPath() + '/' + uuid;
+    }
+
+    public String generatePostBackImageKeyName(String uuid) {
+        return amazonConfig.getPostBackPath() + '/' + uuid;
     }
 
 

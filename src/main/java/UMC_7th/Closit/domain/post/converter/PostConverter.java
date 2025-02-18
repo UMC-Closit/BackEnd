@@ -60,8 +60,6 @@ public class PostConverter {
 
     public static PostRequestDTO.CreatePostDTO toPost(Post post) {
         return PostRequestDTO.CreatePostDTO.builder()
-                .frontImage(post.getFrontImage())             // 앞면 이미지
-                .backImage(post.getBackImage())               // 뒷면 이미지
                 .pointColor(post.getPointColor())             // 포인트 컬러
                 .visibility(post.getVisibility())             // 공개 여부
                 .isMission(post.isMission())
@@ -91,6 +89,8 @@ public class PostConverter {
         return PostResponseDTO.CreatePostResultDTO.builder()
                 .clositId(post.getUser().getClositId())
                 .postId(post.getId())
+                .frontImage(post.getFrontImage())
+                .backImage(post.getBackImage())
                 .createdAt(post.getCreatedAt())
                 .visibility(post.getVisibility())
                 .build();

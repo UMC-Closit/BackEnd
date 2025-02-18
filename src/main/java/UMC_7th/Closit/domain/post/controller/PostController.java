@@ -8,14 +8,21 @@ import UMC_7th.Closit.domain.post.service.PostCommandService;
 import UMC_7th.Closit.domain.post.service.PostQueryService;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.print.attribute.standard.Media;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,10 +33,17 @@ public class PostController {
     private final PostCommandService postCommandService;
 
     @Operation(summary = "게시글 업로드")
-    @PostMapping
-    public ApiResponse<PostResponseDTO.CreatePostResultDTO> createPost (@RequestBody @Valid PostRequestDTO.CreatePostDTO request) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
+    public ApiResponse<PostResponseDTO.CreatePostResultDTO> createPost (
+            @RequestPart @Valid
+            PostRequestDTO.CreatePostDTO request, // 게시글 정보
+            @RequestPart("frontImage")
+            MultipartFile frontImage, // 앞면 이미지
+            @RequestPart("backImage")
+            MultipartFile backImage    // 뒷면 이미지
+    ) {
 
-        Post post = postCommandService.createPost(request);
+        Post post = postCommandService.createPost(request, frontImage, backImage);
 
         return ApiResponse.onSuccess(PostConverter.toCreatePostResultDTO(post));
     }
