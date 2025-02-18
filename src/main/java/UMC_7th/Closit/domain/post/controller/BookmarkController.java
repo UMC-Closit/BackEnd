@@ -34,7 +34,7 @@ public class BookmarkController {
     @Operation(summary = "사용자의 북마크 목록 조회")
     @GetMapping
     public ApiResponse<BookmarkResponseDTO.BookmarkPreviewDTO> getUserBookmarks(@RequestParam(defaultValue = "0") int page,
-                                                                                       @RequestParam(defaultValue = "10") int size) {
+                                                                                @RequestParam(defaultValue = "10") int size) {
 
         User user = securityUtil.getCurrentUser();
         Long userId = user.getId();
