@@ -66,9 +66,12 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {
+            log.info("-------------------- JwtTokenProvider.getClaims ---------------------");
+            log.info("⏳ Expired Token: {}", token);
             log.info("⏳ Expired Token: {}", token);
             log.info("⏳ Expired At: {}", e.getClaims().getExpiration());
-            return e.getClaims(); // 만료된 토큰의 Claims 반환 (리프레시 토큰 검증 시 필요할 수 있음)
+            log.info("⏳ Current Time: {}", new Date(System.currentTimeMillis()));
+            return e.getClaims();
         }
     }
 
@@ -83,7 +86,7 @@ public class JwtTokenProvider {
 
             Jwts.parserBuilder()
                     .setSigningKey(key)
-                    .setAllowedClockSkewSeconds(120) // ✅ Clock Skew 적용 (2분 오차 허용)
+                    .setAllowedClockSkewSeconds(60) // ✅ Clock Skew 적용 (2분 오차 허용)
                     .build()
                     .parseClaimsJws(token);
 
