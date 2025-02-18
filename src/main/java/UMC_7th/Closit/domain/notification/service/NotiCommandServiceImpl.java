@@ -108,27 +108,31 @@ public class NotiCommandServiceImpl implements NotiCommandService {
     @Override
     public void likeNotification(Likes likes) { // 좋아요 알림
         User receiver = likes.getPost().getUser(); // 게시글 작성자
-        String content = likes.getUser().getName() + "님이 좋아요를 눌렀습니다. ";
+        String content = likes.getUser().getName() + "님이 좋아요를 눌렀습니다.";
 
-        NotificationRequestDTO.SendNotiRequestDTO request = NotificationConverter.sendNotiRequest(receiver, content, NotificationType.LIKE);
-
-        sendNotification(request);
+        // 좋아요를 누른 사용자가 본인이 아닐 경우, 알림 전송
+        if (!receiver.getId().equals(likes.getUser().getId())) {
+            NotificationRequestDTO.SendNotiRequestDTO request = NotificationConverter.sendNotiRequest(receiver, content, NotificationType.LIKE);
+            sendNotification(request);
+        }
     }
 
     @Override
     public void commentNotification(Comment comment) { // 댓글 알림
         User receiver = comment.getPost().getUser(); // 게시글 작성자 ID
-        String content = comment.getUser().getName() + "님이 댓글을 작성했습니다. ";
+        String content = comment.getUser().getName() + "님이 댓글을 작성했습니다.";
 
-        NotificationRequestDTO.SendNotiRequestDTO request = NotificationConverter.sendNotiRequest(receiver, content, NotificationType.COMMENT);
-
-        sendNotification(request);
+        // 댓글을 작성한 사용자가 본인이 아닐 경우, 알림 전송
+        if (!receiver.getId().equals(comment.getUser().getId())) {
+            NotificationRequestDTO.SendNotiRequestDTO request = NotificationConverter.sendNotiRequest(receiver, content, NotificationType.COMMENT);
+            sendNotification(request);
+        }
     }
 
     @Override
     public void followNotification(Follow follow) { // 팔로우 알림
         User receiver = follow.getReceiver(); // 팔로워 알림 받는 사용자
-        String content = follow.getReceiver().getName() + "님이 회원님을 팔로우하기 시작했습니다. ";
+        String content = follow.getReceiver().getName() + "님이 회원님을 팔로우하기 시작했습니다.";
 
         NotificationRequestDTO.SendNotiRequestDTO request = NotificationConverter.sendNotiRequest(receiver, content, NotificationType.FOLLOW);
 
