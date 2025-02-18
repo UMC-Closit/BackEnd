@@ -21,9 +21,6 @@ public class ClositApplication {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(new Date());
-		System.out.println(new DateTime());
-		System.out.println(Date.from(ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toInstant()));
 		SpringApplication.run(ClositApplication.class, args);
 	}
 
