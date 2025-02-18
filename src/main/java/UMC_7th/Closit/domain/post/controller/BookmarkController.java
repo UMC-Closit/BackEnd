@@ -16,8 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth/bookmarks")
@@ -48,9 +46,9 @@ public class BookmarkController {
     }
 
     @Operation(summary = "게시글 북마크 삭제")
-    @DeleteMapping("/{bookmark_id}")
-    public ApiResponse<String> deleteBookmark(@PathVariable("bookmark_id") Long bookmarkId){
-        bookmarkService.removeBookmark(bookmarkId);
+    @DeleteMapping("/{post_id}")
+    public ApiResponse<String> deleteBookmark(@PathVariable("post_id") Long postId){
+        bookmarkService.removeBookmark(postId);
         return ApiResponse.onSuccess("Deletion successful");
     }
 }

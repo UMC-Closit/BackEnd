@@ -61,9 +61,15 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public void removeBookmark(Long bookmarkId) {
-        Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
+    public void removeBookmark(Long postId) {
+        User user = securityUtil.getCurrentUser();
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
+
+        Bookmark bookmark = bookmarkRepository.findByUserAndPost(user, post)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.BOOKMARK_NOT_FOUND));
+
         bookmarkRepository.delete(bookmark);
     }
 }
