@@ -2,11 +2,14 @@ package UMC_7th.Closit.domain.post.service;
 
 import UMC_7th.Closit.domain.post.dto.BookmarkRequestDTO;
 import UMC_7th.Closit.domain.post.dto.BookmarkResponseDTO;
+import UMC_7th.Closit.domain.post.entity.Bookmark;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
 public interface BookmarkService {
     BookmarkResponseDTO.CreateBookmarkResultDTO addBookmark(BookmarkRequestDTO.CreateBookmarkDTO request);
-    List<BookmarkResponseDTO.CreateBookmarkResultDTO> getUserBookmarks(String clositId);
+    Slice<Bookmark> getUserBookmarks(Long userId, Pageable pageable);
     void removeBookmark(Long bookmarkId);
 }

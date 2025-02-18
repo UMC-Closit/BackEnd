@@ -1,12 +1,19 @@
 package UMC_7th.Closit.domain.post.controller;
 
+import UMC_7th.Closit.domain.post.converter.BookmarkConverter;
 import UMC_7th.Closit.domain.post.dto.BookmarkRequestDTO;
 import UMC_7th.Closit.domain.post.dto.BookmarkResponseDTO;
+import UMC_7th.Closit.domain.post.entity.Bookmark;
 import UMC_7th.Closit.domain.post.service.BookmarkService;
+import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.global.apiPayload.ApiResponse;
+import UMC_7th.Closit.security.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +22,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/auth/bookmarks")
 public class BookmarkController {
+
     private final BookmarkService bookmarkService;
+    private final SecurityUtil securityUtil;
+
     @Operation(summary = "게시글 북마크 추가")
     @PostMapping
     public ApiResponse<BookmarkResponseDTO.CreateBookmarkResultDTO> addBookmark(
@@ -24,10 +34,17 @@ public class BookmarkController {
     }
 
     @Operation(summary = "사용자의 북마크 목록 조회")
-    @GetMapping("/{closit_id}")
-    public ApiResponse<List<BookmarkResponseDTO.CreateBookmarkResultDTO>> getUserBookmarks(
-            @PathVariable("closit_id") String clositId) {
-        return ApiResponse.onSuccess(bookmarkService.getUserBookmarks(clositId));
+    @GetMapping
+    public ApiResponse<BookmarkResponseDTO.BookmarkPreviewDTO> getUserBookmarks(@RequestParam(defaultValue = "0") int page,
+                                                                                       @RequestParam(defaultValue = "10") int size) {
+
+        User user = securityUtil.getCurrentUser();
+        Long userId = user.getId();
+
+        Pageable pageable = PageRequest.of(page, size);
+        Slice<Bookmark> bookmarks = bookmarkService.getUserBookmarks(userId, pageable);
+
+        return ApiResponse.onSuccess(BookmarkConverter.bookmarkPreviewDTO(bookmarks));
     }
 
     @Operation(summary = "게시글 북마크 삭제")
