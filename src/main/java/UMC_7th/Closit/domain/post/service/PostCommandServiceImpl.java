@@ -12,14 +12,17 @@ import UMC_7th.Closit.domain.post.repository.PostRepository;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.GeneralException;
+import UMC_7th.Closit.global.s3.AmazonS3Manager;
 import UMC_7th.Closit.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,9 +35,10 @@ public class PostCommandServiceImpl implements PostCommandService {
     private final PostHashTagRepository postHashtagRepository;
     private final ItemTagRepository itemTagRepository;
     private final SecurityUtil securityUtil;
+    private final AmazonS3Manager amazonS3Manager;
 
     @Override
-    public Post createPost(PostRequestDTO.CreatePostDTO request) {
+    public Post createPost(PostRequestDTO.CreatePostDTO request, MultipartFile frontImage, MultipartFile backImage) {
         // 1. User 조회
 
         User currentUser = securityUtil.getCurrentUser();
@@ -44,15 +48,20 @@ public class PostCommandServiceImpl implements PostCommandService {
         LocalDateTime now = LocalDateTime.now();
         boolean isMission = postRepository.findAllByUserIdAndCreatedAtBetween(currentUser.getId(), startOfDay, now).isEmpty();
 
+        String uuid_front = UUID.randomUUID().toString();
+        String storedFrontLocation = amazonS3Manager.uploadFile(amazonS3Manager.generatePostFrontImageKeyName(uuid_front), frontImage);
+
+        String uuid_back = UUID.randomUUID().toString();
+        String storedBackLocation = amazonS3Manager.uploadFile(amazonS3Manager.generatePostBackImageKeyName(uuid_back), backImage);
+
         // 3. Post 생성 및 저장
         Post post = Post.builder()
-                .frontImage(request.getFrontImage())
-                .backImage(request.getBackImage())
+                .frontImage(storedFrontLocation)
+                .backImage(storedBackLocation)
                 .pointColor(request.getPointColor())
                 .visibility(request.getVisibility())
                 .user(currentUser)
                 .isMission(isMission)
-                .user(currentUser)
                 .build();
 
         postRepository.save(post);

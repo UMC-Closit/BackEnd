@@ -3,17 +3,15 @@ package UMC_7th.Closit.domain.user.service;
 import UMC_7th.Closit.domain.follow.entity.Follow;
 import UMC_7th.Closit.domain.user.dto.RegisterResponseDTO;
 import UMC_7th.Closit.domain.user.dto.UserRequestDTO;
-import UMC_7th.Closit.domain.user.entity.Role;
 import UMC_7th.Closit.domain.user.entity.User;
 import UMC_7th.Closit.domain.user.repository.UserRepository;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
 import UMC_7th.Closit.global.s3.AmazonS3Manager;
-import UMC_7th.Closit.global.s3.UuidRepository;
-import UMC_7th.Closit.global.s3.entity.Uuid;
 import UMC_7th.Closit.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +33,9 @@ public class UserCommandServiceImpl implements UserCommandService {
     private final SecurityUtil securityUtil;
 
     private final AmazonS3Manager amazonS3Manager;
-    private final UuidRepository uuidRepository;
+
+    @Value("${cloud.aws.s3.default-profile-image}")
+    private String defaultProfileImage;
 
     @Override
     public RegisterResponseDTO registerUser (UserRequestDTO.CreateUserDTO userRequestDto) {
@@ -60,7 +60,7 @@ public class UserCommandServiceImpl implements UserCommandService {
                 .clositId(userRequestDto.getClositId())
                 .password(encodedPassword)
                 .birth(userRequestDto.getBirth())
-                .profileImage(userRequestDto.getProfileImage())
+                .profileImage(defaultProfileImage)
                 .role(UMC_7th.Closit.domain.user.entity.Role.USER) // 기본적으로 USER 부여
                 .build();
 
@@ -70,6 +70,7 @@ public class UserCommandServiceImpl implements UserCommandService {
                 .clositId(user.getClositId())
                 .name(userRequestDto.getName())
                 .email(userRequestDto.getEmail())
+                .profileImage(user.getProfileImage())
                 .build();
 
     }
@@ -94,20 +95,20 @@ public class UserCommandServiceImpl implements UserCommandService {
 
         // 사용자가 프로필 이미지를 삭제하려는 경우
         if (file == null || file.isEmpty()) {
+            log.info("file is null or empty");
             amazonS3Manager.deleteFile(currentUser.getProfileImage());
             currentUser.updateProfileImage(null);
             return currentUser;
         }
 
         // 기존 프로필 이미지 삭제
-        if (currentUser.getProfileImage() != null) {
+        if (currentUser.getProfileImage() != null && !currentUser.getProfileImage().equals(defaultProfileImage)) {
             amazonS3Manager.deleteFile(currentUser.getProfileImage());
         }
 
         // 새로운 프로필 이미지 등록
         String uuid = UUID.randomUUID().toString();
-        Uuid savedUuid = uuidRepository.save(Uuid.builder().uuid(uuid).build());
-        String storedLocation = amazonS3Manager.uploadFile(amazonS3Manager.generateProfileImageKeyName(savedUuid), file);
+        String storedLocation = amazonS3Manager.uploadFile(amazonS3Manager.generateProfileImageKeyName(uuid), file);
 
         currentUser.updateProfileImage(storedLocation);
 
