@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.Date;
 
@@ -36,8 +39,10 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(email)
                 .claim("role", role)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + validity))
+                .setIssuedAt(Date.from(ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toInstant()))
+                .setExpiration(Date.from(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
+                        .plus(Duration.ofMillis(validity))
+                        .toInstant()))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
