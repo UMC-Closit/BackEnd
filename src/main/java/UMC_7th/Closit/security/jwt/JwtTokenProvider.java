@@ -3,6 +3,7 @@ package UMC_7th.Closit.security.jwt;
 import UMC_7th.Closit.domain.user.entity.Role;
 import UMC_7th.Closit.global.apiPayload.code.status.ErrorStatus;
 import UMC_7th.Closit.global.apiPayload.exception.handler.JwtHandler;
+import UMC_7th.Closit.global.apiPayload.exception.handler.UserHandler;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.Date;
 
@@ -95,7 +99,7 @@ public class JwtTokenProvider {
             log.info("⏳ Expired Token: {}", token);
             log.info("⏳ Expired At: {}", e.getClaims().getExpiration());
             log.info("⏳ Current Time: {}", new Date(System.currentTimeMillis()));
-            throw new JwtHandler(ErrorStatus.EXPIRED_TOKEN);
+            throw new UserHandler(ErrorStatus.EXPIRED_TOKEN);
         } catch (MalformedJwtException e) {
             log.info("🚨 Malformed Token: {}", token);
             throw new JwtHandler(ErrorStatus.INVALID_TOKEN);
